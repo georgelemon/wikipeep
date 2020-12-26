@@ -1,0 +1,32 @@
+#!usr/bin/env php
+<?php
+
+require __DIR__.'/vendor/autoload.php';
+
+use App\Console\Console;
+use Symfony\Component\Console\Application as SymfonyApplication;
+
+/**
+ * Redefine all the system constants
+ */
+define('DS', DIRECTORY_SEPARATOR);
+require_once __DIR__ . DS . 'app/helper.php';
+define('VERSION', '1.0.0');
+
+define('PATH', __DIR__);
+// While in blindmode (Artisan Console) we don't need the real public path,
+// but will overwrite the PUBLIC_PATH value with the root path.
+define('APP_PATH', PATH . DS . 'app');
+define('CONFIG_PATH', PATH . DS . 'config');
+define('STORAGE_PATH', PATH . DS . 'storage');
+define('DATABASE_PATH', PATH . DS . 'storage/database/');
+define('CONTENT_PATH', PATH . DS . 'content');
+define('ROUTES_PATH', PATH . DS . 'routes');
+define('VIEWS_PATH', APP_PATH . DS . 'Views');
+define('PUBLIC_PATH', PATH);
+define('VENDOR_PATH', PATH . DS . 'vendor');
+
+// date_default_timezone_set(config('app.timezone'));
+
+$console = new Console(new SymfonyApplication("Running on version " . VERSION), null);
+$console->run();

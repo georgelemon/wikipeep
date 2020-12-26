@@ -1,0 +1,32 @@
+{
+    "name": "georgelemon/wikipeep",
+    "description": "An open source wiki for busy devs. 🌿 Inspired by GetOutline. Fully OOP, based on Symfony Console, Markdown, Flywheel flat database and PHP",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "George Lemon",
+            "email": "hi@georgelemon.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7.4|^8.0",
+        "symfony/http-foundation": "^5.2@dev",
+        "illuminate/support": "^9.0@dev",
+        "illuminate/filesystem": "^9.0@dev",
+        "vlucas/phpdotenv": "^5.1@dev",
+        "nyholm/psr7": "^1.0@dev",
+        "symfony/yaml": "^5.2@dev",
+        "georgelemon/dessert": "dev-master",
+        "erusev/parsedown": "dev-master",
+        "symfony/console": "5.x-dev",
+        "jamesmoss/flywheel": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Ethos\\Dessert\\": "vendor/georgelemon/dessert/src/"
+        }
+    }
+}
