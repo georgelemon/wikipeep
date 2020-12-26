@@ -17,7 +17,7 @@
         "illuminate/filesystem": "^9.0@dev",
         "vlucas/phpdotenv": "^5.1@dev",
         "nyholm/psr7": "^1.0@dev",
-        "symfony/yaml": "^5.2@dev",
+        "symfony/yaml": "5.x-dev",
         "georgelemon/dessert": "dev-master",
         "symfony/console": "5.x-dev",
         "jamesmoss/flywheel": "dev-master"

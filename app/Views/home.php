@@ -16,6 +16,7 @@
             5. Add support for white label
 
  -->
+
 <style>
     /*--color: bisque;*/
 
@@ -24,6 +25,17 @@
     }
 
     /* Headlines in Contents */
+    #article--side h1,
+    #article--side h2 {
+        font-weight: bold;
+    }
+
+    #article--side h1,
+    #article--side h2,
+    #article--side h3 {
+        margin-bottom: 1.3rem;
+    }
+
     #article--side h1 a[id],
     #article--side h2 a[id],
     #article--side h3 a[id],
@@ -33,6 +45,34 @@
         text-decoration: none;
         color:black;
         border-bottom:1px #AAA dotted;
+    }
+
+    #article--side {
+        font-size: 1.15em;
+    }
+
+    #article--side span.paragraph {
+        margin-bottom:1.3em;
+        display: block;
+    }
+
+    #article--side li {
+        list-style: none;
+        margin-bottom: .5em;
+    }
+
+    #article--side li input[type="checkbox"] {
+        width: 15px; /*Desired width*/
+        height: 15px; /*Desired height*/
+        cursor: pointer;
+        /*-webkit-appearance: none;*/
+        /*appearance: none;*/
+        margin-right: 5px;
+    }
+
+    #article--side li span.paragraph {
+        margin-bottom: 0;
+        display: inline;
     }
 
     .main--sidebar ul,
@@ -78,8 +118,18 @@
 </style>
 <?php
 
-$PD = new Parsedown;
-$PD->parseMarkdown($example);
+// $PD = new App\Core\Parsedown\Parsedown;
+// $example = file_get_contents(ROOT_PATH . '/README.md');
+
+// $example = <<<EOF
+// - [x] test
+// - [ ] aaa
+// EOF;
+// $PD->parseMarkdown($example);
+
+
+// var_dump($PD->getContent());
+
 // echo $PD->text('Hello _Parsedown_!'); 
 ?>
 
@@ -99,10 +149,17 @@ $PD->parseMarkdown($example);
                     </h5>
                     <h6 class="text-muted"><small>Summary</small></h6>
                     <ul>
-                        <li><a href="#">👋 Gettind Started</a></li>
-                        <li><a href="#"><?php echo icon('code')->size(17); ?> Environments</a></li>
+                        <?php 
+                            if( $navigation = flywheel()->getNavigation() ) {
+                                foreach ($navigation as $key => $nav) {
+                                    $icon = $nav->icon ? icon($nav->icon)->size(17) : null;
+                                    echo sprintf('<li><a href="/%1$s">%3$s %2$s</a></li>', $nav->slug, $nav->label, $icon);
+                                }
+                            }
+                        ?>
+<!--                         <li><a href="#"><?php echo icon('code')->size(17); ?> Environments</a></li>
                         <li><a href="#"><?php echo icon('zap')->size(17); ?> Technologies</a></li>
-                        <li><a href="#"><?php echo icon('external-link')->size(17); ?> Motherboard</a></li>
+                        <li><a href="#"><?php echo icon('external-link')->size(17); ?> Motherboard</a></li> -->
                     </ul>
                     <div class="position-absolute pb-3" style="bottom:0">
                         <small class="text-muted d-block" style="font-size:10px">Made with <a href="#">WikiPeep 1.0.0</a><br>
@@ -134,7 +191,7 @@ $PD->parseMarkdown($example);
                     <div class="col-lg-2 mt-2 position-fixed">
                         <div id="contents--sidebar">
                             <h6 class="text-muted">Contents</h6>
-                            <ul>
+                            <ul class="mb-4">
                                 <?php
                                 if( $this->contents['summary'] ) {
                                     foreach ($this->contents['summary'] as $item) {
@@ -143,16 +200,21 @@ $PD->parseMarkdown($example);
                                 }
                                 ?>
                             </ul>
+
+                            <div class="p-3 rounded" style="background-color: beige">
+                                <strong>Hot note</strong>
+                                <span class="d-block">Be sure you ssh to your machine and do some nginx checks</span>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-10 offset-lg-2">
-                        <div id="article--side" class="px-5 pb-5">
+                        <div id="article--side" class="px-5 py-5">
 
                             <?php echo $this->contents['content'] ?>
 
-                            <div class="p-4 border mt-5 rounded" style="box-shadow:0 0 5px rgba(0,0,0,.04)">
-                                <strong class="h5">Something missing on this page?</strong>
-                                <p class="mb-0">We aim to have sufficient test coverage for critical parts of the application and aren't aiming for 100% unit test coverage.</p>
+                            <div class="p-4 mt-5 rounded" style="background-color:lavender;">
+                                <strong class="h5 font-weight-bold">Something missing on this page?</strong>
+                                <p class="mb-0">We aim to have a powerful open source documentation for busy developers and teams that can make it up & running in just couple minutes.</p>
                             </div>
                         </div>
                     </div>

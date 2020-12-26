@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "46a2a5c72029fdfe733d593e9b01ead0",
+    "content-hash": "e8d66a98d583c9995a411577db07d0e7",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -2355,16 +2355,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "dev-master",
+            "version": "5.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "230b68b6601fb71aa3df000f7eee3ac8859672ef"
+                "reference": "d2d600fb284494bdb1270a1d19dcf27cb57e3264"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/230b68b6601fb71aa3df000f7eee3ac8859672ef",
-                "reference": "230b68b6601fb71aa3df000f7eee3ac8859672ef",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/d2d600fb284494bdb1270a1d19dcf27cb57e3264",
+                "reference": "d2d600fb284494bdb1270a1d19dcf27cb57e3264",
                 "shasum": ""
             },
             "require": {
@@ -2385,11 +2385,6 @@
                 "Resources/bin/yaml-lint"
             ],
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.2-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Symfony\\Component\\Yaml\\": ""
@@ -2428,7 +2423,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-09-27T03:44:38+00:00"
+            "time": "2020-12-08T17:04:48+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
