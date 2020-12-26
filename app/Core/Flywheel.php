@@ -50,6 +50,17 @@ class Flywheel
     }
 
     /**
+     * Retrieve the main navigation menu
+     * @return array | null
+     */
+    public function getNavigation()
+    {
+        if( $nav = $this->getRepository('settings')->findById('navigation')) {
+            return $nav->navigation;
+        }        
+    }
+
+    /**
      * Query for retrieving documents.
      * 
      * @param  string $repoName

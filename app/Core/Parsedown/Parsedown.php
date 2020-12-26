@@ -212,6 +212,8 @@ class Parsedown
         '*' => array('Rule', 'List'),
         '+' => array('List'),
         '-' => array('SetextHeader', 'Table', 'Rule', 'List'),
+        '[x]' => array('CheckInput'),
+        '[ ]' => array('UnCheckInput'),
         '0' => array('List'),
         '1' => array('List'),
         '2' => array('List'),
@@ -231,7 +233,6 @@ class Parsedown
         '`' => array('FencedCode'),
         '|' => array('Table'),
         '~' => array('FencedCode'),
-        '[x]' => array('CheckInput'),
     );
 
     # ~
@@ -244,6 +245,13 @@ class Parsedown
     # Blocks
     #
 
+    /**
+     * Line parser.
+     * 
+     * @param  array  $lines                array with markdown lines to be parsed
+     *                                          
+     * @return string
+     */
     protected function lines(array $lines)
     {
         return $this->elements($this->linesElements($lines));
@@ -309,15 +317,14 @@ class Parsedown
                 }
             }
 
-            // Since WikiPeep, we have a new feature for adding checkboxes in GitHub style [x] & [ ]
             // Since WikiPeep there is also support for adding checkbox as you do in GitHub.
-            // So, for rendering checkboxes use [x] or [ ] for non checked
+            // So, for rendering checkboxes use [x] or [ ].
             if( $text[0] === '[' && $text[1] === 'x' && $text[2] === ']' ) {
                 $marker = '[x]';
             } elseif( $text[0] === '[' && $text[1] === ' ' && $text[2] === ']' ) {
                 $marker = '[ ]';
             } else {
-                // Retrieve the markdown tag positioned first in line
+            // Retrieve the markdown tag positioned first in line
                 $marker = $text[0];
             }
 
@@ -325,27 +332,30 @@ class Parsedown
 
             if (isset($this->BlockTypes[$marker]))
             {
+
                 foreach ($this->BlockTypes[$marker] as $blockType)
                 {
-                    $blockTypes []= $blockType;
+                    $blockTypes[] = $blockType;
                 }
             }
 
             #
             # ~
-
+            /**
+             * Parsing all block types available in order to identify
+             * the content for each iterated line
+             */
             foreach ($blockTypes as $blockType) {
 
                 $Block = $this->{"block$blockType"}($Line, $CurrentBlock);
 
-                if (isset($Block))
-                {
+                if (isset($Block)) {
+
                     $Block['type'] = $blockType;
 
-                    if ( ! isset($Block['identified']))
-                    {
-                        if (isset($CurrentBlock))
-                        {
+                    if ( ! isset($Block['identified'])) {
+                        
+                        if (isset($CurrentBlock)) {
                             $Elements[] = $this->extractElement($CurrentBlock);
                         }
 
@@ -372,13 +382,11 @@ class Parsedown
             if (isset($Block)) {
                 $CurrentBlock = $Block;
             } else {
-
                 if (isset($CurrentBlock)) {
                     $Elements[] = $this->extractElement($CurrentBlock);
                 }
 
                 $CurrentBlock = $this->paragraph($Line);
-
                 $CurrentBlock['identified'] = true;
             }
         }
@@ -461,7 +469,10 @@ class Parsedown
         return array(
             'type' => 'Paragraph',
             'element' => array(
-                'name' => 'p',
+                'name' => 'span',
+                'attributes' => [
+                    'class' => 'paragraph'
+                ],
                 'handler' => array(
                     'function' => 'lineElements',
                     'argument' => $Line['text'],
@@ -768,30 +779,23 @@ class Parsedown
         {
             $markup .= $hasName ? '>' : '';
 
-            if (isset($Element['elements']))
-            {
+            if (isset($Element['elements'])) {
                 $markup .= $this->elements($Element['elements']);
-            }
-            elseif (isset($Element['element']))
-            {
+            } elseif (isset($Element['element'])) {
                 $markup .= $this->element($Element['element']);
-            }
-            else
-            {
-                if (!$permitRawHtml)
-                {
+            } else {
+                if (!$permitRawHtml) {
                     $markup .= self::escape($text, true);
-                }
-                else
-                {
+                } else {
+                    // In some cases, the given text can be an array
+                    // provided by BlockCheckInput
+                    // $markup .= is_array($text) ? $this->lines($text) : $text;
                     $markup .= $text;
                 }
             }
 
             $markup .= $hasName ? '</' . $Element['name'] . '>' : '';
-        }
-        elseif ($hasName)
-        {
+        } elseif ($hasName) {
             $markup .= ' />';
         }
 

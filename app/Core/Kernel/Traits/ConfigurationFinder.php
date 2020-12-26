@@ -57,13 +57,16 @@ trait ConfigurationFinder {
      * Initialize an instance of Finder
      * @see Symfony\Component\Finder\Finder
      */
-    public function finder(string $directory, $fileType = 'php')
+    public function finder(string $directory, $fileType = 'php', $searchType = 'files', $level = null)
     {
         $finder = new Finder;
 
-        return $finder->files()->in($directory)
-                      ->name('*.' . $fileType)
-                      ->sortByName();
+        if( $searchType === 'files' ) {
+            return $finder->files()->in($directory)->name('*.' . $fileType)->sortByName();
+        }
+        
+        return $level ? $finder->directories()->in($directory)->sortByName()->depth($level) :
+                        $finder->directories()->in($directory)->sortByName();
     }
 
     /**

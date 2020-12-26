@@ -122,12 +122,10 @@ trait BlockList
                 )
             );
 
-            $Block['element']['elements'] []= & $Block['li'];
+            $Block['element']['elements'][] = & $Block['li'];
 
             return $Block;
-        }
-        elseif ($Line['indent'] < $requiredIndent and $this->blockList($Line))
-        {
+        } elseif ($Line['indent'] < $requiredIndent and $this->blockList($Line)) {
             return null;
         }
 
