@@ -68,7 +68,6 @@ class Application {
     protected function loadWithPublicRoutes()
     {
         require ROUTES_PATH . '/public.php';
-        require ROUTES_PATH . '/api.php';
     }
 
     protected function loadWithProviders()

@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Core\Compiler;
+use App\Core\Parsedown\Parsedown;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -71,7 +72,7 @@ class BuildCommand extends Command
         }
 
         // Instantiate Parsedown 
-        $parsedown = new \Parsedown;
+        $parsedown = new Parsedown;
 
         // Instantiate Progress Bar that will be displayed in terminal while compiling
         // which also shows the number of total markdown files in queue.

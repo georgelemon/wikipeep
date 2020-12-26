@@ -1,14 +1,6 @@
 <?php
 
 /**
- * My personal portfolio
- *
- * © 2020 George Lemon
- * https://georgelemon.com
- * https://www.gnu.org/licenses/gpl-3.0.en.html
- */
-
-/**
  * Define the current environment (default: production).
  * @see !IMPORTANT: Do not leave the app with local env in production
  */ 
