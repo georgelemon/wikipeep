@@ -19,7 +19,6 @@
         "nyholm/psr7": "^1.0@dev",
         "symfony/yaml": "^5.2@dev",
         "georgelemon/dessert": "dev-master",
-        "erusev/parsedown": "dev-master",
         "symfony/console": "5.x-dev",
         "jamesmoss/flywheel": "dev-master"
     },
