@@ -1,0 +1,7 @@
+menu:
+  label: '👋 Getting Started'
+  order: 1
+aside_box:
+  label: '🔥 Hot note'
+  message: 'Share with your developer friends so maybe WikiPeep can help them'
+  color: 'beige'

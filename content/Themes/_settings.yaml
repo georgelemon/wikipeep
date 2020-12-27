@@ -1,0 +1,4 @@
+menu:
+  label: 'Themes'
+  icon: feather
+  order: 3
