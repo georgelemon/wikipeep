@@ -1,5 +1,6 @@
 # Open Source Wiki for Busy Devs (WIP)
 
+NOTE: This is still working in progress project.
 
 ## Features
 - [x] Markdown parser, thanks to [Parsedown](https://github.com/erusev/parsedown)
