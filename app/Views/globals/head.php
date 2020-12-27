@@ -1,1 +1,0 @@
-<?php echo $this->view('globals/meta/meta-head'); ?>
