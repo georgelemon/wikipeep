@@ -59,7 +59,7 @@ class ErrorExceptionHandler
                             code{background:#D1E751;border-radius:4px;padding:2px 6px}
                         </style>
                     </head>
-                    <body>
+                    <body style="font-size:1.2rem">
                         <h1>Uncaught Exception</h1>
                         <p><code>' . $e->getMessage() . '</code></p>
                         <h3>Origin</h3>

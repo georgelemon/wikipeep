@@ -11,7 +11,6 @@ trait ContainerSingleton {
     public static function instance() {
       
         if (static::$instance === null){
-
             static::$instance = new static();
         }
       

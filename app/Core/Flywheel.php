@@ -61,6 +61,18 @@ class Flywheel
     }
 
     /**
+     * When available, retrieves the helper aside box.
+     * 
+     * @return 
+     */
+    public function getAsideBox()
+    {
+        if( $box = $this->getRepository('getting-started')->findById('asidebox')) {
+            return ['label' => $box->label, 'message' => $box->message, '_boxColor' => $box->color];
+        }
+    }
+
+    /**
      * Query for retrieving documents.
      * 
      * @param  string $repoName

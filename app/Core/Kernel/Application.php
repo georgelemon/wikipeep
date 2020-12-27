@@ -4,7 +4,7 @@ namespace App\Core\Kernel;
 
 use Exception;
 use Ethos\Dessert\Library;
-use App\Core\Flywheel;
+use App\Core\{Theme, Flywheel};
 
 class Application {
 
@@ -49,15 +49,8 @@ class Application {
          * @see App\Core\Config
          */
         $this->registerConfigurationFiles();
-
-        /**
-         * Connect all SQLite databases
-         */
-        // $this->database();
-        // $this->createUsersDatabase();
-
         $this->initializeRouter();
-        // $this->initializeRegistry();
+
         $this->loadWithPublicRoutes();
         $this->loadWithProviders();
     }
@@ -77,6 +70,9 @@ class Application {
 
         // Configurate a Flywheel Instance
         Flywheel::instance()->flywheelConfig();
+        
+        // Configurate Theme Handler
+        Theme::instance()->configurate($this->config()->get('app.theme_settings'));
     }
 
     /**
