@@ -11,6 +11,6 @@ class IndexController extends BaseController {
         /**
          * Return view with the results
          */
-        return $this->layout('home', 'base' );
+        return $this->layout('home', 'base');
     }
 }

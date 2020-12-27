@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Core\Theme;
+
 abstract class BaseController {
 
     /**
@@ -31,12 +33,21 @@ abstract class BaseController {
     protected $partial;
 
     /**
+     * Retrieve the current theme path via Theme Handler
+     * @return string
+     */
+    protected function getCurrentTheme()
+    {
+        return theme()->getCurrentTheme();
+    }
+
+    /**
      * Return a specific view
      */
     protected function view(string $view, $data = null)
     {
         $this->view = $data;
-        require VIEWS_PATH . DS . $view . static::EXT;
+        require $this->getCurrentTheme() . DS . $view . static::EXT;
     }
 
     /**
@@ -60,7 +71,7 @@ abstract class BaseController {
     protected function partial(string $path, $data = null)
     {
         $this->partial = $data;
-        require VIEWS_PATH . DS . 'partials' . DS . $path . static::EXT;
+        require $this->getCurrentTheme() . DS . 'partials' . DS . $path . static::EXT;
     }
 
     /**
