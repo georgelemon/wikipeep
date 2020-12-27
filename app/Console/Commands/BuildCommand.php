@@ -112,15 +112,14 @@ class BuildCommand extends Command
 
         foreach ($content as $key => $value) {
 
+            // Parsing the Markdown file contents
             $parsedown->parseMarkdown($value->getContents());
 
+            // Retrieve the entire path of the file
             $markdownStructure = $this->getIndexStructure($value->getPathName());
+
+            // Create the structure of directories
             $directoriesUri = $this->getDirectoriesPath($markdownStructure);
-            
-            // $menuItems[] = [
-            //     'label' => 
-            //     'uri' => $directoriesUri
-            // ];
 
             // Creating a new JSON file for each iterated article.
             // Where 'summary' represents the contents summary parsed from all anchor urls
@@ -154,30 +153,48 @@ class BuildCommand extends Command
             
             // Checks if the current directory has specific settings declared
             if( $settings = $this->getDirectorySettings($filesystem, $directory->getRealPath()) ) {
+
+                $getDirectoryName = $settings['menu']['label'] ?? $directory->getRelativePathname();
+
+                // Checking if the current directory contains anything
+                // related to the helper box so it can be parsed
+                // and displayed on the main aside bar.
+                if( isset($settings['aside_box']) && is_array($settings['aside_box']) ) {
+                    $this->getAsideBox($settings['aside_box'], $getDirectoryName);
+                }
+
+                // Creating the main navigation menu
                 $menuItems[$settings['menu']['order'] ?? null] = [
-                    'label' => $settings['menu']['label'] ?? $directory->getRelativePathname(),
+                    'label' => $getDirectoryName,
                     'slug' => Str::slug($directory->getRelativePathname()),
                     'icon' => $settings['menu']['icon'] ?? false,
                 ];
             }
             
-            $this->inProgress();
+            $this->inProgress(); // progress for each iteration
         }
         
-        ksort($menuItems);
+        ksort($menuItems); // Sort the items based on their specified order
 
+        // Create a flat file JSON via Flywheel with all menu items found
         flywheel()->create([
             'navigation' => $menuItems
         ], 'settings', 'navigation');
 
-        $this->finishLoader();
+        $this->finishLoader(); // Finish the console loader 
+
         $output->writeln(PHP_EOL . '<info>Success</info> The navigation menu has been sucessfully built.');
         return 0;
     }
 
     /**
-     * Try retrieve the directory settings when available
+     * Try retrieve the directory settings when available.
+     * 
+     * @param  Filesystem  $filesystem
+     * @param  string  $path
+     * 
      * @return array
+     * @throws ParseException
      */
     protected function getDirectorySettings($filesystem, $path)
     {
@@ -186,9 +203,34 @@ class BuildCommand extends Command
             try {
                 return Yaml::parse($filesystem->get($settings));
             } catch (ParseException $e) {
-                throw new Exception($e->getMessage(), 1);
+                throw new ParseException($e->getMessage());
             }
         }
+    }
+
+    /**
+     * When provided in settings.yaml, will show a note box in the main aside.
+     * This will be visible on all articles that stays under the specific category.
+     *
+     * @param  $asideBox
+     * 
+     * @return [type] [description]
+     */
+    protected function getAsideBox(array $asideBox, $directoryName)
+    {
+        $label = $asideBox['label'] ?? null;
+        $message = $asideBox['message'] ?? null;
+
+        if( $label === null && $message === null ) {
+            return false;
+        }
+
+        // Create a flat file JSON via Flywheel with all menu items found
+        flywheel()->create([
+            'label' => $label,
+            'message' => $message,
+            'color' => $asideBox['color'] ?? 'beige'
+        ], Str::slug($directoryName), 'asidebox');
     }
 
     /**
