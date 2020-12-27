@@ -32,18 +32,46 @@ function onScroll(event){
 
 window.document.addEventListener('scroll', onScroll );
 
+/**
+ * Focusing the search bar input when pressing the / key
+ */
+function searchbarFocus(element)
+{
+    searchBarElement = document.getElementById(element);
+    document.addEventListener("keydown", event => {
+        if (event.keyCode === 191) {
+            event.preventDefault()
+            searchBarElement.focus()
+        }
+    });
+}
 
 /**
- * Drag and drop 
+ * Add automatically target blank for externallinks
  */
-  const containers = document.querySelectorAll('.interactive-area');
-  const droppable = new Draggable.Droppable(containers, {
-    draggable: '.item',
-    dropzone: '.dropzone',
-    mirror: {
-      constrainDimensions: true,
-    },
-  });
+function targetBlankLinks() {
+
+    let internal = location.host.replace("www.", "");
+    internal = new RegExp(internal, "i");
+      
+    let a = document.getElementsByTagName('a');
+    
+    for (var i = 0; i < a.length; i++) {
+        let href = a[i].host;
+        if( !internal.test(href) ) {
+            a[i].setAttribute('target', '_blank');
+        }
+    }
+};
+
+
+/**
+ * Initialize the juice
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    searchbarFocus('searchbar--input')
+    targetBlankLinks()
+});
 
 /**
  * Autocomplete
