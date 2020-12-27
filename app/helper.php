@@ -14,6 +14,7 @@ if( ! function_exists('app') ) {
 
 /**
  * A ready to use Flywheel instance
+ * 
  * @return App\Core\Flywheel
  */
 function flywheel()
@@ -23,11 +24,22 @@ function flywheel()
 
 /**
  * An instantiated Theme
+ * 
  * @return App\Core\Theme
  */
 function theme()
 {
     return App\Core\Theme::instance();
+}
+
+/**
+ * Retrieve the public path to current theme stylesheet css.
+ * 
+ * @return string
+ */
+function getStylesheetTag()
+{
+    return theme()->getStylesheetTag();
 }
 
 function el(string $tag, $attributes = null, $content = null, array $statement = null) : string

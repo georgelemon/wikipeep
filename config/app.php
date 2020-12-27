@@ -22,8 +22,9 @@ return [
     'theme_settings' => [
         /**
          * The name of the theme based on its directory name (lowercase).
+         * @var string (Default theme is twentytwentyone)
          */
-        'name' => 'default',
+        'name' => 'twentytwentyone',
         
         /**
          * When is set true, it will try to look for the theme switcher
@@ -31,6 +32,13 @@ return [
          * @var boolean
          */
         'switch_mode' => true
-    ]
+    ],
+
+    /**
+     * When set true, it will shows default WikiKeep copyright note.
+     * Otherwise it will try to use the application_copyright text when available
+     */
+    'copyright' => true,
+    'application_copyright' => null
 ];
 

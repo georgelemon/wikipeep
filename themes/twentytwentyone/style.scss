@@ -1,0 +1,135 @@
+
+html {
+    scroll-behavior: auto;
+}
+
+
+/* Headlines in Contents */
+#article--side h1,
+#article--side h2 {
+    font-weight: bold;
+}
+
+#article--side {
+
+    font-size: 1.15em;
+
+    h1, h2, h3 {
+        margin-bottom: 1.3rem;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        & [id] {
+            text-decoration: none;
+            color:black;
+            border-bottom:1px #AAA dotted;
+        }
+    }
+
+    span.paragraph {
+        margin-bottom:1.3em;
+        line-height: 1.9em;
+        display: block;
+    }
+
+    li {
+        list-style: none;
+        margin-bottom: .5em;
+
+        &:input[type="checkbox"] {
+            width: 15px;
+            height: 15px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        span.paragraph {
+            margin-bottom: 0;
+            display: inline;
+        }
+    }
+}
+
+.main--sidebar ul,
+#contents--sidebar ul {
+    padding:0;
+    margin:0;
+}
+
+.main--sidebar li,
+#contents--sidebar li {
+    list-style: none;
+    margin-bottom:7px;
+}
+
+.main--sidebar {
+    left:-10px;
+    position:fixed;
+
+    li {
+
+        a {
+            color:#222;
+            text-decoration: none;
+        }
+
+        &.active {
+            a {
+                color:blue;
+            }
+        }
+    }
+}
+
+#contents--sidebar {
+    li {
+        a {
+            color:black;
+            border-right:3px transparent solid;
+            transition: all .3s ease;
+            text-decoration: none;
+        }
+
+        &.active {
+            a {
+                border-right-color: rgba(0,0,255,0.15);
+                color:blue;
+            }
+        }
+    }
+}
+
+.breadcrumb--nav li:after {
+    content:"/";
+}
+
+pre {
+    border-radius:5px;
+}
+
+.list-none {
+    list-style: none;
+}
+
+
+details {
+    margin-bottom: 2rem;
+    padding: 20px;
+    border-radius: 4px;
+    background: bisque;
+}
+
+details summary {
+    font-weight: bold;
+    font-family: inherit;
+}
+
+/**
+ * Usually hacked for youtube or other iframe-based players
+ */
+iframe {
+    width:100%;
+    border-radius:15px;
+    box-shadow: 0 0 20px rgba(0,0,0,.2);
+    margin:10px 0 20px;
+}
