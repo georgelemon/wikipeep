@@ -33,6 +33,7 @@ define('ROUTES_PATH', ROOT_PATH . DS . 'routes');
 define('VIEWS_PATH', APP_PATH . DS . 'Views');
 define('PUBLIC_PATH', $_SERVER['HTTP_HOST']);
 define('VENDOR_PATH', ROOT_PATH . DS . 'vendor');
+define('THEMES_PATH', ROOT_PATH . DS . 'themes');
 
 // Set default time based on location input
 date_default_timezone_set('Europe/Bucharest'); 

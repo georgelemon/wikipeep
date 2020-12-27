@@ -14,11 +14,20 @@ if( ! function_exists('app') ) {
 
 /**
  * A ready to use Flywheel instance
- * @return Flywheel
+ * @return App\Core\Flywheel
  */
 function flywheel()
 {
     return App\Core\Flywheel::instance();
+}
+
+/**
+ * An instantiated Theme
+ * @return App\Core\Theme
+ */
+function theme()
+{
+    return App\Core\Theme::instance();
 }
 
 function el(string $tag, $attributes = null, $content = null, array $statement = null) : string
@@ -213,5 +222,39 @@ if( ! function_exists('emoji') ) {
     function emoji()
     {
         return new App\Core\Components\EmojiBuilder\Emoji;
+    }
+}
+
+function getCurrentCategory()
+{
+    $currentCategory = request()->segment(1);
+
+    if( ! $currentCategory ) {
+        return;
+    }
+
+    return $currentCategory;
+}
+
+/**
+ * Retrieves the main navigation menu
+ */
+function getAsideNavigation()
+{
+
+    if( $navigation = flywheel()->getNavigation() ) {
+        foreach ($navigation as $key => $nav) {
+            
+            $icon = $nav->icon ? icon($nav->icon)->size(17) : null;
+            $slug = $nav->slug;
+
+            if( $activeCat = getCurrentCategory() )  {
+                $activeCat = $activeCat === $slug ? sprintf(' class="%s"', 'active') : null;
+            } else {
+                $activeCat = null;
+            }
+
+            echo sprintf('<li%4$s><a href="/%1$s">%3$s %2$s</a></li>', $slug, $nav->label, $icon, $activeCat);
+        }
     }
 }
