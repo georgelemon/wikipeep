@@ -12,7 +12,7 @@ return [
      * SEO Meta tags - Where meta name is used for title tag,
      * and description for meta tag description.
      */
-    'meta_name' => 'A simple markdown wiki for busy devs',
+    'meta_name' => 'An Open Source Wiki for Busy Developers',
     'meta_description' => false,
     'meta_image' => false,
 
