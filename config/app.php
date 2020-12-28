@@ -5,7 +5,12 @@ return [
      * The application name and logo.
      * When logo is set to false the default WikiPeep logo will be shown.
      */
-    'name' => 'WikiPeep',
+    'name' => 'WikiPeep.',
+    /**
+     * In order to display it correctly,
+     * the given path must be a public path to a svg/png file of your logo.
+     * If you don't want to use a graphic logo, just leave it false
+     */
     'logo' => false,
 
     /**

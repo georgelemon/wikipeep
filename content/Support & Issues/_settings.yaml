@@ -1,0 +1,5 @@
+menu:
+  label: 'Support & Issues'
+  icon: 'check-circle'
+  order: 5
+  redirect: https://github.com/georgelemon/wikipeep/issues
