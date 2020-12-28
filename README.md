@@ -1,4 +1,3 @@
-# Open Source Wiki for Busy Devs (WIP)
 **WikiPeep is still in heavy development. Wait for the first official release.**
 
 ![Landing page of WikiPeep](.github/wikipeep_screen.png)
