@@ -6,44 +6,13 @@
 <main>
     <div class="container-fluid">
         <div class="row">
-            <div class="main--sidebar col-lg-2">
-                <div class="p-3" style="background-color:#edf2f7; height:100vh" >
-                    
-                    <h5 class="mb-4">
-                        <div style="width:32px; height:32px; background-image:linear-gradient(45deg, blue, #ff2e8f); border-radius:70px" class="d-inline-block text-center">
-                            <svg style="margin-top:4px" viewBox="0 0 24 24" width="18" height="18" stroke="white" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
-                        </div>
-                        <span style="top:4px; position: relative; display: inline-block;">
-                            <?php echo app_name(); ?>
-                        </span>
-                    </h5>
-                    <h6 class="text-muted"><small>Summary</small></h6>
-                    <?php echo getAsideNavigation(); ?>
-                    <?php
-                        if( $box = flywheel()->getAsideBox()) {
-                            echo sprintf('<div class="p-3" style="background-color: %s">%s</div>', $box['_boxColor'], $box['message'], $box['label']);
-                        }
-                    ?>
-
-                    <div class="position-absolute pb-3" style="bottom:0">
-                        <small class="text-muted d-block" style="font-size:10px">Made with <a href="#">WikiPeep 1.0.0</a><br>
-                        An open source wiki for busy devs.</small>
-                    </div>
-                </div>
-            </div>
+            <?php echo $this->view('partials/globals/aside') ?>
             <div class="col-lg-10 offset-lg-2">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="row mt-5">
-                            <div class="col-lg-12">
-                                <div id="searchbar--area" class="pr-5 position-relative">
-                                    <input id="searchbar--input" type="text" placeholder="<?php echo config()->get('placeholders.search_bar') ?>" class="form-control">
-                                    <span class="btn position-absolute btn-sm border mr-5">/</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php
+                    echo $this->view('partials/globals/search-bar', [
+                        'isFullScreen' => true
+                    ])
+                ?>
                 <div class="row">
                     <div class="col-lg-12">
                         <div id="article--side" class="pl-4 pr-5 pt-4 pb-5">
@@ -59,11 +28,11 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-5">
+                            <div class="row mb-4">
                                 <div class="col-lg-4">
                                     <div class="p-4 rounded boxed" style="border:1px #EEE solid">
-                                        <h4 class="font-weight-bold">Whitelabel</h4>
-                                        <p class="mb-0">Ready to fit your brand guidelines. Just use it as it is or customize it as you wish 🙀</p>
+                                        <h4 class="font-weight-bold">Markdown</h4>
+                                        <p class="mb-0">Secure by default, WikiPeep has no admin interface, so you're safer than ever.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
@@ -78,6 +47,32 @@
                                     <div class="p-4 rounded boxed" style="border:1px #EEE solid">
                                         <h4 class="font-weight-bold">Dynamic Router</h4>
                                         <p class="mb-0">A lightweight Router that handles everything and also can cache things so you can boost up!</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-5">
+
+                                <div class="col-lg-4">
+                                    <div class="p-4 rounded boxed" style="border:1px #EEE solid">
+                                        <h4 class="font-weight-bold">Apperance</h4>
+                                        <p class="mb-0">Beautiful UI, with minimal and modern readable layouts that make your docs <mark>pop in!</mark> 👌</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="p-4 rounded boxed" style="border:1px #EEE solid">
+                                        <h4 class="font-weight-bold">
+                                            Super Fast Search
+                                        </h4>
+                                        <p class="mb-0">Including Autocomplete and IndexedDB local storage for fast performances.</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="p-4 rounded boxed" style="border:1px #EEE solid">
+                                        <h4 class="font-weight-bold">Whitelabel</h4>
+                                        <p class="mb-0">Ready to fit your brand guidelines. Just use it as it is or customize it as you wish 🙀</p>
                                     </div>
                                 </div>
                             </div>
@@ -104,6 +99,16 @@
                                     <img src="/assets/themes/twentytwentyone/svg/undrawChecking.svg" alt="" class="img-fluid" width="68%">
                                 </div>
                             </div>
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <small style="font-size:.7em" class="d-block text-muted">Handcrafted by <a class="text-decoration-none" href="#">George Lemon</a> in Bucharest, RO 😷<br>
+                                    Released under dual license, <code>AGPL</code> for Indie Developers, and a <code>Commercial License</code> for Agencies.<br>
+                                    Find out more <a href="/license" class="text-decoration-none">about WikiPeep and Licensing.</a>
+                                    </small>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>

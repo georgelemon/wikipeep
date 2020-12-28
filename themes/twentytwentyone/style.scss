@@ -81,6 +81,16 @@ html {
     left:-10px;
     position:fixed;
 
+    .main--sidebar--area {
+        background-color:#edf2f7;
+        height:100vh;
+
+        .logo a, .logoText {
+            color:black;
+            text-decoration: none;
+        }
+    }
+
     li {
 
         a {
