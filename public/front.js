@@ -174,7 +174,6 @@ const autoCompleteJS = new autoComplete({
                 slug = '<code class="d-block"><small>' + data.value.slug + '</small></code>';
 
             source.innerHTML = title + excerpt + slug;
-            // source.innerHTML = data.match;
         },
         element: "li"
     },
@@ -183,10 +182,11 @@ const autoCompleteJS = new autoComplete({
         generateList(autoCompleteJS, dataFeedback, dataFeedback.results);
         // No Results List Item
         const result = document.createElement("li");
-        result.setAttribute("class", "no_result");
+        result.setAttribute("class", "no_result d-block");
         result.setAttribute("tabindex", "1");
-        result.innerHTML = `<span style="display: flex; align-items: center; font-weight: 100; color: rgba(0,0,0,.2);">Found No Results for "${dataFeedback.query}"</span>`;
-        document.querySelector(`#${autoCompleteJS.resultsList.idName}`).appendChild(result);
+        result.innerHTML = `<span class="font-weight-normal">Couldn't find anything related to <code>"${dataFeedback.query}"</code></span>`;
+
+        document.querySelector('#searchbar--area ul').appendChild(result);
     },
     onSelection: feedback => {
         document.querySelector("#searchbar--input").blur();

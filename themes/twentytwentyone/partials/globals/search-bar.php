@@ -26,7 +26,7 @@
             <div class="col-lg-12">
                 <div id="searchbar--area" class="<?php echo addIf(!$isHalfScreen, 'pr-5') ?> position-relative">
                     <input id="searchbar--input" type="text" placeholder="<?php echo config()->get('placeholders.search_bar') ?>" class="form-control">
-                    <span class="btn position-absolute btn-sm border <?php echo addIf(!$isHalfScreen, 'mr-5') ?>">/</span>
+                    <span title="Focus on slash key" class="btn position-absolute btn-sm border <?php echo addIf(!$isHalfScreen, 'mr-5') ?>">/</span>
                 </div>
             </div>
         </div>

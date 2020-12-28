@@ -1,4 +1,4 @@
-<div class="col-lg-5">
+<div class="col-lg-6">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-white px-0">
             <li class="breadcrumb-item"><a href="#">Getting Started</a></li>

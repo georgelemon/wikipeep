@@ -89,6 +89,15 @@ html {
             color:black;
             text-decoration: none;
         }
+
+        .wikiPeepLogo {
+            top:7px;
+            position: relative;
+            display: inline-block;
+            background:-webkit-linear-gradient(45deg, #5daefc, #02bc9c 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     }
 
     li {

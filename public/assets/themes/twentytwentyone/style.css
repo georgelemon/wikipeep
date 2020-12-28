@@ -75,6 +75,14 @@ html {
   color: black;
   text-decoration: none;
 }
+.main--sidebar .main--sidebar--area .wikiPeepLogo {
+  top: 7px;
+  position: relative;
+  display: inline-block;
+  background: -webkit-linear-gradient(45deg, #5daefc, #02bc9c 80%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 .main--sidebar li a {
   color: #222;
   text-decoration: none;
