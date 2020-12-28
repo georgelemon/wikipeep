@@ -1,6 +1,7 @@
-// const adapter = new LocalStorage('wikipeepSearchDB')
-// const LowDB = low(adapter)
-
+/**
+ * Initialize IndexedDB with Dexie.js
+ * @see https://github.com/dfahlander/Dexie.js
+ */
 const LocalDatabase = new Dexie("wikipeepSearchDB");
 
 /**
@@ -33,8 +34,6 @@ function onScroll(event){
     }     
 
 };
-
-window.document.addEventListener('scroll', onScroll );
 
 /**
  * Focusing the search bar input when pressing the / key
@@ -110,22 +109,9 @@ async function fetchSearchResults()
 }
 
 /**
- * Initialize the juice
+ * Setup Autocomplete 
+ * @see https://github.com/TarekRaafat/autoComplete.js
  */
-document.addEventListener('DOMContentLoaded', function() {
-
-    // Creating the Local Indexed Database which stores
-    // local to user's browser all the search indexes for fast results.
-    LocalDatabase.version(1).stores({
-        search_results: "++id,title,slug,excerpt"
-    });
-
-    // Make the search bar input focusable on pressing slash key
-    searchbarFocus('searchbar--input')
-    // Make external links opening in a new tab on the fly
-    targetBlankLinks()
-});
-
 const autoCompleteJS = new autoComplete({
     data: {
       src: async () => {
@@ -195,3 +181,85 @@ const autoCompleteJS = new autoComplete({
             window.location.href = slug;
     }
 });
+
+/**
+ * Switch all CSS classes related to colors
+ */
+function switchingContrastColors(mode)
+{
+
+    // todo extend so it can apply for all elements
+    
+    // When entering dark mode we need to search for all
+    // classes related to light mode and force switch to dark mode
+    if( mode === 'darkmode' ) {
+        let elements = document.querySelectorAll('.is-light');
+        elements.forEach(function(el) {
+            el.classList.toggle('is-light');
+            el.classList.add('is-dark');
+        });
+    } else {
+        let elements = document.querySelectorAll('.is-dark');
+        elements.forEach(function(el) {
+            el.classList.toggle('is-dark');
+            el.classList.add('is-light');
+        });
+    }
+}
+
+/**
+ * Creating the Theme switcher
+ */
+function appThemeSwitcher(buttonElement) {
+
+    // Automatically switch to a preferred theme according to the OS theme preference.
+    let AutoPreferredTheme = (matchMedia('(prefers-color-scheme: dark)').matches ? 'theme-dark' : 'theme-light');
+    let BodyClass = document.body.classList;
+        BodyClass.add(AutoPreferredTheme);
+
+    document.getElementById(buttonElement)
+        .addEventListener('click', function(event) {
+
+            let btn = event.currentTarget;
+            btn.classList.toggle('lights_on');
+            
+            // 
+            // Adding a temporary class for creating a fluent transition between themes
+            BodyClass.add('switching-theme');
+
+            if( BodyClass.contains('theme-dark') ) {
+                BodyClass.toggle('theme-dark');
+                BodyClass.add('theme-light');
+                
+                switchingContrastColors('lightmode');
+
+            } else {
+                BodyClass.toggle('theme-light');
+                BodyClass.add('theme-dark');
+
+                switchingContrastColors('darkmode');
+            }
+
+        });
+}
+
+/**
+ * Initialize the juice
+ */
+document.addEventListener('DOMContentLoaded', function() {
+
+    // Creating the Local Indexed Database which stores
+    // local to user's browser all the search indexes for fast results.
+    LocalDatabase.version(1).stores({
+        search_results: "++id,title,slug,excerpt"
+    });
+
+    // Enable the Theme Switcher
+    appThemeSwitcher('app--theme--switcher');
+    // Make the search bar input focusable on pressing slash key
+    searchbarFocus('searchbar--input')
+    // Make external links opening in a new tab on the fly
+    targetBlankLinks()
+});
+
+window.document.addEventListener('scroll', onScroll );
