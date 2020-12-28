@@ -1,3 +1,7 @@
+// const adapter = new LocalStorage('wikipeepSearchDB')
+// const LowDB = low(adapter)
+
+const LocalDatabase = new Dexie("wikipeepSearchDB");
 
 /**
  * Highlight current contents while in reading mode
@@ -47,7 +51,7 @@ function searchbarFocus(element)
 }
 
 /**
- * Add automatically target blank for externallinks
+ * Add automatically target blank for external links
  */
 function targetBlankLinks() {
 
@@ -64,64 +68,112 @@ function targetBlankLinks() {
     }
 };
 
+/**
+ * 
+ * It use LowDB API in order to store the entire search
+ * resuls directly in user's browser for super fast results.
+ */
+async function updateBrowserLocalStorage()
+{
+    let results = await LocalDatabase.search_results.orderBy('title').toArray();
+
+    if( results.length === 0 ) {        
+        await fetchSearchResults();
+        results = await LocalDatabase.search_results.orderBy('title').toArray();
+    } else {
+        console.info("%c Serve search results from Indexed Database", 'padding:5px; border-radius:25px; background: lightblue; color: black');
+    }
+
+    return results;
+}
+
+// Fetching the search results database and prepare
+// for storing as Local Storage to the user's browser.
+async function fetchSearchResults()
+{
+    await fetch('/search/search-results.json').then(function (response) {
+        return response.json();
+    }).then(function (getSearchData) {
+
+        LocalDatabase.search_results.bulkAdd(getSearchData).then(function() {
+            return LocalDatabase.search_results.orderBy('title').toArray();
+        }).then(function (results) {
+            console.info("%c Local Database successfuly initiated:", 'padding:5px; border-radius:25px; background: blue; color: white');
+            console.log(results);
+        }).catch(function (e) {
+            console.log("Error: " + (e.stack || e));
+        });
+
+    }).catch(function (error) {
+        console.warn('Error while fetching database search results with the browser...', error);
+    });
+}
 
 /**
  * Initialize the juice
  */
 document.addEventListener('DOMContentLoaded', function() {
+
+    // Creating the Local Indexed Database which stores
+    // local to user's browser all the search indexes for fast results.
+    LocalDatabase.version(1).stores({
+        search_results: "++id,title,slug,excerpt"
+    });
+
+    // Make the search bar input focusable on pressing slash key
     searchbarFocus('searchbar--input')
+    // Make external links opening in a new tab on the fly
     targetBlankLinks()
 });
 
-/**
- * Autocomplete
- */
 const autoCompleteJS = new autoComplete({
-    data: {                              // Data src [Array, Function, Async] | (REQUIRED)
+    data: {
       src: async () => {
-        // API key token
-        // const token = "this_is_the_API_token_number";
-        // User search query
-        // const query = document.querySelector("#autoComplete").value;
-        // Fetch External Data Source
-        const source = await fetch('/search-data.json');
-        // Format data into JSON
-        const data = await source.json();
-        // Return Fetched data
-        return data;
-      },
-      key: ["VillaName"],
-      cache: false
+            // Creating or getting search data from Indexed Database via user's browser
+            const source = await updateBrowserLocalStorage();
+            // Format data into JSON
+            const data = await source;
+            // Return Fetched data
+            return data;
     },
-    query: {                             // Query Interceptor               | (Optional)
-          // manipulate: (query) => {
-          //   return query.replace("pizza", "burger");
-          // }
+    key: ["title"],
+        // results: (list) => {
+        //     // Filter duplicates
+        //     const filteredResults = Array.from(new Set(list.map((value) => value.match))).map((title) => {
+        //         return list.find((value) => value.match === title);
+        //     });
+
+        //     return filteredResults;
+        // },
+        cache: false
     },
     sort: (a, b) => {                    // Sort rendered results ascendingly | (Optional)
         if (a.match < b.match) return -1;
         if (a.match > b.match) return 1;
         return 0;
     },
-    placeHolder: "Search for villas...",     // Place Holder text                 | (Optional)
-    selector: "#autoComplete",           // Input field selector              | (Optional)
-    observer: true,                      // Input field observer | (Optional)
-    threshold: 3,                        // Min. Chars length to start Engine | (Optional)
-    debounce: 300,                       // Post duration for engine to start | (Optional)
-    searchEngine: "strict",              // Search Engine type/mode           | (Optional)
-    resultsList: {                       // Rendered results list object      | (Optional)
+    selector: "#searchbar--input",
+    // observer: true,
+    threshold: 3,
+    debounce: 170,
+    searchEngine: "loose",
+    resultsList: {
         container: source => {
             source.setAttribute("id", "list");
         },
-        destination: "#autoComplete",
+        destination: "#searchbar--input",
         position: "afterend",
         element: "ul"
     },
-    maxResults: 5,                         // Max. number of rendered results | (Optional)
-    highlight: true,                       // Highlight matching results      | (Optional)
-    resultItem: {                          // Rendered result item            | (Optional)
+    maxResults: 10,
+    highlight: false,
+    resultItem: {
         content: (data, source) => {
-            source.innerHTML = data.VillaName;
+            let excerpt = data.value.excerpt ? '<span class="search--item--excerpt">' + data.value.excerpt + '</span>' : '',
+                title = '<span class="search--item--title">' + data.value.title + '</span>';
+
+            source.innerHTML = title + excerpt;
+            // source.innerHTML = data.match;
         },
         element: "li"
     },
@@ -135,7 +187,10 @@ const autoCompleteJS = new autoComplete({
         result.innerHTML = `<span style="display: flex; align-items: center; font-weight: 100; color: rgba(0,0,0,.2);">Found No Results for "${dataFeedback.query}"</span>`;
         document.querySelector(`#${autoCompleteJS.resultsList.idName}`).appendChild(result);
     },
-    onSelection: feedback => {             // Action script onSelection event | (Optional)
-        console.log(feedback.selection.value);
+    onSelection: feedback => {
+        document.querySelector("#searchbar--input").blur();
+
+        let slug = feedback.selection.value.slug;
+            window.location.href = slug;
     }
 });

@@ -3,11 +3,26 @@ html {
     scroll-behavior: auto;
 }
 
-
 /* Headlines in Contents */
 #article--side h1,
 #article--side h2 {
     font-weight: bold;
+}
+
+#searchbar--area {
+
+    input {
+        border-radius:45px
+    }
+
+    span.btn {
+        cursor: default;
+        top: 3px;
+        right: 4px;
+        width: 31px;
+        border-radius: 62px;
+        color: #AAA;
+    }
 }
 
 #article--side {
@@ -88,10 +103,8 @@ html {
             border-right:3px transparent solid;
             transition: all .3s ease;
             text-decoration: none;
-        }
-
-        &.active {
-            a {
+            
+            &.active {
                 border-right-color: rgba(0,0,255,0.15);
                 color:blue;
             }
@@ -132,4 +145,36 @@ iframe {
     border-radius:15px;
     box-shadow: 0 0 20px rgba(0,0,0,.2);
     margin:10px 0 20px;
+}
+
+
+
+
+/**
+ * Autocomplete search
+ */
+
+.autoComplete_list {
+    position: absolute;
+    padding: 0;
+    width: 100%;
+    background: #FFF;
+    padding: 20px;
+    border-radius: 5px;
+    border: 2px #EEE solid;
+    box-shadow: 0 35px 25px rgba(0,0,0,.1);
+    margin-top: 5px;
+
+    li {
+        span.search--item--title {
+            font-weight: 500;
+            font-size: 1.1em;
+        }
+
+        span.search--item--excerpt {
+            display: block;
+            font-size: .9em;
+            color: dimgrey;
+        }
+    }
 }

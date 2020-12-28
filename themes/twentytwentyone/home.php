@@ -1,4 +1,3 @@
-
 <!-- 
 
     @todo
@@ -16,6 +15,7 @@
             5. Add support for white label
 
  -->
+
 <main>
     <div class="container-fluid">
         <div class="row">
@@ -27,14 +27,14 @@
                             <svg style="margin-top:4px" viewBox="0 0 24 24" width="18" height="18" stroke="white" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
                         </div>
                         <span style="top:4px; position: relative; display: inline-block;">
-                            <?php echo app_name(); ?>
+                            <a href="/"><?php echo app_name(); ?></a>
                         </span>
                     </h5>
                     <h6 class="text-muted"><small>Summary</small></h6>
                     <?php echo getAsideNavigation(); ?>
                     <?php
                         if( $box = flywheel()->getAsideBox()) {
-                            echo sprintf('<div class="p-3" style="background-color: %s">%s</div>', $box['_boxColor'], $box['message'], $box['label']);
+                            // echo sprintf('<div class="p-3" style="background-color: %s">%s</div>', $box['_boxColor'], $box['message'], $box['label']);
                         }
                     ?>
 
@@ -79,7 +79,7 @@
                                 ?>
                             </ul>
 
-                            <div class="p-3 rounded" style="background-color: beige">
+                            <div class="p-3 rounded d-none" style="background-color: beige">
                                 <strong>Hot note</strong>
                                 <span class="d-block">Be sure you ssh to your machine and do some nginx checks</span>
                             </div>
