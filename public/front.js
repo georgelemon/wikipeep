@@ -170,9 +170,10 @@ const autoCompleteJS = new autoComplete({
     resultItem: {
         content: (data, source) => {
             let excerpt = data.value.excerpt ? '<span class="search--item--excerpt">' + data.value.excerpt + '</span>' : '',
-                title = '<span class="search--item--title">' + data.value.title + '</span>';
+                title = '<span class="search--item--title">' + data.value.title + '</span>',
+                slug = '<code class="d-block"><small>' + data.value.slug + '</small></code>';
 
-            source.innerHTML = title + excerpt;
+            source.innerHTML = title + excerpt + slug;
             // source.innerHTML = data.match;
         },
         element: "li"
