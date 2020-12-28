@@ -1,6 +1,7 @@
 # Open Source Wiki for Busy Devs (WIP)
+**WikiPeep is still in heavy development. Wait for the first official release.**
 
-NOTE: This is still working in progress project.
+![Landing page of WikiPeep](.github/wikipeep_screen.jpg)
 
 ## Features
 - [x] Markdown parser, thanks to [Parsedown](https://github.com/erusev/parsedown)
