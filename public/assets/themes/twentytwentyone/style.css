@@ -2,6 +2,67 @@ html {
   scroll-behavior: auto;
 }
 
+body.theme-light #app--theme--switcher svg {
+  stroke: black;
+}
+body.theme-light #app--theme--switcher .icon-moon {
+  display: block !important;
+}
+body.theme-dark {
+  background-color: #1b1818;
+  color: #bae0d1;
+}
+body.theme-dark mark {
+  background-color: rgba(160, 183, 174, 0.16);
+  color: #bae0d1;
+}
+body.theme-dark #app--theme--switcher svg {
+  stroke: white;
+}
+body.theme-dark #app--theme--switcher .icon-sun {
+  display: block !important;
+}
+body.theme-dark .main--sidebar--area {
+  background-color: #151212;
+}
+body.theme-dark .main--sidebar--area li a {
+  color: antiquewhite;
+  opacity: 0.7;
+}
+body.theme-dark .main--sidebar--area li a svg {
+  stroke: antiquewhite;
+  opacity: 0.4;
+}
+body.theme-dark .main--sidebar--area li.active a {
+  opacity: 1;
+}
+body.theme-dark .main--sidebar--area li.active a svg {
+  opacity: 0.8;
+}
+body.theme-dark #sidebar--summary-wrapper #contents--sidebar li a {
+  color: antiquewhite;
+}
+body.theme-dark .border {
+  border-color: #2d2222 !important;
+}
+body.theme-dark .form-control {
+  background: none;
+  border-color: #222;
+}
+
+#app--theme--switcher {
+  background-color: transparent !important;
+  border: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+#app--theme--switcher span {
+  transition: all ease 0.5s;
+}
+#app--theme--switcher:hover span {
+  transform: scale(1.2);
+}
+
 /* Headlines in Contents */
 #article--side h1,
 #article--side h2 {
@@ -64,7 +125,7 @@ html {
 }
 
 .main--sidebar {
-  left: -10px;
+  left: -12px;
   position: fixed;
 }
 .main--sidebar .main--sidebar--area {

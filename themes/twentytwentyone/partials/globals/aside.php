@@ -1,9 +1,11 @@
-<div class="main--sidebar col-lg-2">
+<div class="main--sidebar col-lg-2" style="z-index:11;">
     <div class="main--sidebar--area p-3">
         
         <?php echo $this->view('partials/globals/logo') ?>
 
-        <h6 class="text-muted"><small>Summary</small></h6>
+        <h6 class="text-muted">
+            <small>Summary</small>
+        </h6>
         <?php echo getAsideNavigation(); ?>
         <?php
             if( $box = flywheel()->getAsideBox()) {

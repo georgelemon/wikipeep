@@ -1,6 +1,18 @@
-<div class="col-lg-2 mt-2 position-fixed">
+<style type="text/css">
+/*    #sidebar--summary-wrapper {
+        transform: translate(-100%, 0);
+        transition: all .3s ease;
+    }
+*/
+</style>
+<div id="sidebar--summary-wrapper" class="col-lg-2 mt-2 position-fixed">
     <div id="contents--sidebar">
-        <h6 class="text-muted">Contents</h6>
+        <h6 class="text-muted">
+            Contents
+            <a href="#" class="btn position-relative float-right" style="top:-12px;">
+                <?php echo icon('align-left')->size(16); ?>
+            </a>
+        </h6>
         <ul class="mb-4">
             <?php
                 foreach ($this->contents['summary'] as $item) {

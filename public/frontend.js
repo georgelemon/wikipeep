@@ -8,7 +8,7 @@ const LocalDatabase = new Dexie("wikipeepSearchDB");
  * Highlight current contents while in reading mode
  */
 function onScroll(event){
-    var sections = document.querySelectorAll('#contents--sidebar a');
+    var sections = document.querySelectorAll('#contents--sidebar li a');
     var scrollPos = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
 
     for (var i = 0; i < sections.length; i++ ) {
@@ -213,15 +213,14 @@ function switchingContrastColors(mode)
 function appThemeSwitcher(buttonElement) {
 
     // Automatically switch to a preferred theme according to the OS theme preference.
-    let AutoPreferredTheme = (matchMedia('(prefers-color-scheme: dark)').matches ? 'theme-dark' : 'theme-light');
+    let autoPreferredTheme = (matchMedia('(prefers-color-scheme: dark)').matches ? 'theme-dark' : 'theme-light');
     let BodyClass = document.body.classList;
-        BodyClass.add(AutoPreferredTheme);
+        BodyClass.add(autoPreferredTheme);
 
-    document.getElementById(buttonElement)
-        .addEventListener('click', function(event) {
+    document.getElementById(buttonElement).addEventListener('click', function(event) {
 
             let btn = event.currentTarget;
-            btn.classList.toggle('lights_on');
+                btn.classList.toggle('lights_on');
             
             // 
             // Adding a temporary class for creating a fluent transition between themes

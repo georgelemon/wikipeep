@@ -18,10 +18,15 @@
                         <div id="article--side" class="pl-4 pr-5 pt-4 pb-5">
                             <div class="row d-flex align-items-center my-5">
                                 <div class="col-lg-6">
-                                    <h1 class="display-3">This is WikiPeep.</h1>
-                                    <h2 class="font-weight-normal">The Open Source Wiki for Busy Developers & Agencies. <small class="badge bg-primary" style="font-size:12px;">Dual License</small></h2>
-                                    <p>Everything started few days ago when I realized that I need to publish large documentations for another project that I'm working on, and I've tried to look for some good open source Wikis but none of them got my attention.</p>
-                                    <p>So, a bit frustrated I've decided to stop complaining about and just start create my own wiki documentation platform that can be easily used for future projects but <mark>also by anyone else in the world</mark> 🌿</p>
+                                    <h1 class="display-4 mb-0">This is WikiPeep.</h1>
+                                    <h2 class="h3 font-weight-normal">Open source Wiki for busy Devs & Agencies</h2>
+
+                                    <p>Anyone can use <strong>WikiPeep</strong> for creating self-hosted, modern and professional documentations for their projects 🌿</p>
+
+                                    <p>Fully developed on PHP ^7.4, WikiPeep is not a static wiki, nor a database addicted. At the same time it parse markdown contents and builds flat files JSONs via <code>terminal</code>, which are then served on request by a lightweight Router.</p>
+
+                                    <a class="btn rounded-pill px-4 btn-outline-primary" href="/getting-started">Okay, let's getting started</a>
+
                                 </div>
                                 <div class="col-lg-6 fluid-svg">
                                     <img src="/assets/themes/twentytwentyone/svg/undrawDocs.svg" alt="" class="img-fluid" width="100%">
@@ -30,13 +35,13 @@
 
                             <div class="row mb-4">
                                 <div class="col-lg-4">
-                                    <div class="p-4 rounded boxed" style="border:1px #EEE solid">
+                                    <div class="p-4 rounded border">
                                         <h4 class="font-weight-bold">Markdown</h4>
                                         <p class="mb-0">Secure by default, WikiPeep has no admin interface, so you're safer than ever.</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
-                                    <div class="p-4 rounded boxed" style="border:1px #EEE solid">
+                                    <div class="p-4 rounded border">
                                         <h4 class="font-weight-bold">
                                             Compile via Artisan
                                         </h4>
@@ -44,7 +49,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
-                                    <div class="p-4 rounded boxed" style="border:1px #EEE solid">
+                                    <div class="p-4 rounded border">
                                         <h4 class="font-weight-bold">Dynamic Router</h4>
                                         <p class="mb-0">A lightweight Router that handles everything and also can cache things so you can boost up!</p>
                                     </div>
@@ -54,14 +59,14 @@
                             <div class="row mb-5">
 
                                 <div class="col-lg-4">
-                                    <div class="p-4 rounded boxed" style="border:1px #EEE solid">
+                                    <div class="p-4 rounded border">
                                         <h4 class="font-weight-bold">Apperance</h4>
                                         <p class="mb-0">Beautiful UI, with minimal and modern readable layouts that make your docs <mark>pop in!</mark> 👌</p>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-4">
-                                    <div class="p-4 rounded boxed" style="border:1px #EEE solid">
+                                    <div class="p-4 rounded border">
                                         <h4 class="font-weight-bold">
                                             Super Fast Search
                                         </h4>
@@ -70,7 +75,7 @@
                                 </div>
 
                                 <div class="col-lg-4">
-                                    <div class="p-4 rounded boxed" style="border:1px #EEE solid">
+                                    <div class="p-4 rounded border">
                                         <h4 class="font-weight-bold">Whitelabel</h4>
                                         <p class="mb-0">Ready to fit your brand guidelines. Just use it as it is or customize it as you wish 🙀</p>
                                     </div>
