@@ -21,6 +21,16 @@ class BuildCommand extends Command
      */
     protected $compiler;
 
+    /**
+     * @var array
+     */
+    protected $searchIndex = [];
+
+    /**
+     * Configuring the cli command.
+     * 
+     * @return void
+     */
     protected function configure()
     {
         $this->setName('app:build')
@@ -84,6 +94,36 @@ class BuildCommand extends Command
     }
 
     /**
+     * Stores relevant data for creating the search index
+     * @return [type] [description]
+     */
+    protected function storeInSearchIndex($title, $slug, $excerpt = null)
+    {
+        $this->searchIndex[] = [
+            'title' => $title,
+            'excerpt' => $excerpt,
+            'slug' => $slug
+        ];
+    }
+
+    protected function getSearchIndex()
+    {
+        return $this->searchIndex;
+    }
+
+    /**
+     * While iterating it will try to retrieve a portion from
+     * the first paragraph of the article in order to add an excerpt
+     * to search index for showing in search results.
+     * @return 
+     */
+    protected function getExcerpt($contentArticle)
+    {
+        $excerpt = strip_tags($contentArticle);
+        return explode(PHP_EOL, $excerpt);
+    }
+
+    /**
      * The Builder Executer
      * 
      * @param  InputInterface  $input 
@@ -120,14 +160,34 @@ class BuildCommand extends Command
 
             // Create the structure of directories
             $directoriesUri = $this->getDirectoriesPath($markdownStructure);
+            $articleIdentifier = $this->getArticleName( $markdownStructure );
+
+            // Getting contents summary and the full content of the article
+            $contentSummary = $parsedown->getContentSummary();
+            $contentArticle = $parsedown->getContent();
+
+            // Try retrieve an excerpt of the article
+            $excerpt = $this->getExcerpt($contentArticle);
 
             // Creating a new JSON file for each iterated article.
             // Where 'summary' represents the contents summary parsed from all anchor urls
             // found in the article content and 'body' is the article content.
             flywheel()->create([
-                'summary' => $parsedown->getContentSummary(),
-                'article' => serialize($parsedown->getContent()),
-            ], $directoriesUri, $this->getArticleName( $markdownStructure ));
+                'summary' => $contentSummary,
+                'article' => serialize($contentArticle),
+            ], $directoriesUri, $articleIdentifier);
+
+            // Collecting info and creating the index for search results
+            if( $contentSummary ) {
+
+                foreach ($contentSummary as $section) {
+                    $articleUri = $articleIdentifier === 'index' ? '' : $articleIdentifier;
+                    // Creating the final URI that may include anchor link
+                    $_anchor = $section['anchor'] ? '#' . $section['anchor'] : '';
+                    $uri = $directoriesUri . $articleUri . $_anchor;
+                    $this->storeInSearchIndex($section['title'], $uri, $excerpt[1]);
+                }
+            }
             
             // Progress the Console loader for each iteration
             $this->inProgress();
@@ -137,7 +197,6 @@ class BuildCommand extends Command
         // and everything is stored in flat files.
         $this->finishLoader();
         $output->writeln(PHP_EOL . '<info>Success</info> Content was successfully compiled.');
-
 
         // Now we have to build/rebuild the main menu of application.
         // This process is made based on the main directories found in content directory.
@@ -163,18 +222,26 @@ class BuildCommand extends Command
                     $this->getAsideBox($settings['aside_box'], $getDirectoryName);
                 }
 
+                $directorySlug = Str::slug($directory->getRelativePathname());
+
                 // Creating the main navigation menu
                 $menuItems[$settings['menu']['order'] ?? null] = [
                     'label' => $getDirectoryName,
-                    'slug' => Str::slug($directory->getRelativePathname()),
+                    'slug' => $directorySlug,
                     'icon' => $settings['menu']['icon'] ?? false,
                 ];
+
+                $this->storeInSearchIndex($getDirectoryName, $directorySlug);
             }
             
             $this->inProgress(); // progress for each iteration
         }
         
         ksort($menuItems); // Sort the items based on their specified order
+
+        // Save the search index results
+        // created above directly on disk via Filesystem.
+        $filesystem->put(ROOT_PATH . '/public/search/search-results.json', json_encode($this->getSearchIndex()));
 
         // Create a flat file JSON via Flywheel with all menu items found
         flywheel()->create([

@@ -13,6 +13,15 @@ if( ! function_exists('app') ) {
 }
 
 /**
+ * Retrieve the instantiated Config class
+ * @return Config Array Access
+ */
+function config()
+{
+    return app()->config();
+}
+
+/**
  * A ready to use Flywheel instance
  * 
  * @return App\Core\Flywheel

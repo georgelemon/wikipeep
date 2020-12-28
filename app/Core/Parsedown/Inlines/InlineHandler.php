@@ -4,8 +4,10 @@ namespace App\Core\Parsedown\Inlines;
 
 trait InlineHandler
 {
+
     protected function inlineText($text)
     {
+
         $Inline = array(
             'extent' => strlen($text),
             'element' => array(),
@@ -244,6 +246,7 @@ trait InlineHandler
         // Store in a separate collection for retrieving later as a contents summary
         $this->contentsSummary[] = [
             'title' => $title,
+            'excerpt' => '',
             'anchor' => $anchorUrl
         ];
 
