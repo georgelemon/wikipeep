@@ -27,9 +27,29 @@ class CategoryController extends BaseController
         } else {
             return $this->layout('home', 'base', [
                 'title' => 'Getting Started',
-                'content' => 'Index',
+                'content' => $this->getContent(),
                 'summary' => null
             ]);
         }
+    }
+
+    /**
+     * Try retrieve the content of the category or show the default notice
+     * 
+     * @return string
+     */
+    protected function getContent()
+    {
+        return $article['content'] ?? $this->getNotFoundContentNotice();
+    }
+
+    /**
+     * Get notification screen in case the content could not be retrieved
+     *  
+     * @return string 
+     */
+    protected function getNotFoundContentNotice()
+    {
+        return 'Hey, looks like this page does not have any content yet.';
     }
 }

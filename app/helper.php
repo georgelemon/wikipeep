@@ -266,8 +266,11 @@ function getAsideNavigation()
     if( $navigation = flywheel()->getNavigation() ) {
         foreach ($navigation as $key => $nav) {
             
+            // Get icon if provided
             $icon = $nav->icon ? icon($nav->icon)->size(17) : null;
-            $slug = $nav->slug;
+
+            // Get slug uri and check if this is an internal or external link
+            $slug = strpos($nav->slug, 'http') === 0 ? $nav->slug : '/' . $nav->slug;
 
             if( $activeCat = getCurrentCategory() )  {
                 $activeCat = $activeCat === $slug ? sprintf(' class="%s"', 'active') : null;
@@ -275,7 +278,7 @@ function getAsideNavigation()
                 $activeCat = null;
             }
 
-            echo sprintf('<li%4$s><a href="/%1$s">%3$s %2$s</a></li>', $slug, $nav->label, $icon, $activeCat);
+            echo sprintf('<li%4$s><a href="%1$s">%3$s %2$s</a></li>', $slug, $nav->label, $icon, $activeCat);
         }
     }
 }

@@ -79,11 +79,6 @@ class BuildCommand extends Command
         return Str::slug(implode('/', $paths));
     }
 
-    protected function buildMainMenu()
-    {
-
-    }
-
     /**
      * Retrieve a Finder instance with Markdown results
      * @return Finder
@@ -106,6 +101,41 @@ class BuildCommand extends Command
         ];
     }
 
+    /**
+     * Stores directories in order to create the main navigation menu
+     * 
+     * @param  string  $key              When available, is used for ordering the array
+     * @param  string  $label
+     * @param  string  $slug
+     * @param  string  $icon
+     * 
+     * @return  void
+     */
+    protected function storeInNavigation($key, $label, $slug, $icon)
+    {
+        $this->menuItems[$key] = [
+            'label' => $label,
+            'slug' => $slug,
+            'icon' => $icon
+        ];
+    }
+
+    /**
+     * Retrieve already stored and sorted items for navigation menu.
+     * 
+     * @return  array
+     */
+    protected function getNavigationItems()
+    {
+        ksort($this->menuItems); // Sort the items based on their specified order
+        return $this->menuItems;
+    }
+
+    /**
+     * Retreive the search index used for creating the search results.
+     * 
+     * @return array
+     */
     protected function getSearchIndex()
     {
         return $this->searchIndex;
@@ -115,6 +145,9 @@ class BuildCommand extends Command
      * While iterating it will try to retrieve a portion from
      * the first paragraph of the article in order to add an excerpt
      * to search index for showing in search results.
+     *
+     * @param  string $contentArticle
+     * 
      * @return 
      */
     protected function getExcerpt($contentArticle)
@@ -213,31 +246,40 @@ class BuildCommand extends Command
             // Checks if the current directory has specific settings declared
             if( $settings = $this->getDirectorySettings($filesystem, $directory->getRealPath()) ) {
 
-                $getDirectoryName = $settings['menu']['label'] ?? $directory->getRelativePathname();
+                $label = $settings['menu']['label'] ?? $directory->getRelativePathname();
 
                 // Checking if the current directory contains anything
                 // related to the helper box so it can be parsed
                 // and displayed on the main aside bar.
                 if( isset($settings['aside_box']) && is_array($settings['aside_box']) ) {
-                    $this->getAsideBox($settings['aside_box'], $getDirectoryName);
+                    $this->getAsideBox($settings['aside_box'], $label);
                 }
 
                 $directorySlug = Str::slug($directory->getRelativePathname());
 
-                // Creating the main navigation menu
+                // Checking if there should be an external uri instead of the url
+                // of the directory. When provided it will replace the default.
+                $slug = $settings['menu']['redirect'] ?? $directorySlug;
+                $icon = $settings['menu']['icon'] ?? null;
+
+                // Collecting items that will be displayed
+                // under the main navigation menu.
                 $menuItems[$settings['menu']['order'] ?? null] = [
-                    'label' => $getDirectoryName,
-                    'slug' => $directorySlug,
+                    'label' => $label,
+                    'slug' => $slug,
                     'icon' => $settings['menu']['icon'] ?? false,
                 ];
+                
+                // Store it in navigation menu
+                $this->storeInNavigation($settings['menu']['order'] ?? null, $label, $slug, $icon);
 
-                $this->storeInSearchIndex($getDirectoryName, $directorySlug);
+                // Store it in search index
+                $this->storeInSearchIndex($label, $directorySlug);
             }
             
             $this->inProgress(); // progress for each iteration
         }
-        
-        ksort($menuItems); // Sort the items based on their specified order
+    
 
         // Save the search index results
         // created above directly on disk via Filesystem.
@@ -245,7 +287,7 @@ class BuildCommand extends Command
 
         // Create a flat file JSON via Flywheel with all menu items found
         flywheel()->create([
-            'navigation' => $menuItems
+            'navigation' => $this->getNavigationItems()
         ], 'settings', 'navigation');
 
         $this->finishLoader(); // Finish the console loader 
