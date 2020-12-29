@@ -278,7 +278,24 @@ function getAsideNavigation()
                 $activeCat = null;
             }
 
-            echo sprintf('<li%4$s><a href="%1$s">%3$s %2$s</a></li>', $slug, $nav->label, $icon, $activeCat);
+            if( $separator = $nav->separator ) {
+                $separator = $separator->before ? 'before' : ($separator->after ? 'after' : null);
+                $separator = sprintf('item-separator="%s"', $separator);
+            }
+
+            echo sprintf('<li%4$s %5$s><a href="%1$s">%3$s %2$s</a></li>', $slug, $nav->label, $icon, $activeCat, $separator);
         }
     }
+}
+
+function getApplicationSettings()
+{
+    $api = config()->get('api');
+    
+    $encode = json_encode([
+                    'api_base' => $api['base'],
+                    'search_endpoint' => $api['search']
+        ]);
+
+    return sprintf('<script>const __settings = %s</script>', $encode);
 }

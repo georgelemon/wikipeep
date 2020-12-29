@@ -63,7 +63,8 @@ class BuildCommand extends Command
      */
     protected function getArticleName($paths)
     {
-        return Str::slug(str_replace('.md', '', $paths[array_key_last($paths)]));
+        $title = str_replace('.md', '', $paths[array_key_last($paths)]);
+        return ['title' => $title, 'slug' => Str::slug($title)];
     }
 
     /**
@@ -104,19 +105,38 @@ class BuildCommand extends Command
     /**
      * Stores directories in order to create the main navigation menu
      * 
-     * @param  string  $key              When available, is used for ordering the array
-     * @param  string  $label
-     * @param  string  $slug
-     * @param  string  $icon
+     * @param  string  $key             When available, is used for ordering the array
+     * @param  string  $label           The name of the page, based on dir name, or by _settings.yaml
+     * @param  string  $slug            The URI of the page
+     * @param  string  $icon            When provided, prepends an SVG icon
+     * @param  array|null $separator    When available it can add a visual separator before/after the item
      * 
      * @return  void
      */
-    protected function storeInNavigation($key, $label, $slug, $icon)
+    protected function storeInNavigation($key, $label, $slug, $icon, $separator = null)
     {
         $this->menuItems[$key] = [
             'label' => $label,
             'slug' => $slug,
-            'icon' => $icon
+            'icon' => $icon,
+            'separator' => $separator
+        ];
+    }
+
+    /**
+     * Store articles as sub items in the main navigation menu
+     * 
+     * @param  [type] $parentKey [description]
+     * @param  [type] $label     [description]
+     * @param  [type] $slug      [description]
+     * 
+     * @return [type]            [description]
+     */
+    protected function storeInNavigationSubItems($parentKey, $slug, $label)
+    {
+        $this->menuSubItems[$parentKey] [] = [
+            'label' => $label,
+            'slug' => $slug
         ];
     }
 
@@ -129,6 +149,16 @@ class BuildCommand extends Command
     {
         ksort($this->menuItems); // Sort the items based on their specified order
         return $this->menuItems;
+    }
+
+    /**
+     * Retrieve stored navigation sub items.
+     * 
+     * @return array
+     */
+    protected function getNavigationSubItems($parent)
+    {
+        return $this->menuSubItems[$parent] ?? null;
     }
 
     /**
@@ -157,6 +187,19 @@ class BuildCommand extends Command
     }
 
     /**
+     * Add a specific numbers of breaklines using PHP_EOL
+     */
+    protected function addBreakline($counts)
+    {
+        $breaks = '';
+        for ($i=0; $i < $counts; $i++) { 
+            $breaks .= PHP_EOL;
+        }
+
+        return $breaks;
+    }
+
+    /**
      * The Builder Executer
      * 
      * @param  InputInterface  $input 
@@ -172,7 +215,7 @@ class BuildCommand extends Command
 
         // Skip the process in case finder fails in finding any markdown files
         if( $content->hasResults() === false ) {
-            $output->writeln("<error>Error 😓</error> Looks like there is no markdown in content directory.");
+            $output->writeln($this->addBreakline(2) . "<error>Error 😓</error> Looks like there is no markdown in content directory.");
             return 1;
         }
 
@@ -181,6 +224,7 @@ class BuildCommand extends Command
 
         // Instantiate Progress Bar that will be displayed in terminal while compiling
         // which also shows the number of total markdown files in queue.
+        $output->writeln($this->addBreakline(1));
         $this->startLoader($output, $content->count());
 
         foreach ($content as $key => $value) {
@@ -193,7 +237,11 @@ class BuildCommand extends Command
 
             // Create the structure of directories
             $directoriesUri = $this->getDirectoriesPath($markdownStructure);
-            $articleIdentifier = $this->getArticleName( $markdownStructure );
+
+            // Get the name of the article including its slugified version
+            $articleMeta = $this->getArticleName( $markdownStructure );
+            $articleSlug = $articleMeta['slug'];
+            $articleTitle = $articleMeta['title'];
 
             // Getting contents summary and the full content of the article
             $contentSummary = $parsedown->getContentSummary();
@@ -206,30 +254,51 @@ class BuildCommand extends Command
             // Where 'summary' represents the contents summary parsed from all anchor urls
             // found in the article content and 'body' is the article content.
             flywheel()->create([
+                'title' => $articleTitle,
                 'summary' => $contentSummary,
                 'article' => serialize($contentArticle),
-            ], $directoriesUri, $articleIdentifier);
+            ], $directoriesUri, $articleSlug);
+
+            // Get the Article URI. In case the Article is saved as index.md
+            // it will be served as a root page of its directory.
+            $articleUri = $articleSlug === 'index' ? '' : $articleSlug;
 
             // Collecting info and creating the index for search results
             if( $contentSummary ) {
 
                 foreach ($contentSummary as $section) {
-                    $articleUri = $articleIdentifier === 'index' ? '' : $articleIdentifier;
                     // Creating the final URI that may include anchor link
                     $_anchor = $section['anchor'] ? '#' . $section['anchor'] : '';
                     $uri = $directoriesUri . $articleUri . $_anchor;
-                    $this->storeInSearchIndex($section['title'], $uri, $excerpt[1]);
+
+                    $this->storeInSearchIndex($articleTitle, $uri, $excerpt[1]);
                 }
+
+            } else {
+                $uri = $directoriesUri  . DS . $articleUri;
+                $this->storeInSearchIndex($articleTitle, $uri, $excerpt[1] ?? '');
             }
-            
+
+
+            // Store the article as subitem to navigation menu
+            $this->storeInNavigationSubItems(
+                $directoriesUri,
+                $articleSlug === 'index' ? $directoriesUri : $articleSlug,
+                $articleTitle
+            );
+
             // Progress the Console loader for each iteration
             $this->inProgress();
         }
 
+        // var_dump($this->getNavigationSubItems('getting-started'));
+        // die;
+
         // Ending the progress bar since we finished to compile the content
         // and everything is stored in flat files.
         $this->finishLoader();
-        $output->writeln(PHP_EOL . '<info>Success</info> Content was successfully compiled.');
+        $output->writeln($this->addBreakline(1) . '<info>Success</info> Content was successfully compiled.');
+        $output->writeln($this->addBreakline(1));
 
         // Now we have to build/rebuild the main menu of application.
         // This process is made based on the main directories found in content directory.
@@ -271,7 +340,7 @@ class BuildCommand extends Command
                 ];
                 
                 // Store it in navigation menu
-                $this->storeInNavigation($settings['menu']['order'] ?? null, $label, $slug, $icon);
+                $this->storeInNavigation($settings['menu']['order'] ?? null, $label, $slug, $icon, $settings['menu']['separator'] ?? null);
 
                 // Store it in search index
                 $this->storeInSearchIndex($label, $directorySlug);
@@ -280,10 +349,14 @@ class BuildCommand extends Command
             $this->inProgress(); // progress for each iteration
         }
     
-
-        // Save the search index results
-        // created above directly on disk via Filesystem.
-        $filesystem->put(ROOT_PATH . '/public/search/search-results.json', json_encode($this->getSearchIndex()));
+        // This is a temporary fix to create search results.
+        // 
+        // @TODO In a normal world we'll have to create
+        // an API Endpoint that gets content from source at every build.
+        // 
+        // At the same time, there will be an IndexedDB in user's browser
+        // that will be served first and updated when needs a refresh.
+        $filesystem->put(STORAGE_PATH . '/search-results.json', json_encode($this->getSearchIndex()));
 
         // Create a flat file JSON via Flywheel with all menu items found
         flywheel()->create([
@@ -292,7 +365,8 @@ class BuildCommand extends Command
 
         $this->finishLoader(); // Finish the console loader 
 
-        $output->writeln(PHP_EOL . '<info>Success</info> The navigation menu has been sucessfully built.');
+        $output->writeln($this->addBreakline(1) . '<info>Success</info> The navigation menu has been sucessfully built.');
+        $output->writeln($this->addBreakline(1));
         return 0;
     }
 
