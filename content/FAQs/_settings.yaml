@@ -1,0 +1,4 @@
+menu:
+  label: 'FAQs'
+  icon: 'help-circle'
+  order: 7
