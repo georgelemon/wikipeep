@@ -1,11 +1,17 @@
 <?php
 
-$get = app()->config()->get('controllers');
+$api = config()->get('api');
 
 /**
  * Landing screen
  */
-route()->get('/', $get['index'] . '@index');
+route()->get('/', 'App\Controllers\IndexController@index');
+
+/**
+ * API Endpoint for getting the Search Results.
+ * For customizing endpoints go to app/config/api.php
+ */
+route()->get($api['base'] . DS . $api['search'], 'App\Controllers\Api\EndpointSearchController@get');
 
 /**
  * The Category screen that can act with two different functionalities,
@@ -19,5 +25,7 @@ route()->get('([a-z-A-Z0-9_-]+)', 'App\Controllers\CategoryController@index');
  */
 route()->get('([a-z-A-Z0-9_-]+)/([a-z-A-Z0-9_-]+)', 'App\Controllers\ArticleController@index');
 
-// 404 Route Handler
-route()->set404($get['404'] . '@index');
+/**
+ * 404 Error Handler
+ */
+route()->set404('App\Controllers\ErrorController@index');
