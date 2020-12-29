@@ -87,7 +87,7 @@
                                     <img src="/assets/themes/twentytwentyone/svg/undrawReadingTime.svg" alt="" class="img-fluid" width="80%">
                                 </div>
                                 <div class="col-lg-6">
-                                    <h1 class="display-3">Flawless <span class="font-weight-normal">Documentation</span></h1>
+                                    <h1 class="display-4">Flawless <span class="font-weight-normal">Documentation</span></h1>
                                     <h2 class="font-weight-normal">Every developer knows how important is the documentation.</h2>
 
                                     <p>When you document your code you create a mirror of your work. So be sure that your stuff is readable by others, fully understandable and also a good experience for reading.</p>
@@ -96,16 +96,18 @@
                                 </div>
                             </div>
 
-                            <div class="row d-flex align-items-center my-5" style="height:100vh">
+                            <div class="row d-flex align-items-center" style="height:100vh">
                                 <div class="col-lg-6">
-                                    <h1 class="display-3">Lightweight <span class="font-weight-normal">by default.</span></h1>
-                                    <h2 class="font-weight-normal">Keeping dependencies to minimal.</h2>
-                                    <p>Out of the box, WikiPeep comes with <strong>Zero</strong> NodeJS module dependencies.</p>
+                                    <h1 class="display-4">Cacheable <span class="font-weight-normal">by default.</span></h1>
+                                    <h2 class="font-weight-normal">Routes, contents and assets...</h2>
+                                    <p>The built-in Cache of WikiPeep is a strong layer that can cache all routes, JSON contents files and of course your theme assets.</p>
 
-                                    <p>Everyhting related to JavaScript is pure Vanilla and is mainly used only to offer the best performances while people navigate or search through your documentation website.</p>
+                                    <p>On the front-end side, the <strong>Autocomplete Search</strong> is powered by IndexedDB storage that store a copy of the search results in user's browser for better performances.</p>
+
+                                    <p class="p-3" style="background-color:lavender"><strong>KICKASS Feature &mdash; Offline Mode</strong> by Service Workers is already in Roadmap 2021. <a href="/roadmap">Stay tunned</a> 🥰</p>
                                 </div>
                                 <div class="col-lg-6 text-center">
-                                    <img src="/assets/themes/twentytwentyone/svg/undrawChecking.svg" alt="" class="img-fluid" width="68%">
+                                    <img src="/assets/themes/twentytwentyone/svg/undrawChecking.svg" alt="" class="img-fluid" width="80%">
                                 </div>
                             </div>
 
