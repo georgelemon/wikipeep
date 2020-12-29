@@ -3,6 +3,7 @@
  * @see https://github.com/dfahlander/Dexie.js
  */
 const LocalDatabase = new Dexie("wikipeepSearchDB");
+let toggleElement;
 
 /**
  * Highlight current contents while in reading mode
@@ -47,6 +48,62 @@ function searchbarFocus(element)
             searchBarElement.focus()
         }
     });
+}
+
+/**
+ * Creates the toggle element that
+ * brings back content summary sidebar.
+ */
+function getSummaryRevealBtn()
+{
+//<a id="summary--trigger" href="#" class="btn position-relative float-right" style="top:-12px;"></a>
+    
+    if( toggleElement ) {
+        return toggleElement;
+    }
+
+    toggleElement = document.createElement("a");
+    let toggleElementIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="10" x2="7" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="21" y1="18" x2="7" y2="18"></line></svg>';
+
+    toggleElement.setAttribute('class', 'btn position-absolute')
+    toggleElement.setAttribute('id', 'contents--summary--reveal')
+
+    toggleElement.innerHTML = toggleElementIcon;
+
+    return toggleElement;
+}
+
+/**
+ * While in reading mode, summary contents can be toggle
+ * for a better reading experience.
+ */
+function toggleSummaryContents(triggerId, wrapperId, articleWrapperId = 'article--side')
+{
+    let toggleButton = document.getElementById(triggerId),
+        summaryWrapper = document.getElementById(wrapperId),
+        articleWrapper = document.getElementById(articleWrapperId);
+
+    if( toggleButton === null ) {
+        return;
+    }
+
+    toggleButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        summaryWrapper.classList.add('d-none')
+        articleWrapper.prepend(getSummaryRevealBtn())
+
+        if( articleWrapper.classList.contains('offset-lg-2') ) {
+            articleWrapper.setAttribute('class', 'col-lg-12')
+        }
+        summaryWrapper.classList.add('--hide')
+    });
+
+    getSummaryRevealBtn().addEventListener('click', function(e){
+        e.preventDefault();
+        summaryWrapper.classList.remove('d-none')
+        articleWrapper.setAttribute('class', 'col-lg-8 offset-lg-2')
+        getSummaryRevealBtn().remove();
+    })
 }
 
 /**
@@ -213,7 +270,19 @@ function switchingContrastColors(mode)
 function appThemeSwitcher(buttonElement) {
 
     // Automatically switch to a preferred theme according to the OS theme preference.
-    let autoPreferredTheme = (matchMedia('(prefers-color-scheme: dark)').matches ? 'theme-dark' : 'theme-light');
+    let autoPreferredTheme;
+
+    if( ! cookie('appearance') ) {
+        autoPreferredTheme = (matchMedia('(prefers-color-scheme: dark)').matches ? 'theme-dark' : 'theme-light');
+        cookie.set('appearance', autoPreferredTheme, {
+            secure: false,
+            expires: 7,
+            path: '/'
+        });
+    } else {
+        autoPreferredTheme = cookie.get('appearance');
+    }
+
     let BodyClass = document.body.classList;
         BodyClass.add(autoPreferredTheme);
 
@@ -255,6 +324,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Enable the Theme Switcher
     appThemeSwitcher('app--theme--switcher');
+    // Enable toggle switcher while in reading mode
+    toggleSummaryContents('summary--trigger', 'sidebar--summary-wrapper')
     // Make the search bar input focusable on pressing slash key
     searchbarFocus('searchbar--input')
     // Make external links opening in a new tab on the fly
