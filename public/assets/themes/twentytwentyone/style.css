@@ -210,6 +210,7 @@ iframe {
   border: 2px #EEE solid;
   box-shadow: 0 35px 25px rgba(0, 0, 0, 0.1);
   margin-top: 5px;
+  z-index: 22;
 }
 .autoComplete_list li span.search--item--title {
   font-weight: 500;

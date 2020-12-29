@@ -9,9 +9,7 @@
     <div id="contents--sidebar">
         <h6 class="text-muted">
             Contents
-            <a href="#" class="btn position-relative float-right" style="top:-12px;">
-                <?php echo icon('align-left')->size(16); ?>
-            </a>
+            <a id="summary--trigger" href="#" class="btn position-relative float-right" style="right:20px; top:-12px;"><?php echo icon('align-left')->size(16); ?></a>
         </h6>
         <ul class="mb-4">
             <?php
