@@ -24,14 +24,9 @@
                             <?php foreach ($this->contents as $key => $item): ?>
                                 <div class="p-4 bg-light mb-3 rounded">
                                     <a class="text-dark text-decoration-none" href="/faqs/<?php echo $item->getId(); ?>">
-                                        <span class="d-block font-weight-bold">How to build contents</span>
-                                        <small class="d-block">Here you can find most common questions related to WikiPeep. If you have anything else that's not covered in here, just </small>
-                                    </a>
-                                </div>
-
-                                <div class="p-4 bg-light mb-3 rounded">
-                                    <a class="text-dark text-decoration-none" href="/faqs/<?php echo $item->getId(); ?>">
-                                        <span class="d-block font-weight-bold">How to build contents</span>
+                                        <span class="d-block font-weight-bold">
+                                            <?php echo $item->title; ?>
+                                        </span>
                                         <small class="d-block">Here you can find most common questions related to WikiPeep. If you have anything else that's not covered in here, just </small>
                                     </a>
                                 </div>
