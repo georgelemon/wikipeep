@@ -2,7 +2,8 @@
  * Initialize IndexedDB with Dexie.js
  * @see https://github.com/dfahlander/Dexie.js
  */
-const LocalDatabase = new Dexie("wikipeepSearchDB");
+const LocalDatabase = new Dexie("wikipeepSearchDB"),
+      SearchEndpoint = __settings.api_base + '/' + __settings.search_endpoint;
 let toggleElement;
 
 /**
@@ -56,11 +57,8 @@ function searchbarFocus(element)
  */
 function getSummaryRevealBtn()
 {
-//<a id="summary--trigger" href="#" class="btn position-relative float-right" style="top:-12px;"></a>
-    
-    if( toggleElement ) {
-        return toggleElement;
-    }
+    // return the element in case is already created
+    if( toggleElement ) return toggleElement;
 
     toggleElement = document.createElement("a");
     let toggleElementIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="10" x2="7" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="21" y1="18" x2="7" y2="18"></line></svg>';
@@ -147,7 +145,7 @@ async function updateBrowserLocalStorage()
 // for storing as Local Storage to the user's browser.
 async function fetchSearchResults()
 {
-    await fetch('/search/search-results.json').then(function (response) {
+    await fetch('/' + SearchEndpoint).then(function (response) {
         return response.json();
     }).then(function (getSearchData) {
 
@@ -270,15 +268,16 @@ function switchingContrastColors(mode)
 function appThemeSwitcher(buttonElement) {
 
     // Automatically switch to a preferred theme according to the OS theme preference.
-    let autoPreferredTheme;
-
-    if( ! cookie('appearance') ) {
-        autoPreferredTheme = (matchMedia('(prefers-color-scheme: dark)').matches ? 'theme-dark' : 'theme-light');
-        cookie.set('appearance', autoPreferredTheme, {
+    let autoPreferredTheme,
+        cookieSettings = {
             secure: false,
             expires: 7,
             path: '/'
-        });
+        };
+
+    if( ! cookie('appearance') ) {
+        autoPreferredTheme = (matchMedia('(prefers-color-scheme: dark)').matches ? 'theme-dark' : 'theme-light');
+        cookie.set('appearance', autoPreferredTheme, cookieSettings);
     } else {
         autoPreferredTheme = cookie.get('appearance');
     }
@@ -291,21 +290,24 @@ function appThemeSwitcher(buttonElement) {
             let btn = event.currentTarget;
                 btn.classList.toggle('lights_on');
             
-            // 
             // Adding a temporary class for creating a fluent transition between themes
             BodyClass.add('switching-theme');
 
             if( BodyClass.contains('theme-dark') ) {
                 BodyClass.toggle('theme-dark');
                 BodyClass.add('theme-light');
-                
+                // switching color related css classes
                 switchingContrastColors('lightmode');
+                // update cookie with the light theme
+                cookie.set('appearance', 'theme-light', cookieSettings);
 
             } else {
                 BodyClass.toggle('theme-light');
                 BodyClass.add('theme-dark');
-
+                // switching color related css classes
                 switchingContrastColors('darkmode');
+                // update cookie with the dark theme
+                cookie.set('appearance', 'theme-dark', cookieSettings);
             }
 
         });
