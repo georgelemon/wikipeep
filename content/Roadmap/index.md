@@ -18,10 +18,10 @@ When will reach the January tasks will boost the version to 1.5
 - [x] MVC Pattern w/ Model (where the actual Model is provided by <strong>Flywheel</strong>)
 
 ##### Front-end Features
+- [x] Whitelabel
 - [x] Search support with Autocomplete
 - [x] Boost up performances of the Search Results by storing data via IndexedDB 
 - [x] Code Syntax Support with [Rainbow JS](https://github.com/ccampbell/rainbow). Check [currently supported languages](https://github.com/ccampbell/rainbow#supported-languages).
-- [x] Whitelabel
 - [x] Infobox Support for <strong>Article</strong> screen on various areas
 - [x] Secure by default (There is no dashboard admin, at least not for now)
 - [ ] Breadcrumb navigation
@@ -30,6 +30,9 @@ When will reach the January tasks will boost the version to 1.5
 #### Parser Features
 - [x] Tasks List [See reference](https://www.markdownguide.org/extended-syntax/#task-lists)
 - [x] Anchor URLs [See reference](https://www.markdownguide.org/extended-syntax/#linking-to-heading-ids)
+
+### API Features
+- [ ] Create API Endpoint for accessing the search results
 
 ##### Other Features
 - [ ] SEO ready
