@@ -12,34 +12,33 @@ class CategoryController extends BaseController
      */
     public function index()
     {
-        $categorySlug = request()->segment(1);
+        $repository = request()->segment(1);
 
         // First, try look if the current category has an index.json stored
         // in repository. This index.json is by default automatically created
         // whenever you create an index.md inside a directory.
-        if( $article = flywheel()->getById('index', $categorySlug)) {
+        if( $article = flywheel()->getById('index', $repository)) {
 
             return $this->layout('home', 'base', $article);
 
         // Otherwise, it auto creates an index page
         // containing a list with all the page screens.
         } else {
-            return $this->layout('home', 'base', [
-                'title' => 'Getting Started',
-                'content' => $this->getContent(),
-                'summary' => null
-            ]);
+            $getArticles = $this->getContent($repository);
+            return $this->layout('category', 'base', $getArticles);
         }
     }
 
     /**
      * Try retrieve the content of the category or show the default notice
+     *
+     * @param  $repository  The name of the repository from request
      * 
      * @return string
      */
-    protected function getContent()
+    protected function getContent($repository)
     {
-        return $article['content'] ?? $this->getNotFoundContentNotice();
+        return flywheel()->query($repository)->orderBy('__update DESC')->execute() ?? $this->getNotFoundContentNotice();
     }
 
     /**
