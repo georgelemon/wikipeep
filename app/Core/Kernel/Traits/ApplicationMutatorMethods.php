@@ -5,25 +5,6 @@ namespace App\Core\Kernel\Traits;
 trait ApplicationMutatorMethods {
 
     /**
-     * Initialize the Application with a blind setup used for Cron tasks
-     * @see App\Core\Config
-     */
-    public function blindSetup($_storagePath, $_configPath) : void
-    {
-        $this->registerConfigurationFiles($_storagePath, $_configPath);
-        new Config($this->config);
-    }
-
-    /**
-     * Returns an instance of the Registry
-     * @see App\Core\Registry
-     */
-    public function registry()
-    {
-        return static::$registry;
-    }
-
-    /**
      * Returns an instance of Str Helper
      * @see Illuminate\Support\Str
      */
@@ -51,27 +32,6 @@ trait ApplicationMutatorMethods {
     public function collection($array = [])
     {
         return new \Illuminate\Support\Collection($array);
-    }
-
-    /**
-     * @return an instance of Collection
-     */
-    public function encrypter($array = [])
-    {
-        return new \App\Core\Encryption\Encrypter;
-    }
-
-    /**
-     * Retrieve the contents
-     */
-    public function getContents()
-    {
-        return static::$articleIds;
-    }
-
-    public function validator()
-    {
-        return new \App\Core\Components\Validator;
     }
 
     /**

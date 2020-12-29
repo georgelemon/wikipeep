@@ -273,7 +273,7 @@ function getAsideNavigation()
             $slug = strpos($nav->slug, 'http') === 0 ? $nav->slug : '/' . $nav->slug;
 
             if( $activeCat = getCurrentCategory() )  {
-                $activeCat = $activeCat === $slug ? sprintf(' class="%s"', 'active') : null;
+                $activeCat = $activeCat === str_replace('/', '', $slug) ? sprintf(' class="%s"', 'active') : null;
             } else {
                 $activeCat = null;
             }

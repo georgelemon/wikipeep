@@ -43,7 +43,11 @@ class Flywheel
     public function getById(string $articleId, string $repoName)
     {
         if( $article = $this->getRepository($repoName)->findById($articleId)) {
-            return ['content' => unserialize($article->article), 'summary' => $article->summary];
+            return [
+                '__update' => $article->__update,
+                'content' => unserialize($article->article),
+                'summary' => $article->summary
+            ];
         }
 
         return false;
@@ -96,7 +100,7 @@ class Flywheel
     public function create(array $content, string $repoName, $articleId) : void
     {
         // Set current date based on date zone
-        $content['__update'] = date("Y-m-d H:i:s");
+        $content['__update'] = date( config()->get('app.date_format') ?? "Y-m-d H:i:s");
 
         // Instantiate Flywheel Document 
         $article = new Document($content);

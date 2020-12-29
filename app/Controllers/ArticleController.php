@@ -20,9 +20,7 @@ class ArticleController extends BaseController {
 
         // Try retrieve the article based on the ID provided from Request
         if( $article = flywheel()->getById($articleId, $directory)) {
-            return $this->layout('home', 'base', [
-                'content' => $article['content'], 'summary' => $article['summary']
-            ]);
+            return $this->layout('home', 'base', $article);
         }
 
         return $this->layout('404', 'base');

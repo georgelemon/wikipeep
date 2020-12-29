@@ -9,9 +9,9 @@ use App\Core\{Theme, Flywheel};
 class Application {
 
     /**
-     * Application protected properties
+     * @var object
      */
-    use Traits\ApplicationProperties;
+    protected static $router;
 
     /**
      * Make use of mutator methods
@@ -53,6 +53,17 @@ class Application {
 
         $this->loadWithPublicRoutes();
         $this->loadWithProviders();
+    }
+
+    /**
+     * Used by Symfony Console, it registers only
+     * the configuration files so it can be used via terminal.
+     * 
+     * @return void
+     */
+    public function headless()
+    {
+        $this->registerConfigurationFiles();
     }
 
     /**
