@@ -36,9 +36,11 @@ define('VENDOR_PATH', ROOT_PATH . DS . 'vendor');
 define('THEMES_PATH', ROOT_PATH . DS . 'themes');
 
 // Set default time based on location input
-date_default_timezone_set('Europe/Bucharest'); 
+date_default_timezone_set(config()->get('app.timezone')); 
 
-session()->start();
+// While still in 1.0 we don't need a PHP session,
+// but this may be used for a feature that implements private wiki system.
+// session()->start();
 
 /**
  * Initialize the Application with the current setup

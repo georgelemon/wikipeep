@@ -26,7 +26,14 @@ define('VIEWS_PATH', APP_PATH . DS . 'Views');
 define('PUBLIC_PATH', ROOT_PATH);
 define('VENDOR_PATH', ROOT_PATH . DS . 'vendor');
 
-// date_default_timezone_set(config('app.timezone'));
+/**
+ * Initialize the Application with the current setup
+ */
+$app = App\Core\Kernel\Application::instance();
+$app->headless();
+
+// Set default time based on location input
+date_default_timezone_set(config()->get('app.timezone')); 
 
 $console = new Console(new SymfonyApplication("Running on version " . VERSION), null);
 $console->run();

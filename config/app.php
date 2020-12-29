@@ -14,6 +14,18 @@ return [
     'logo' => false,
 
     /**
+     * Setup your timezone.
+     * Used by Compiler to add the update time on articles.
+     */
+    'timezone' => 'Europe/Bucharest',
+
+    /**
+     * A valid date format.
+     * @see https://www.php.net/manual/en/function.date.php
+     */
+    'date_format' => 'l jS \of F Y h:i:s A',
+
+    /**
      * SEO Meta tags - Where meta name is used for title tag,
      * and description for meta tag description.
      */
