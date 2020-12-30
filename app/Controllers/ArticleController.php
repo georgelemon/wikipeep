@@ -9,8 +9,8 @@ class ArticleController extends BaseController {
     public function index()
     {
 
-        $directory = strip_tags(request()->segment(1));
-        $articleId = strip_tags(request()->segment(2));
+        $directory = request()->segment(1);
+        $articleId = request()->segment(2);
 
         // In case the article id is /index it will redirect to root of the category
         // in order to prevent duplicated contents.
@@ -26,13 +26,4 @@ class ArticleController extends BaseController {
         return $this->layout('404', 'base');
     }
 
-    /**
-     * Retrieve the aside helper box when available.
-     * 
-     * @return string | null
-     */
-    protected function getAsideHelperBox()
-    {
-
-    }
 }

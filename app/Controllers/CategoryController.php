@@ -110,15 +110,18 @@ class CategoryController extends BaseController
 
             $articles = $this->getContent($this->categoryId);
 
-            $this->total = $articles->total();
-            $this->count = $articles->count();
+            if( $articles ) {
 
-            if( $this->total > 0 && $this->count > 0 ) {
-                $this->hasPaginationConfig();
-                return $this->layout('category', 'base', $articles);                
+                $this->total = $articles->total();
+                $this->count = $articles->count();
+
+                if( $this->total > 0 && $this->count > 0 ) {
+                    $this->hasPaginationConfig();
+                    return $this->layout('category', 'base', $articles);                
+                }
             }
 
-            return $this->layout('404', 'base');
+            return $this->layout('404', 'public');
         }
     }
 
@@ -206,9 +209,9 @@ class CategoryController extends BaseController
 
             return $items;
 
-        } else {
-            return $this->getNotFoundContentNotice();
         }
+        
+        return false;
     }
 
     /**
@@ -258,6 +261,27 @@ class CategoryController extends BaseController
     public function getTotal()
     {
         return $this->total;
+    }
+
+    /**
+     * Retrieve the current category slug
+     * @return string
+     */
+    public function getCategorySlug()
+    {
+        return $this->categoryId;
+    }
+
+    /**
+     * Retrieve the article permalink containing its category slug.
+     *
+     * @param  $articleId
+     * 
+     * @return string
+     */
+    public function getArticlePermalink( string $articleId )
+    {
+        return $this->getCategorySlug() . DS . $articleId;
     }
 
     /**
