@@ -227,9 +227,11 @@ function app_logo()
 
 /**
  * Retrieve the meta title of the application
- * @param  string $title   [description]
- * @param  string $default [description]
- * @return [type]          [description]
+ * 
+ * @param  string $title   
+ * @param  string $default
+ * 
+ * @return string
  */
 function meta_title(string $title = '', $default = '')
 {
@@ -237,15 +239,10 @@ function meta_title(string $title = '', $default = '')
 }
 
 /**
- * Get emoticons from Emoji Builder
+ * Get the current category from Request
+ * 
+ * @return string
  */
-if( ! function_exists('emoji') ) {
-    function emoji()
-    {
-        return new App\Core\Components\EmojiBuilder\Emoji;
-    }
-}
-
 function getCurrentCategory()
 {
     $currentCategory = request()->segment(1);
@@ -259,6 +256,8 @@ function getCurrentCategory()
 
 /**
  * Retrieves the main navigation menu
+ *
+ * @return string
  */
 function getAsideNavigation()
 {
@@ -288,14 +287,55 @@ function getAsideNavigation()
     }
 }
 
+/**
+ * When enabled retrieves all cookie settings from config/cookie.php
+ * 
+ * @return array
+ */
+function getCookieSettings()
+{
+    $cookie = config()->get('cookie');
+    return $cookie['enabled'] && $cookie['settings'] ? $cookie['settings'] : null;
+}
+
+/**
+ * When avilable, it will return the cookie disclaimer from config/cookie.php
+ * 
+ * @return string
+ */
+function getCookeDisclaimer()
+{
+    return config()->has('cookie.disclaimer') ? htmlspecialchars(config()->get('cookie.disclaimer')) : null;
+}
+
+/**
+ *
+ * It injects an inline JavaScript array in the head of your WikiPeep,
+ * in order to create a simple bridge that will be used via JavaScript
+ * by search related functionality.
+ * 
+ * @return string
+ */
 function getApplicationSettings()
 {
     $api = config()->get('api');
-    
-    $encode = json_encode([
-                    'api_base' => $api['base'],
-                    'search_endpoint' => $api['search']
-        ]);
 
-    return sprintf('<script>const __settings = %s</script>', $encode);
+    return sprintf('<script>const __settings = %s</script>', json_encode([
+                // The base API endpoint.
+                'api_base' => $api['base'],
+                // Search Results API Endpoint is used by the search
+                // to fetch data via JavaScript. For changing the default endpoint
+                // go to configs/api.php
+                'search_endpoint' => $api['search'],
+                // The latest search update is used for keeping the track
+                // of builds so people who visited your WikiPeep before
+                // can get the latest version of search results directly to their IndexedDB.
+                // Gets filled with the date of the last build.
+                'latest_search_update' => '10',
+                // The only thing related to cookies that WikiPeep
+                // does by default is to set a cookie for theme preference.
+                'cookie_settings' => getCookieSettings(),
+                // Retrieve the cookie disclaimer message
+                'cookie_disclaimer' => getCookeDisclaimer()
+        ]));
 }
