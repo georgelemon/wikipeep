@@ -99,7 +99,7 @@ function toggleSummaryContents(triggerId, wrapperId, articleWrapperId = 'article
     getSummaryRevealBtn().addEventListener('click', function(e){
         e.preventDefault();
         summaryWrapper.classList.remove('d-none')
-        articleWrapper.setAttribute('class', 'col-lg-8 offset-lg-2')
+        articleWrapper.setAttribute('class', 'col-lg-10 offset-lg-2')
         getSummaryRevealBtn().remove();
     })
 }
@@ -177,7 +177,7 @@ const autoCompleteJS = new autoComplete({
             // Return Fetched data
             return data;
     },
-    key: ["title"],
+    key: ["title", "excerpt"],
         // results: (list) => {
         //     // Filter duplicates
         //     const filteredResults = Array.from(new Set(list.map((value) => value.match))).map((title) => {
