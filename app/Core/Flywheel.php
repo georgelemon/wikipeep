@@ -37,19 +37,32 @@ class Flywheel
      * 
      * @param  string $articleId
      * @param  string $repoName
+     * @param  string $screentype       Available options: 'article', 'category'
      * 
      * @return mixed (array|false)
      */
-    public function getById(string $articleId, string $repoName)
+    public function getById(string $articleId, string $repoName, $screentype = 'article')
     {
-        if( $article = $this->getRepository($repoName, 'read')) {
+        if( $repository = $this->getRepository($repoName, 'read')) {
 
-            $article = $article->findById($articleId);
-            return [
-                '__update' => $article->__update,
-                'content' => unserialize($article->article),
-                'summary' => $article->summary
-            ];
+            $data = $repository->findById($articleId);
+
+            // Catching requests for non existing indexes that
+            // should be treat as automatically generated indexes.
+            // 
+            // The generated category page is handled by CategoryController
+            if( $articleId === 'index' && $data === false ) {
+                return false;
+            }
+
+            if( $screentype === 'article' ) {
+                return [
+                    'content' => unserialize($data->article),
+                    'summary' => $data->summary
+                ];
+            }
+
+            return $data;
         }
 
         return false;
@@ -97,16 +110,19 @@ class Flywheel
     /**
      * Callable when creating a new article.
      * 
-     * @param  array  $content
-     * @param  string $repoName
-     * @param  string $articleId
+     * @param  array   $content
+     * @param  string  $repoName
+     * @param  string  $articleId
+     * @param  bool    $withDate        Whether to add the update time or not
      * 
      * @return void
      */
-    public function create(array $content, string $repoName, $articleId) : void
+    public function create(array $content, string $repoName, string $articleId, bool $withDate = true) : void
     {
         // Set current date based on date zone
-        $content['__update'] = date( config()->get('app.date_format') ?? "Y-m-d H:i:s");
+        if( $withDate ) {
+            $content['__update'] = date( config()->get('app.date_format') ?? "Y-m-d H:i:s");
+        }
 
         // Instantiate Flywheel Document 
         $article = new Document($content);
