@@ -2,3 +2,7 @@ menu:
   label: 'FAQs'
   icon: 'help-circle'
   order: 7
+settings:
+  heading:
+    title: Frequently Questions & Answers
+    lead: "Here you can find most common questions related to WikiPeep.<br>If you have anything else that's not covered in here, just open a new issue on GitHub"

@@ -20,7 +20,7 @@
 
 ### [Requirements](#requirements)
 You will need PHP 7.4 or newer and Composer installed.
-Since WikiPeep is a flat file database you don't have to setup a database.
+<mark>Since WikiPeep is a flat file database you don't have to setup a database environment.</mark> Deploying on a shared hosting requires some extra steps, so [be sure you read this article](/faqs/does-wikipeep-works-on-a-shared-hosting).
 
 ### [Installation](#installation)
 

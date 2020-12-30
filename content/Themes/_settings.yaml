@@ -2,3 +2,7 @@ menu:
   label: 'Themes'
   icon: feather
   order: 2
+settings:
+  heading:
+    title: Working with Themes
+    lead: Developing your own theme for WikiPeep is easy.

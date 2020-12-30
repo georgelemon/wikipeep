@@ -26,6 +26,7 @@ When will reach the January tasks will boost the version to 1.5
 - [x] Secure by default (There is no dashboard admin, at least not for now)
 - [ ] Breadcrumb navigation
 - [ ] Default theme Light & Dark (Manual switcher and based on user's OS preferences)
+- [ ] Enable/Disable Support for auto navigate relation between articles.
 
 #### Parser Features
 - [x] Tasks List [See reference](https://www.markdownguide.org/extended-syntax/#task-lists)
@@ -41,6 +42,10 @@ When will reach the January tasks will boost the version to 1.5
 ##### Bugfixes & Enhancements
 - [ ] Overall bugfixing
 - [ ] UI & UX improvements
+
+##### Talk about it
+- [ ] Publish on Producthunt
+- [ ] Publish on Dev.to
 
 ### [January 2021](#january-2021)
 - [ ] **Offline Mode Feature by Service Workers**
