@@ -107,7 +107,8 @@
                                     <p class="p-3" style="background-color:lavender"><strong>KICKASS Feature &mdash; Offline Mode</strong> by Service Workers is already in Roadmap 2021. <a href="/roadmap">Stay tunned</a> 🥰</p>
                                 </div>
                                 <div class="col-lg-6 text-center">
-                                    <img src="/assets/themes/twentytwentyone/svg/undrawChecking.svg" alt="" class="img-fluid" width="80%">
+                                    <!-- <img src="/assets/themes/twentytwentyone/svg/undrawChecking.svg" alt="" class="img-fluid" width="80%"> -->
+                                    <?php echo config()->get('welcome.undraw_cacheable') ?>
                                 </div>
                             </div>
 
@@ -133,10 +134,10 @@
                                         Artworks by <a class="text-decoration-none" href="https://undraw.co/?ref=georgelemon.com/wikipeep">Katerina Limpitsouni</a>.
 
                                         Developed & Maintained by <a class="text-decoration-none" href="https://georgelemon.com">George Lemon</a> 😷
-                                    <small class="d-block mt-1">Released under a dual license, <code>AGPL</code> for Indie Developers, and a <code>Commercial License</code> for Agencies. 
-                                        <a href="/license" class="text-decoration-none">About Licensing.</a>
-                                        <span class="mt-1 d-block">&copy <?php echo date('Y') ?> George Lemon &mdash; WikiPeep &mdash; All rights reserved.</span>
-                                    </small>
+                                        <small class="d-block mt-1">Released under a dual license, <code>AGPL</code> for Indie Developers, and a <code>Commercial License</code> for Agencies. 
+                                            <a href="/license" class="text-decoration-none">About Licensing.</a>
+                                            <span class="mt-1 d-block">&copy <?php echo date('Y') ?> George Lemon &mdash; WikiPeep &mdash; All rights reserved.</span>
+                                        </small>
                                     </small>
                                 </div>
                             </div>

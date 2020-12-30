@@ -19,11 +19,15 @@
                     ?>
                     <div id="article--side" class="<?php echo $articleViewColSize; ?> position-relative">
                         <div class="px-5 pt-4 pb-5">
-                            <h1>Frequently Questions & Answers</h1>
-                            <p>Here you can find most common questions related to WikiPeep.<br>If you have anything else that's not covered in here, just <a href="#">open a new issue on GitHub</a></p>
+                            <?php
+                                // When provided in _settings.yaml will get meta heading
+                                // data in order to create a headline and a lead.
+                                echo $this->getCategoryHeading();
+                            ?>
+                            <div class="category--list--items">
                             <?php foreach ($this->contents as $key => $item): ?>
-                                <div class="p-4 bg-light mb-3 rounded">
-                                    <a class="text-dark text-decoration-none" href="/faqs/<?php echo $item->getId(); ?>">
+                                <div class="mb-3">
+                                    <a class="category--item p-4 bg-light rounded d-block text-dark text-decoration-none" href="/faqs/<?php echo $item->getId(); ?>">
                                         <span class="d-block font-weight-bold">
                                             <?php echo $item->title; ?>
                                         </span>
@@ -31,6 +35,7 @@
                                     </a>
                                 </div>
                             <?php endforeach; ?>
+                            </div>
                         </div>
                     </div>
                 </div>
