@@ -18,14 +18,13 @@ class CategoryController extends BaseController
         // in repository. This index.json is by default automatically created
         // whenever you create an index.md inside a directory.
         if( $article = flywheel()->getById('index', $repository)) {
-
             return $this->layout('home', 'base', $article);
 
         // Otherwise, it auto creates an index page
         // containing a list with all the page screens.
         } else {
             $getArticles = $this->getContent($repository);
-            return $this->layout('category', 'base', $getArticles);
+            return $getArticles ? $this->layout('category', 'base', $getArticles) : $this->layout('404', 'base');
         }
     }
 
@@ -38,7 +37,12 @@ class CategoryController extends BaseController
      */
     protected function getContent($repository)
     {
-        return flywheel()->query($repository)->orderBy('__update DESC')->execute() ?? $this->getNotFoundContentNotice();
+        if( $results = flywheel()->query($repository)) {
+            return $results->orderBy('__update DESC')->execute();
+        } else {
+            // return $this->getNotFoundContentNotice();
+            return null;
+        }
     }
 
     /**

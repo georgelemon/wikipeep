@@ -42,7 +42,9 @@ class Flywheel
      */
     public function getById(string $articleId, string $repoName)
     {
-        if( $article = $this->getRepository($repoName)->findById($articleId)) {
+        if( $article = $this->getRepository($repoName, 'read')) {
+
+            $article = $article->findById($articleId);
             return [
                 '__update' => $article->__update,
                 'content' => unserialize($article->article),
@@ -59,7 +61,8 @@ class Flywheel
      */
     public function getNavigation()
     {
-        if( $nav = $this->getRepository('settings')->findById('navigation')) {
+        if( $nav = $this->getRepository('settings', 'read')) {
+            $nav = $nav->findById('navigation');
             return $nav->navigation;
         }        
     }
@@ -71,7 +74,8 @@ class Flywheel
      */
     public function getAsideBox()
     {
-        if( $box = $this->getRepository('getting-started')->findById('asidebox')) {
+        if( $box = $this->getRepository('getting-started', 'read')) {
+            $box = $box->findById('asidebox');
             return ['label' => $box->label, 'message' => $box->message, '_boxColor' => $box->color];
         }
     }
@@ -85,7 +89,9 @@ class Flywheel
      */
     public function query(string $repoName)
     {
-        return $this->getRepository($repoName)->query();
+        if( $results = $this->getRepository($repoName, 'read')) {
+            return $results->query();
+        }
     }
 
     /**
@@ -110,15 +116,32 @@ class Flywheel
 
         // Retrieve an already created repository or create a new one
         // and store the compiled article inside.
-        $this->getRepository($repoName)->store($article);
+        $this->getRepository($repoName, 'write')->store($article);
     }
 
     /**
-     * Get Flywheel repository
-     * @return [type] [description]
+     * Flywheel repository
+     * 
+     * @param  string $repoName         the name of the repository
+     * @param  string $mode             the type of the operation. available read|write
+     * 
+     * @return [type]           [description]
      */
-    protected function getRepository($repoName)
+    protected function getRepository($repoName, $mode)
     {
-        return new Repository($repoName, $this->flyConfig ?? $this->flywheelConfig(true));
+        // Prevent Flywheel creating a new repository when we just try to read data
+        // In this case will use the second param $mode to determine the operation type
+        if( $mode === 'read' ) {
+            
+            if( app()->filesystem()->isDirectory($this->flyConfig->getPath() . DS . $repoName) ) {
+                return new Repository($repoName, $this->flyConfig ?? $this->flywheelConfig(true));                
+            } else {
+                return false;
+            }
+
+        } elseif( $mode === 'write' ) {
+            return new Repository($repoName, $this->flyConfig ?? $this->flywheelConfig(true));
+        }
+
     }
 }
