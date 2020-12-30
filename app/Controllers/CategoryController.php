@@ -141,7 +141,7 @@ class CategoryController extends BaseController
 
         $baseUrl = $this->categoryId . DS . $this->categoryConfigs['base_url'] ?? 'page';
 
-        $this->paginator = new Paginator('okay', $this->getTotal(), $this->getCurrentPage(), $this->getPerPage(), $baseUrl);
+        $this->paginator = new Paginator($this->getTotal(), $this->getCurrentPage(), $this->getPerPage(), $baseUrl);
 
         return true;
     }
@@ -176,7 +176,7 @@ class CategoryController extends BaseController
         if( $this->getCurrentPage() > 1 ) {
             return $this->getPerPage() * $this->getCurrentPage() - $this->getPerPage();
         }
-        
+
         return 0;
     }
 

@@ -4,19 +4,6 @@ namespace App\Core;
 
 class Paginator
 {
-    /**
-     * Determine if the current instance has results
-     *
-     * @var bool
-     */
-    public $has_results = false;
-
-    /**
-     * Holds the paginated results
-     *
-     * @var array
-     */
-    public $results = [];
 
     /**
      * Holds the result count
@@ -75,22 +62,18 @@ class Paginator
     protected $url;
 
     /**
-     * @param array  $results results to paginate
      * @param int    $count   result count
      * @param int    $page    page offset
      * @param int    $perpage page limit
      * @param string $url     base URL
      */
-    public function __construct($results, $count, $page, $perpage, $url)
+    public function __construct($count, $page, $perpage, $url)
     {
-        $this->results = $results;
         $this->count   = $count;
         $this->page    = $page;
         $this->perpage = $perpage;
         // $this->url     = rtrim($url, '/');
         $this->url     = '/' . $url;
-
-        $this->has_results = $this->results ? true : false;
 
         $this->first = 'First page';
         $this->last  = 'Last Page';
