@@ -12,11 +12,13 @@ git clone https://github.com/georgelemon/wikipeep.git
 composer install
 ```
 
+_NOTE: WikiPeep is not made with Laravel or Symfony. It just use some components like Symfony Console, HttpFoundation, Illuminate Filesystem, Support and so on._
+
 ### Building Content
 
 By default, WikiPeep comes with some demo content, so you can make a better idea about what WikiPeep is and what can do. Building the content is made via [Symfony Console](https://github.com/symfony/console), so you will need to ssh to your virtual machine and run
 ```
-artisan app:build
+artisan build:all
 ```
 
 ### Database structure
