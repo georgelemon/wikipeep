@@ -16,8 +16,10 @@ class Response extends BaseResponse
     /** @var bool */
     protected $json = false;
 
+    /**
+     * @var string
+     */
     protected $content;
-
 
     /**
      * Class constructor
@@ -31,12 +33,11 @@ class Response extends BaseResponse
     public function __construct(?string $content = '', int $status = 200, array $headers = [])
     {
         // Remove all headers
-        header_remove();
+        // header_remove();
         parent::__construct($content, $status, $headers);
         $this->setCharset('utf-8');
         $this->headers->set('Content-Type', 'text/html; charset=' . $this->getCharset());
     }
-
 
     /**
      * Json response

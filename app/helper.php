@@ -80,8 +80,8 @@ function request() {
  * @see App\Core\Http\Response
  * @see https://symfony.com/doc/current/components/http_foundation.html#response
  */
-function response() {
-    return new App\Core\Http\Response;
+function response($content = '', $status = 200, array $headers = []) {
+    return new App\Core\Http\Response($content, $status, $headers);
 }
 
 function uri() {
