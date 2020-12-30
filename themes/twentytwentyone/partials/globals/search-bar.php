@@ -7,7 +7,7 @@
     // Otherwise, it gets splited in two, where a half is reserved
     // for the breadcrumb navigation and the other half by the search bar.
     } else {
-        $searchBarColSize = 'col-lg-5';
+        $searchBarColSize = 'col-lg-11';
         $isHalfScreen = true;
     }
 
@@ -23,8 +23,8 @@
 
 
 ?>
-<div class="row mt-4">
-    <?php echo $isHalfScreen ? $this->view('partials/globals/breadcrumb') : '' ?>
+<div class="row mt-4 mb-4">
+    <?php //echo $isHalfScreen ? $this->view('partials/globals/breadcrumb') : '' ?>
     <div class="<?php echo $searchBarColSize; ?>">
         <div class="row">
             <div class="col-lg-12">

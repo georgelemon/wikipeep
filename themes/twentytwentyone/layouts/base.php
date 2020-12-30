@@ -1,3 +1,9 @@
 <?php $this->view('globals/head'); ?>
-<?php $this->view($this->fileview); ?>
+<main>
+    <div class="container-fluid">
+        <div class="row">
+            <?php $this->view($this->fileview); ?>
+        </div>
+    </div>
+</main>
 <?php $this->view('globals/foot'); ?>

@@ -1,6 +1,3 @@
-<main>
-    <div class="container-fluid">
-        <div class="row">
             <?php echo $this->view('partials/globals/aside') ?>
             <div class="col-lg-10 offset-lg-2">
                 <?php
@@ -27,7 +24,7 @@
                             <div class="category--list--items">
                             <?php foreach ($this->contents as $key => $item): ?>
                                 <div class="mb-3">
-                                    <a class="category--item p-4 bg-light rounded d-block text-dark text-decoration-none" href="/faqs/<?php echo $item->getId(); ?>">
+                                    <a class="category--item p-4 bg-light rounded d-block text-dark text-decoration-none" href="<?php echo $this->getArticlePermalink($item->getId()); ?>">
                                         <span class="d-block font-weight-bold">
                                             <?php echo $item->title; ?>
                                         </span>
@@ -35,12 +32,14 @@
                                     </a>
                                 </div>
                             <?php endforeach; ?>
-                            <?php echo $this->getPaginationElement() ?>
+                            <?php
+                                /**
+                                 * When available it renders the pagination at the end of the page
+                                 */
+                                echo $this->getPaginationElement()
+                            ?>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</main>

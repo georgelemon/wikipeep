@@ -10,6 +10,7 @@
                 ?>
                 <div class="row">
                     <?php
+
                         if( $this->contents['summary'] ) {
                             $articleViewColSize = 'col-lg-10 offset-lg-2';
                             $this->view('partials/globals/summary');

@@ -1,10 +1,3 @@
-<style type="text/css">
-/*    #sidebar--summary-wrapper {
-        transform: translate(-100%, 0);
-        transition: all .3s ease;
-    }
-*/
-</style>
 <div id="sidebar--summary-wrapper" class="col-lg-2 mt-2 position-fixed">
     <div id="contents--sidebar">
         <h6 class="text-muted">
