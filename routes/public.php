@@ -19,6 +19,7 @@ route()->get($api['base'] . DS . $api['search'], 'App\Controllers\Api\EndpointSe
  * 2. Otherwise, it will create an auto screen with the index of all pages inside of it.
  */
 route()->get('([a-z-A-Z0-9_-]+)', 'App\Controllers\CategoryController@index');
+route()->get('([a-z-A-Z0-9_-]+)/page/([0-9])', 'App\Controllers\CategoryController@pagination');
 
 /**
  * The Article screen
