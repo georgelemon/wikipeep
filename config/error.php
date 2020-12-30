@@ -2,10 +2,7 @@
 
 return [
     'report' => true,
-    
     'log'    => function ($e) {
-
-        /** @var \Exception $e */
         $data = [
             'date'    => date("Y-m-d H:i:s"),
             'message' => $e->getMessage(),
@@ -15,10 +12,10 @@ return [
         ];
 
         file_put_contents(STORAGE_PATH . '/logs/errors.log', json_encode($data) . "\n", FILE_APPEND | LOCK_EX);
-
+        
         echo '<pre>';
         echo $e->getMessage() . "\n";
-        echo 'The error has been logged in /storage/errors.log';
+        echo 'The error has been logged in /storage/logs/errors.log';
         echo '</pre>';
     }
 ];

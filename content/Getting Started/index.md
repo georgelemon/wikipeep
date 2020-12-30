@@ -61,8 +61,6 @@ configs that can be found under <code>config/</code> directory. There you have s
 - Full namespaced controllers list (used for keeping routes clean)
 - Icon Settings - By default WikiPeep comes with Dessert package (an SVG Renderer and Icon Library Manager that inserts SVG code directly, replacing the use of icon fonts or JavaScript icons) - Default Icon Library is [FeatherIcons](https://feathericons.com/)
 
-## [Roadmap](#road-map)
-
 
 ## [Known Bugs](#known-bugs)
 Right now, there is no possible to create nesting directories in order to achive complex URLs.

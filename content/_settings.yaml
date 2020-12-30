@@ -1,0 +1,23 @@
+# Enabling infobox globally and inserting in
+# the main sidebar bellow navigation menu
+infobox_aside:
+  title: "Something wrong with this page?"
+  message: "You can suggest edits or if you're a developer you can contribute to WikiPeep"
+  show_on:
+    category: true  # show on category screen
+    articles: true  # show on article screen
+    homepage: true  # show on the landing page
+
+# Enabling infobox while in reading mode via article screen
+infobox_summary:
+  title: "Something wrong with this page?"
+  message: "You can suggest edits or if you're a developer you can contribute to WikiPeep"
+
+# Enabling infobox globally and inserting
+# the box at the bottom of the page
+infobox_bottom:
+  title: "Something wrong with this page?"
+  message: "You can suggest edits or if you're a developer you can contribute to WikiPeep"
+  show_on:
+    category: true    # show on category screen
+    articles: true    # show on article screen

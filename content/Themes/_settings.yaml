@@ -1,7 +1,7 @@
 menu:
   label: 'Themes'
   icon: feather
-  order: 2
+  order: 3
 settings:
   heading:
     title: Working with Themes
