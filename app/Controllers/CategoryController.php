@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Core\Paginator;
+
 class CategoryController extends BaseController
 {
 
@@ -18,9 +20,43 @@ class CategoryController extends BaseController
     protected $categoryArticles;
 
     /**
-     * @var bool
+     * Grabs default configurations provided in config/category.php
+     * @var array
+     */
+    protected $categoryConfigs;
+
+    /**
+     * @var boolean
      */
     protected $hasHeading = false;
+
+    /**
+     * @var boolean
+     */
+    protected $withPagination = true;
+
+    /**
+     * Holds the current page number based on request URI
+     * @var integer
+     */
+    protected $currentPage = 1;
+
+    /**
+     * @var object App\Core\Paginator
+     */
+    protected $paginator;
+
+    /**
+     * Holds the total number of published articles
+     * @var int
+     */
+    protected int $total = 0;
+
+    /**
+     * Holds the current count of articles based on pagination
+     * @var integer
+     */
+    protected int $count = 0;
 
     /**
      * The main method that handles GET request.
@@ -29,25 +65,119 @@ class CategoryController extends BaseController
      */
     public function index()
     {
-        $repository = request()->segment(1);
-        $this->categoryId = $repository;
+        $this->categoryId = request()->segment(1);;
+        $this->categoryConfigs = config()->get('category');
+        return $this->getCategoryListing();
+    }
 
+    /**
+     * The pagination method that handles GET request
+     * @return [type] [description]
+     */
+    public function pagination()
+    {
+        $this->categoryId = request()->segment(1);
+        $this->currentPage = request()->segment(3);
+        $this->categoryConfigs = config()->get('category');
+        return $this->getCategoryListing();
+    }
+
+    /**
+     * When available it will print the pagination
+     * @return string | null
+     */
+    public function getPaginationElement()
+    {
+        return $this->withPagination ? $this->paginator->getPagination() : null;
+    }
+
+    /**
+     * Retrieve the listing of the category
+     */
+    protected function getCategoryListing()
+    {
         // First, try look if the current category has an index.json stored
         // in repository. This index.json is by default automatically created
         // whenever you create an index.md inside a directory.
-        if( $article = flywheel()->getById('index', $repository)) {
+        if( $article = flywheel()->getById('index', $this->categoryId)) {
             return $this->layout('home', 'base', $article);
 
         // Otherwise, it will treat the root page of the category with
         // page an auto-index containing a list with all the page screens.
-        // @todo pagination
         } else {
             
             $this->setCategorySettingsIfAny();
-            $getArticles = $this->getContent($repository);
 
-            return $getArticles ? $this->layout('category', 'base', $getArticles) : $this->layout('404', 'base');
+            $articles = $this->getContent($this->categoryId);
+
+            $this->total = $articles->total();
+            $this->count = $articles->count();
+
+            if( $this->total > 0 && $this->count > 0 ) {
+                $this->hasPaginationConfig();
+                return $this->layout('category', 'base', $articles);                
+            }
+
+            return $this->layout('404', 'base');
         }
+    }
+
+    /**
+     * Determine if the application has pagination set up.
+     * 
+     * @return boolean
+     */
+    protected function hasPaginationConfig()
+    {
+        if( !isset($this->categoryConfigs['per_page']) ) {
+            $this->withPagination = false;
+            return false;
+        }
+
+        if( $this->categoryConfigs['per_page'] === 0 || ! is_int($this->categoryConfigs['per_page']) ) {
+            $this->withPagination = false;
+            return false;
+        }
+
+        $baseUrl = $this->categoryId . DS . $this->categoryConfigs['base_url'] ?? 'page';
+
+        $this->paginator = new Paginator('okay', $this->getTotal(), $this->getCurrentPage(), $this->getPerPage(), $baseUrl);
+
+        return true;
+    }
+
+    /**
+     * Retreive the configuration for pagination list.
+     * 
+     * @return integer
+     */
+    protected function getPerPage()
+    {
+        return $this->categoryConfigs['per_page'];
+    }
+
+    /**
+     * Retrieve the current page based on request
+     * @return int
+     */
+    protected function getCurrentPage()
+    {
+        return $this->currentPage;
+    }
+
+    /**
+     * Create an offset for Flywheel query based on current page,
+     * and posts per page preference.
+     * 
+     * @return int
+     */
+    protected function getOffset()
+    {
+        if( $this->getCurrentPage() > 1 ) {
+            return $this->getPerPage() * $this->getCurrentPage() - $this->getPerPage();
+        }
+        
+        return 0;
     }
 
     /**
@@ -60,10 +190,22 @@ class CategoryController extends BaseController
     protected function getContent($repository)
     {
         if( $results = flywheel()->query($repository)) {
-            // By default, Flywheel it will make a basic query,
-            // ignoring possible __settings.json that is related to category screen.
-            // Also, when has results will show them in desending order based on update time
-            return $results->orderBy('__update DESC')->where('__id', '!=', '__settings')->execute();
+            
+            // Retrieve articles paginated based on given preferences
+            if( $this->withPagination ) {
+                
+                $items = $results->orderBy('__update DESC')
+                               ->where('__id', '!=', '__settings')                  // ignore __settings.json
+                               ->limit($this->getPerPage(), $this->getOffset())
+                               ->execute();
+
+            // Otherwise list all articles
+            } else {
+                $items = $results->orderBy('__update DESC')->where('__id', '!=', '__settings')->execute();
+            }
+
+            return $items;
+
         } else {
             return $this->getNotFoundContentNotice();
         }
@@ -109,21 +251,22 @@ class CategoryController extends BaseController
     }
 
     /**
-     * Retrieve the Headline if any
-     * @return string|null
+     * Retrieve the total number of the articles
+     * 
+     * @return integer
      */
-    protected function getCategoryHeadingTitle()
+    public function getTotal()
     {
-
+        return $this->total;
     }
 
     /**
-     * Retrieve the lead of the heading, if any
-     * @return string|null
+     * Retrieve the current counter of the article based on offset/pagination
+     * @return integer
      */
-    protected function getCategoryHeadingLead()
+    protected function getCounter()
     {
-
+        return $this->count;
     }
 
     /**

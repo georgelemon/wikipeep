@@ -35,6 +35,7 @@
                                     </a>
                                 </div>
                             <?php endforeach; ?>
+                            <?php echo $this->getPaginationElement() ?>
                             </div>
                         </div>
                     </div>

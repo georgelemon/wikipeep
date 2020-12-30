@@ -58,7 +58,8 @@ class Flywheel
             if( $screentype === 'article' ) {
                 return [
                     'content' => unserialize($data->article),
-                    'summary' => $data->summary
+                    'summary' => $data->summary,
+                    '__update' => $data->__update
                 ];
             }
 
@@ -120,7 +121,7 @@ class Flywheel
     public function create(array $content, string $repoName, string $articleId, bool $withDate = true) : void
     {
         // Set current date based on date zone
-        if( $withDate ) {
+        if( $withDate === true ) {
             $content['__update'] = date( config()->get('app.date_format') ?? "Y-m-d H:i:s");
         }
 
