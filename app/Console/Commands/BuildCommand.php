@@ -24,7 +24,22 @@ class BuildCommand extends Command
     /**
      * @var array
      */
-    protected $searchIndex = [];
+    protected array $searchIndex = [];
+
+    /**
+     * @var array
+     */
+    // protected array $categoryHeadingMeta = [];
+
+    /**
+     * @var array
+     */
+    protected array $menuItems = [];
+
+    /**
+     * @var array
+     */
+    protected array $menuSubItems = [];
 
     /**
      * Configuring the cli command.
@@ -90,16 +105,33 @@ class BuildCommand extends Command
     }
 
     /**
-     * Stores relevant data for creating the search index
-     * @return [type] [description]
+     * Stores relevant data for creating the search index.
+     * 
+     * @return void
      */
-    protected function storeInSearchIndex($title, $slug, $excerpt = null)
+    protected function storeInSearchIndex($title, $slug, $excerpt = '')
     {
         $this->searchIndex[] = [
             'title' => $title,
             'excerpt' => $excerpt,
             'slug' => $slug
         ];
+    }
+
+    /**
+     * Creates a meta heading for the current
+     * category screen based on given _settings.yaml.
+     *
+     * @param  $key                     The category slug identifier
+     * @param  array|null $heading      The category heading contents
+     * 
+     * @return void
+     */
+    protected function categorySettingsView($key, $settings)
+    {
+        flywheel()->create([
+            'heading' => $settings['heading'] ?? null,
+        ], $key, '__settings', false);
     }
 
     /**
@@ -159,6 +191,18 @@ class BuildCommand extends Command
     protected function getNavigationSubItems($parent)
     {
         return $this->menuSubItems[$parent] ?? null;
+    }
+
+    /**
+     * Retrieve meta headgins of a specific category/directory screen.
+     * 
+     * @param  string $key          The category slug identifier
+     * 
+     * @return array|null
+     */
+    protected function getMetaHeadingByKey($key)
+    {
+        return $this->categoryHeadingMeta[$key] ?? null;
     }
 
     /**
@@ -341,6 +385,14 @@ class BuildCommand extends Command
                 
                 // Store it in navigation menu
                 $this->storeInNavigation($settings['menu']['order'] ?? null, $label, $slug, $icon, $settings['menu']['separator'] ?? null);
+
+                // When provided, creates specific settings
+                // based on some keys that can be placed in _settings.yaml of the category.
+                // Like Heading meta data (for showing a headline/lead while on page),
+                // Custom button links to be displayed on top/bottom and so on.
+                if( isset($settings['settings'])) {
+                    $this->categorySettingsView($slug, $settings['settings']);
+                }
 
                 // Store it in search index
                 $this->storeInSearchIndex($label, $directorySlug);
