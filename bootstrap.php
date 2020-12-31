@@ -21,10 +21,7 @@ require_once __DIR__ . DS . 'app/helper.php';
 require_once __DIR__ . DS . 'app/debug.php';
 
 define('APP_VERSION', '1.0.0');
-
-// Some useful base constants
 define('ROOT_PATH', __DIR__);
-
 define('APP_PATH', ROOT_PATH . DS . 'app');
 define('CONFIG_PATH', ROOT_PATH . DS . 'config');
 define('STORAGE_PATH', ROOT_PATH . DS . 'storage');
@@ -35,20 +32,12 @@ define('PUBLIC_PATH', $_SERVER['HTTP_HOST']);
 define('VENDOR_PATH', ROOT_PATH . DS . 'vendor');
 define('THEMES_PATH', ROOT_PATH . DS . 'themes');
 
-// Set default time based on location input
-date_default_timezone_set(config()->get('app.timezone')); 
-
-// While still in 1.0 we don't need a PHP session,
-// but this may be used for a feature that implements private wiki system.
-// session()->start();
-
-/**
- * Initialize the Application with the current setup
- */
+// Initialize the Application with the current setup
 $app = App\Core\Kernel\Application::instance();
 $app->setup();
 
-/**
- * Bootstrap with routes and other depedencies
- */
+// Set default timezone based on application config
+date_default_timezone_set(config()->get('app.timezone')); 
+
+// Bootstrap the app with routes and other depedencies
 $app->bootstrap();
