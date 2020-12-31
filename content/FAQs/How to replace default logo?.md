@@ -1,0 +1,1 @@
+# How to replace default logo?

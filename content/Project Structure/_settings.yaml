@@ -1,0 +1,7 @@
+menu:
+  label: 'Project Structure'
+  icon: 'align-left'
+  order: 2
+settings:
+  heading:
+    title: WikiPeep Project Structure
