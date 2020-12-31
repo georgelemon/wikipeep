@@ -7,7 +7,6 @@ use App\Core\Parsedown\Parsedown;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Illuminate\Support\Str;
@@ -42,6 +41,39 @@ class BuildCommand extends Command
     protected array $menuSubItems = [];
 
     /**
+     * Database Repository Index
+     */
+    use \App\Console\BuildConcerns\DatabaseIndex;
+
+    /**
+     * Symfony\Finder Instance for getting the right files
+     */
+    use \App\Console\BuildConcerns\FinderInstance;
+
+    /**
+     * Various helper methods used while building contents
+     */
+    use \App\Console\BuildConcerns\Misc;
+
+    /**
+     * Make use of File Information data
+     */
+    use \App\Console\BuildConcerns\FileInformation;
+
+    /**
+     * Make use of Article methods to retrieve related details 
+     */
+    use \App\Console\BuildConcerns\ArticleDetails;
+
+    /**
+     * Loading AsideBox methods in order to store data for
+     * showing informational boxes displayed aside (sidebar).
+     */
+    // use \App\Console\BuildConcerns\AsideBoxDetails;
+
+    use \App\Console\BuildConcerns\ConsoleLoader;
+
+    /**
      * Configuring the cli command.
      * 
      * @return void
@@ -69,20 +101,6 @@ class BuildCommand extends Command
     }
 
     /**
-     * Create the name of the article based on markdown file.
-     * It will slugify the name to lowercase with - separator.
-     * 
-     * @param  array $paths        The full path converted in array
-     * 
-     * @return string
-     */
-    protected function getArticleName($paths)
-    {
-        $title = str_replace('.md', '', $paths[array_key_last($paths)]);
-        return ['title' => $title, 'slug' => Str::slug($title)];
-    }
-
-    /**
      * Return directories structure path based on the markdown path.
      * 
      * @param  array $paths
@@ -93,15 +111,6 @@ class BuildCommand extends Command
     {
         array_pop($paths);
         return Str::slug(implode('/', $paths));
-    }
-
-    /**
-     * Retrieve a Finder instance with Markdown results
-     * @return Finder
-     */
-    protected function finderGetResults($searchIn, $fileType, $searchType = 'files', $level = null)
-    {
-        return $this->compiler->finder($searchIn, $fileType, $searchType, $level);
     }
 
     /**
@@ -216,34 +225,6 @@ class BuildCommand extends Command
     }
 
     /**
-     * While iterating it will try to retrieve a portion from
-     * the first paragraph of the article in order to add an excerpt
-     * to search index for showing in search results.
-     *
-     * @param  string $contentArticle
-     * 
-     * @return 
-     */
-    protected function getExcerpt($contentArticle)
-    {
-        $excerpt = strip_tags($contentArticle);
-        return explode(PHP_EOL, $excerpt);
-    }
-
-    /**
-     * Add a specific numbers of breaklines using PHP_EOL
-     */
-    protected function addBreakline($counts)
-    {
-        $breaks = '';
-        for ($i=0; $i < $counts; $i++) { 
-            $breaks .= PHP_EOL;
-        }
-
-        return $breaks;
-    }
-
-    /**
      * The Builder Executer
      * 
      * @param  InputInterface  $input 
@@ -253,9 +234,17 @@ class BuildCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // Setting the repository database statement
+        // so we can easily track things.
+        $this->setDatabaseIndexStatement();
 
         $this->compiler = new Compiler;
-        $content = $this->finderGetResults(CONTENT_PATH, 'md');
+
+        if( $this->databaseIndexExists() ) {
+            $content = $this->finderGetContents();
+        } else {
+            $content = $this->finderGetContents();
+        }
 
         // Skip the process in case finder fails in finding any markdown files
         if( $content->hasResults() === false ) {
@@ -303,6 +292,23 @@ class BuildCommand extends Command
                 'article' => serialize($contentArticle),
             ], $directoriesUri, $articleSlug);
 
+            $this->storeInDatabaseIndex(
+                // the public path of the directory/category
+                $directoriesUri,
+                
+                // the public path of the article (slug)
+                $articleSlug,
+                
+                // the markdown source path (related to project)
+                $this->getMarkdownPath($value->getRealPath()),
+                
+                // the formatted last time modified date of the markdown
+                $this->getLastTimeModifiedFormatted($value->getRealPath()),
+
+                // the date time of the latest build related to the article
+                flywheel()->getCreationDateTime()
+            );
+
             // Get the Article URI. In case the Article is saved as index.md
             // it will be served as a root page of its directory.
             $articleUri = $articleSlug === 'index' ? '' : $articleSlug;
@@ -335,14 +341,19 @@ class BuildCommand extends Command
             $this->inProgress();
         }
 
-        // var_dump($this->getNavigationSubItems('getting-started'));
-        // die;
-
         // Ending the progress bar since we finished to compile the content
         // and everything is stored in flat files.
         $this->finishLoader();
         $output->writeln($this->addBreakline(1) . '<info>Success</info> Content was successfully compiled.');
         $output->writeln($this->addBreakline(1));
+
+        // Create the Flywheel Database Repository Index that tracks all articles and categories.
+        // 
+        // This comes as a requirement for making builds for a specific types of content:
+        // 1. artisan build:new         Will build only new contents without touching existing ones
+        // 2. artisan build:edits       Will rebuild only published contents that needs update
+        // 3. artisan build:all         Builds everything, no matter what.
+        $this->buildDatabaseIndex();
 
         // Now we have to build/rebuild the main menu of application.
         // This process is made based on the main directories found in content directory.
@@ -350,7 +361,7 @@ class BuildCommand extends Command
         // influence the way will be displayed in menu or its appearance.
         // $output->writeln('<comment>Wait...</comment>  Next we\'re going to build the main navigation menu...');
 
-        $directories = $this->finderGetResults(CONTENT_PATH, null, 'directories', '< 5');
+        $directories = $this->finderGetDirectories('< 5');
         $this->startLoader($output, $directories->count());
         $filesystem = new Filesystem;
 
@@ -419,6 +430,7 @@ class BuildCommand extends Command
 
         $output->writeln($this->addBreakline(1) . '<info>Success</info> The navigation menu has been sucessfully built.');
         $output->writeln($this->addBreakline(1));
+
         return 0;
     }
 
@@ -468,38 +480,4 @@ class BuildCommand extends Command
         ], Str::slug($directoryName), 'asidebox');
     }
 
-    /**
-     * Start the console progress bar
-     * 
-     * @param  [type] $output [description]
-     * @param  [type] $count  [description]
-     * 
-     * @return [type]         [description]
-     */
-    protected function startLoader($output, $count)
-    {
-        $this->progressBar = new ProgressBar($output, $count);
-        $this->progressBar->start();
-    }
-
-    /**
-     * A progress bar advancer, by default with 1
-     * 
-     * @param  integer $step
-     * 
-     * @return void
-     */
-    protected function inProgress($step = 1)
-    {
-        $this->progressBar->advance($step);
-    }
-
-    /**
-     * Finish the current progress bar
-     * @return void
-     */
-    protected function finishLoader()
-    {
-        $this->progressBar->finish();
-    }
 }
