@@ -238,31 +238,6 @@ const autoCompleteJS = new autoComplete({
 });
 
 /**
- * Switch all CSS classes related to colors
- */
-function switchingContrastColors(mode)
-{
-
-    // todo extend so it can apply for all elements
-    
-    // When entering dark mode we need to search for all
-    // classes related to light mode and force switch to dark mode
-    if( mode === 'darkmode' ) {
-        let elements = document.querySelectorAll('.is-light');
-        elements.forEach(function(el) {
-            el.classList.toggle('is-light');
-            el.classList.add('is-dark');
-        });
-    } else {
-        let elements = document.querySelectorAll('.is-dark');
-        elements.forEach(function(el) {
-            el.classList.toggle('is-dark');
-            el.classList.add('is-light');
-        });
-    }
-}
-
-/**
  * Creating the Theme switcher
  */
 function appThemeSwitcher(buttonElement) {
@@ -296,16 +271,12 @@ function appThemeSwitcher(buttonElement) {
             if( BodyClass.contains('theme-dark') ) {
                 BodyClass.toggle('theme-dark');
                 BodyClass.add('theme-light');
-                // switching color related css classes
-                switchingContrastColors('lightmode');
                 // update cookie with the light theme
                 cookie.set('appearance', 'theme-light', cookieSettings);
 
             } else {
                 BodyClass.toggle('theme-light');
                 BodyClass.add('theme-dark');
-                // switching color related css classes
-                switchingContrastColors('darkmode');
                 // update cookie with the dark theme
                 cookie.set('appearance', 'theme-dark', cookieSettings);
             }

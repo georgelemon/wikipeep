@@ -24,11 +24,10 @@ class ErrorExceptionHandler
      *
      * @throws \ErrorException
      */
-    public static function native($code, $message, $file, $line, $context)
+    // public static function native($code, $message, $file, $line, $context)
+    public static function native(...$param)
     {
-        if ($code & error_reporting()) {
-            static::exception(new ErrorException($message, $code, 0, $file, $line));
-        }
+        static::exception(new ErrorException($param[1], $param[0], 0, $param[2], $param[3]));
     }
 
     /**
@@ -51,23 +50,15 @@ class ErrorExceptionHandler
                 ob_end_clean();
             }
 
-                echo '<html>
-                    <head>
-                        <title>Uncaught Exception</title>
-                        <style>
-                            body{font-family:"Open Sans",arial,sans-serif;background:white;color:black;margin:2em}
-                            code{background:#D1E751;border-radius:4px;padding:2px 6px}
-                        </style>
-                    </head>
-                    <body style="font-size:1.2rem">
+                echo '<style>body{font-family:"Open Sans",arial,sans-serif;background:white;color:black;margin:2em}code{background:#D1E751;border-radius:4px;padding:2px 6px}</style>
+                    <errorHandler style="font-size:1.2rem; position:fixed; top:0; left:0; background-color:white; padding:30px">
                         <h1>Uncaught Exception</h1>
                         <p><code>' . $e->getMessage() . '</code></p>
                         <h3>Origin</h3>
                         <p><code>' . substr($e->getFile(), strlen(ROOT_PATH)) . ' on line ' . $e->getLine() . '</code></p>
                         <h3>Trace</h3>
                         <pre style="background-color:antiquewhite; color:black; padding:25px; border-radius:5px;">' . $e->getTraceAsString() . '</pre>
-                    </body>
-                    </html>';
+                    </errorHandler>';
         } else {
             // issue a 500 response
             // response()->error(500, ['exception' => $e])->send();
