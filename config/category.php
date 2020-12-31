@@ -10,7 +10,7 @@ return [
      * 
      * @var integer
      */
-    'per_page' => 10,
+    'per_page' => 5,
 
     /**
      * The pagination links are based on this specific base_url.
