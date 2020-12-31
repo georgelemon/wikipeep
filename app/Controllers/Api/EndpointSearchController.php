@@ -11,9 +11,8 @@ class EndpointSearchController
      */
     public function get()
     {
-        if( $output = app()->filesystem()->get(STORAGE_PATH . DS . '/search-results.json') )  {
-            $tesst = json_decode($output);
-            return print response()->json($tesst);
+        if( $output = flywheel()->getById('__search-results', '__search', null) )  {
+            return print response()->json($output->results);
         }
         
         return print response()->json(['status' => '404']);
