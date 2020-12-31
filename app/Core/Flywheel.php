@@ -20,6 +20,12 @@ class Flywheel
     protected $flyConfig;
 
     /**
+     * Holds temporary the last article id.
+     * @var string
+     */
+    protected $articleCreationDateTime;
+
+    /**
      * Setup the Flywheel instance
      * @return void
      */
@@ -30,6 +36,18 @@ class Flywheel
         if( $returnConfig ) {
             return $this->flyConfig;
         }
+    }
+
+    /**
+     * Try retrieve database index from disk.
+     */
+    public function getDatabaseIndex()
+    {
+        if( $repository = $this->getRepository('___', 'read')) {
+            return $repository;
+        }
+
+        return false;
     }
 
     /**
@@ -90,7 +108,8 @@ class Flywheel
     {
         if( $box = $this->getRepository('getting-started', 'read')) {
             $box = $box->findById('asidebox');
-            return ['label' => $box->label, 'message' => $box->message, '_boxColor' => $box->color];
+
+            if( $box ) return ['label' => $box->label, 'message' => $box->message, '_boxColor' => $box->color];
         }
     }
 
@@ -123,6 +142,7 @@ class Flywheel
         // Set current date based on date zone
         if( $withDate === true ) {
             $content['__update'] = date( config()->get('app.date_format') ?? "Y-m-d H:i:s");
+            $this->articleCreationDateTime = $content['__update'];
         }
 
         // Instantiate Flywheel Document 
@@ -134,6 +154,18 @@ class Flywheel
         // Retrieve an already created repository or create a new one
         // and store the compiled article inside.
         $this->getRepository($repoName, 'write')->store($article);
+    }
+
+    /**
+     * Retrieve the creation date of the previously created article.
+     * Used by Symfony Console after article has been created in order to store
+     * in a separate Flywheel Repository for tracking.
+     * 
+     * @return string
+     */
+    public function getCreationDateTime()
+    {
+        return $this->articleCreationDateTime;
     }
 
     /**
@@ -149,9 +181,11 @@ class Flywheel
         // Prevent Flywheel creating a new repository when we just try to read data
         // In this case will use the second param $mode to determine the operation type
         if( $mode === 'read' ) {
+
+            $this->flyConfig ?? $this->flywheelConfig(true);
             
             if( app()->filesystem()->isDirectory($this->flyConfig->getPath() . DS . $repoName) ) {
-                return new Repository($repoName, $this->flyConfig ?? $this->flywheelConfig(true));                
+                return new Repository($repoName, $this->flyConfig);
             } else {
                 return false;
             }
