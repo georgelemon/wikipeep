@@ -137,7 +137,7 @@ class Flywheel
      * 
      * @return void
      */
-    public function create(array $content, string $repoName, string $articleId, bool $withDate = true) : void
+    public function create(array $content, string $repoName, string $articleId, bool $withDate = true, bool $returnData = false)
     {
         // Set current date based on date zone
         if( $withDate === true ) {
@@ -154,6 +154,10 @@ class Flywheel
         // Retrieve an already created repository or create a new one
         // and store the compiled article inside.
         $this->getRepository($repoName, 'write')->store($article);
+
+        if( $returnData ) {
+            return $this;
+        }
     }
 
     /**

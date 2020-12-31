@@ -319,6 +319,24 @@ function getCookeDisclaimer()
 function getApplicationSettings()
 {
     $api = config()->get('api');
+    $vers = glob(STORAGE_PATH . '/__search--version--*');
+    if( $vers ) {
+        $vers = $vers[0];
+        $vers = explode(STORAGE_PATH , $vers)[1];
+        if( str_contains($vers, '/') ) {
+            $vers = str_replace('/__search--version--', '', $vers);
+        } else {
+            $vers = str_replace('__search--version--', '', $vers);
+        }
+    } else {
+        $vers = 10; // default version
+    }
+
+
+    // Try get the version of the search results from disk
+    // if( $filesystem->exists(STORAGE_PATH . '') ) {
+    //     // $version = 
+    // }
 
     return sprintf('<script>const __settings = %s</script>', json_encode([
                 // The base API endpoint.
@@ -331,7 +349,7 @@ function getApplicationSettings()
                 // of builds so people who visited your WikiPeep before
                 // can get the latest version of search results directly to their IndexedDB.
                 // Gets filled with the date of the last build.
-                'latest_search_update' => '10',
+                'latest_search_update' => $vers,
                 // The only thing related to cookies that WikiPeep
                 // does by default is to set a cookie for theme preference.
                 'cookie_settings' => getCookieSettings(),
