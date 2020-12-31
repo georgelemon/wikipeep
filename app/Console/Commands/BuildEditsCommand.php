@@ -62,7 +62,19 @@ class BuildEditsCommand extends Command
 
             // Retrieve the stored index from repository
             $indexes = $this->getStoredDatabaseIndex()[0];
-            var_dump($indexes);
+            // var_dump($indexes);
+
+            $contents = $this->finderGetContents();
+
+            if( ! $contents->hasResults() ) {
+                $this->printErrorNoMarkdownFiles($output);
+                return 1;
+            }
+
+            foreach ($contents as $key => $value) {
+                var_dump($value);
+            }
+
             return 0;
 
         // Print error in case there are no records found related to edits and published
@@ -71,6 +83,20 @@ class BuildEditsCommand extends Command
             $output->writeln("<info>Use artisan build:new to build your first contents.</info>" . $this->addBreakline(1));
             return 1;
         }
+    }
+
+    /**
+     * Symfony Console Error that gets printed when
+     * there are no markdown files in /content/ directory
+     * 
+     * @param  OutputInterface $output
+     * 
+     * @return void
+     */
+    private function printErrorNoMarkdownFiles($output)
+    {
+        $output->writeln($this->addBreakline(1) . "<error>Something Wrong 😵 Finder couldn't find any contents.</error>");
+        $output->writeln("<info>Write your markdown contents inside content directory.</info>" . $this->addBreakline(1));
     }
 
 }

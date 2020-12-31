@@ -21,7 +21,6 @@ trait ArticleDetails
         return ['title' => $title, 'slug' => Str::slug($title)];
     }
 
-
     /**
      * While iterating it will try to retrieve a portion from
      * the first paragraph of the article in order to add an excerpt

@@ -7,8 +7,6 @@ use App\Core\Parsedown\Parsedown;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\Yaml\Exception\ParseException;
 use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
 
@@ -66,6 +64,21 @@ class BuildCommand extends Command
     use \App\Console\BuildConcerns\ArticleDetails;
 
     /**
+     * Make use of Category methods to retrieve related details 
+     */
+    use \App\Console\BuildConcerns\CategoryDetails;
+
+    /**
+     * Make use of Search methods to retrieve related details 
+     */
+    use \App\Console\BuildConcerns\SearchDetails;
+
+    /**
+     * Make use of Navigation methods
+     */
+    use \App\Console\BuildConcerns\NavigationDetails;
+
+    /**
      * Loading AsideBox methods in order to store data for
      * showing informational boxes displayed aside (sidebar).
      */
@@ -98,130 +111,6 @@ class BuildCommand extends Command
         if( $paths[0] === '' ) array_shift($paths);
 
         return $paths;
-    }
-
-    /**
-     * Return directories structure path based on the markdown path.
-     * 
-     * @param  array $paths
-     * 
-     * @return string
-     */
-    protected function getDirectoriesPath($paths)
-    {
-        array_pop($paths);
-        return Str::slug(implode('/', $paths));
-    }
-
-    /**
-     * Stores relevant data for creating the search index.
-     * 
-     * @return void
-     */
-    protected function storeInSearchIndex($title, $slug, $excerpt = '')
-    {
-        $this->searchIndex[] = [
-            'title' => $title,
-            'excerpt' => $excerpt,
-            'slug' => $slug
-        ];
-    }
-
-    /**
-     * Creates a meta heading for the current
-     * category screen based on given _settings.yaml.
-     *
-     * @param  $key                     The category slug identifier
-     * @param  array|null $heading      The category heading contents
-     * 
-     * @return void
-     */
-    protected function categorySettingsView($key, $settings)
-    {
-        flywheel()->create([
-            'heading' => $settings['heading'] ?? null,
-        ], $key, '__settings', false);
-    }
-
-    /**
-     * Stores directories in order to create the main navigation menu
-     * 
-     * @param  string  $key             When available, is used for ordering the array
-     * @param  string  $label           The name of the page, based on dir name, or by _settings.yaml
-     * @param  string  $slug            The URI of the page
-     * @param  string  $icon            When provided, prepends an SVG icon
-     * @param  array|null $separator    When available it can add a visual separator before/after the item
-     * 
-     * @return  void
-     */
-    protected function storeInNavigation($key, $label, $slug, $icon, $separator = null)
-    {
-        $this->menuItems[$key] = [
-            'label' => $label,
-            'slug' => $slug,
-            'icon' => $icon,
-            'separator' => $separator
-        ];
-    }
-
-    /**
-     * Store articles as sub items in the main navigation menu
-     * 
-     * @param  [type] $parentKey [description]
-     * @param  [type] $label     [description]
-     * @param  [type] $slug      [description]
-     * 
-     * @return [type]            [description]
-     */
-    protected function storeInNavigationSubItems($parentKey, $slug, $label)
-    {
-        $this->menuSubItems[$parentKey] [] = [
-            'label' => $label,
-            'slug' => $slug
-        ];
-    }
-
-    /**
-     * Retrieve already stored and sorted items for navigation menu.
-     * 
-     * @return  array
-     */
-    protected function getNavigationItems()
-    {
-        ksort($this->menuItems); // Sort the items based on their specified order
-        return $this->menuItems;
-    }
-
-    /**
-     * Retrieve stored navigation sub items.
-     * 
-     * @return array
-     */
-    protected function getNavigationSubItems($parent)
-    {
-        return $this->menuSubItems[$parent] ?? null;
-    }
-
-    /**
-     * Retrieve meta headgins of a specific category/directory screen.
-     * 
-     * @param  string $key          The category slug identifier
-     * 
-     * @return array|null
-     */
-    protected function getMetaHeadingByKey($key)
-    {
-        return $this->categoryHeadingMeta[$key] ?? null;
-    }
-
-    /**
-     * Retreive the search index used for creating the search results.
-     * 
-     * @return array
-     */
-    protected function getSearchIndex()
-    {
-        return $this->searchIndex;
     }
 
     /**
@@ -419,7 +308,8 @@ class BuildCommand extends Command
         // 
         // At the same time, there will be an IndexedDB in user's browser
         // that will be served first and updated when needs a refresh.
-        $filesystem->put(STORAGE_PATH . '/search-results.json', json_encode($this->getSearchIndex()));
+        // $filesystem->put(STORAGE_PATH . '/search-results.json', json_encode($this->getSearchIndex()));
+        $this->updateSearchResultsEndpoint();
 
         // Create a flat file JSON via Flywheel with all menu items found
         flywheel()->create([
@@ -432,27 +322,6 @@ class BuildCommand extends Command
         $output->writeln($this->addBreakline(1));
 
         return 0;
-    }
-
-    /**
-     * Try retrieve the directory settings when available.
-     * 
-     * @param  Filesystem  $filesystem
-     * @param  string  $path
-     * 
-     * @return array
-     * @throws ParseException
-     */
-    protected function getDirectorySettings($filesystem, $path)
-    {
-        $settings = $path . DS . '_settings.yaml';
-        if( $filesystem->isFile($settings) &&  $filesystem->isReadable($settings) ) {
-            try {
-                return Yaml::parse($filesystem->get($settings));
-            } catch (ParseException $e) {
-                throw new ParseException($e->getMessage());
-            }
-        }
     }
 
     /**
