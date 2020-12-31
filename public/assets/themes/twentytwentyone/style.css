@@ -111,6 +111,12 @@ body.theme-dark .form-control {
   margin-bottom: 0;
   display: inline;
 }
+#article--side .category--list--items .category--item {
+  transition: all 0.2s ease;
+}
+#article--side .category--list--items .category--item:hover {
+  background-color: lavender !important;
+}
 
 .main--sidebar ul,
 #contents--sidebar ul {
@@ -235,6 +241,35 @@ iframe {
   display: block;
   font-size: 0.9em;
   color: dimgrey;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(93, 228, 142, 0.4);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(93, 228, 142, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0px rgba(93, 228, 142, 0);
+  }
+}
+@keyframes docs {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(93, 228, 142, 0.4);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(93, 228, 142, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0px rgba(93, 228, 142, 0);
+  }
 }
 
 /*# sourceMappingURL=style.css.map */
