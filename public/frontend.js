@@ -3,7 +3,11 @@
  * @see https://github.com/dfahlander/Dexie.js
  */
 const LocalDatabase = new Dexie("wikipeepSearchDB"),
-      SearchEndpoint = __settings.api_base + '/' + __settings.search_endpoint;
+      SearchEndpoint = __settings.api_base + '/' + __settings.search_endpoint,
+      __searchVersion = __settings.latest_search_update;
+
+      console.log(__searchVersion);
+
 let toggleElement;
 
 /**
@@ -130,6 +134,7 @@ function targetBlankLinks() {
 async function updateBrowserLocalStorage()
 {
     let results = await LocalDatabase.search_results.orderBy('title').toArray();
+    // let toBeUpdated = true;
 
     if( results.length === 0 ) {        
         await fetchSearchResults();
@@ -177,15 +182,16 @@ const autoCompleteJS = new autoComplete({
             // Return Fetched data
             return data;
     },
-    key: ["title", "excerpt"],
-        // results: (list) => {
-        //     // Filter duplicates
-        //     const filteredResults = Array.from(new Set(list.map((value) => value.match))).map((title) => {
-        //         return list.find((value) => value.match === title);
-        //     });
+    key: ["title"],
+        results: (list) => {
+            // console.log(list);
+            // Filter duplicates
+            // const filteredResults = Array.from(new Set(list.map((value) => value.match))).map((title) => {
+            //     return list.find((value) => value.match === title);
+            // });
 
-        //     return filteredResults;
-        // },
+            return list;
+        },
         cache: false
     },
     sort: (a, b) => {                    // Sort rendered results ascendingly | (Optional)
@@ -232,7 +238,7 @@ const autoCompleteJS = new autoComplete({
     onSelection: feedback => {
         document.querySelector("#searchbar--input").blur();
 
-        let slug = feedback.selection.value.slug;
+        let slug = "/" + feedback.selection.value.slug;
             window.location.href = slug;
     }
 });
@@ -291,7 +297,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Creating the Local Indexed Database which stores
     // local to user's browser all the search indexes for fast results.
-    LocalDatabase.version(1).stores({
+    LocalDatabase.version(2).stores({
         search_results: "++id,title,slug,excerpt"
     });
 
