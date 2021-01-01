@@ -63,7 +63,7 @@ class Theme
         // If not, it will try to automatically
         // move the stylesheets to the correct path.
         if( ! $this->isThemePublicAvailable() ) {
-            $this->moveStylesheetFromSource();
+            // $this->moveStylesheetFromSource();
         }
     }
 
