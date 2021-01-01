@@ -19,13 +19,15 @@
                             <div class="row d-flex align-items-center my-5">
                                 <div class="col-lg-6">
                                     <h1 class="display-4 mb-0">This is WikiPeep.</h1>
-                                    <h2 class="h3 font-weight-normal">Open source Wiki for busy Devs & Agencies</h2>
+                                    <h2 class="h3 font-weight-normal">The open source Wiki for busy Devs</h2>
+
+                                    <p>Made for Indie Developers, Agencies & Companies Worldwide.</p>
 
                                     <p>Anyone can use <strong>WikiPeep</strong> for creating self-hosted, modern and professional documentations for their projects 🌿</p>
 
                                     <p>Fully developed on PHP ^7.4, WikiPeep is not a static wiki, nor a database addicted. At the same time it parse markdown contents and builds flat files JSONs via <code>terminal</code>, which are then served on request by a lightweight Router.</p>
 
-                                    <a class="btn rounded-pill px-4 btn-outline-light" href="/getting-started">Okay, let's getting started</a>
+                                    <a class="btn rounded-pill px-4 btn-outline-dark" href="/getting-started">Okay, let's getting started</a>
 
                                 </div>
                                 <div class="col-lg-6 fluid-svg">
@@ -125,6 +127,32 @@
                                     <a class="btn btn-outline-primary" href="#">
                                         Check the Commands available
                                     </a>
+                                </div>
+                            </div>
+
+                            <div class="row d-flex align-items-center" style="height:100vh">
+                                <div class="col-lg-6">
+                                    <h1 class="display-3">Open Source</h1>
+                                    <h2 class="font-weight-normal">Released under a dual license to cover all peeps and their needs.</h2>
+                                    <p>So, if you're an <strong>Indie Developer</strong> you can use WikiPeep to create documentations for your next projects under <code>AGPL</code> license</p>
+
+                                    <p>If you're an <strong>Agency</strong> there is a commercial license available for you & your team, which basically is based on the current <code>AGPL</code>.</p>
+                                    <p><strong>The price of WikiPeep starts from 5,00 to 200,00 €</strong> per agency/company. It doesn't matter how many wikis you make with it since you release your work within your company borders.</p>
+                                    <a class="btn rounded-pill px-4 btn-outline-primary" href="/license">
+                                        Read more about Licensing
+                                    </a>
+                                    <a class="btn rounded-pill px-4 btn-dark" href="https://www.paypal.com/donate?hosted_button_id=A8RRZMP42UAYA">
+                                        Pay via Paypal Donations
+                                    </a>
+                                </div>
+                                <div class="col-lg-6 text-center">
+                                    <img src="/assets/themes/twentytwentyone/svg/undrawSetup.svg" alt="" class="img-fluid" width="68%">
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="border rounded p-3">
+                                    <small class="text-muted d-block" style="font-size:.75em">WikiPeep does not provide to you any guarantees, or exclusive support, nor license keys, activation keys, or any kind of a validating system. <mark>It's all about respect.</mark><br>
+                                    Payments received via PayPal are considered donations. <mark>The payments can start from <strong>5,00</strong>, <strong>50,00</strong> to <strong>200,00</strong> EURO, but can be also <strong>Any amount</strong></mark>.<br><strong>The donation can be a one-time payment or monthly &mdash; It's your choice!</strong></small>
+                                    </div>
                                 </div>
                             </div>
 
