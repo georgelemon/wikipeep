@@ -2,17 +2,11 @@
 
 namespace App\Console\Commands;
 
-use DateTime;
-use App\Core\Compiler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Finder\SplFileInfo;
-use Illuminate\Support\Str;
-use Illuminate\Filesystem\Filesystem;
 
-class BuildEditsCommand extends Command
+class HasEditsCommand extends Command
 {
 
     /**
@@ -56,11 +50,8 @@ class BuildEditsCommand extends Command
     use \App\Console\BuildConcerns\NavigationDetails;
 
     /**
-     * Loading AsideBox methods in order to store data for
-     * showing informational boxes displayed aside (sidebar).
+     * Loading the Console Loader feature
      */
-    // use \App\Console\BuildConcerns\AsideBoxDetails;
-
     use \App\Console\BuildConcerns\ConsoleLoader;
 
     /**
@@ -80,24 +71,19 @@ class BuildEditsCommand extends Command
     protected $storedIndexes;
 
     /**
-     * Holds an instance of Parsedown
-     * @var App\Core\Parsedown
-     */
-    protected $parsedown;
-
-    /**
-     * Configuring the cli command for caching everything.
+     * Configuring the cli command for checking if there are
+     * any unpublished edits.
      * 
      * @return void
      */
     protected function configure()
     {
-        $this->setName('build:edits')
-             ->setDescription("Builds contents only for modified articles that are already published.");
+        $this->setName('has:edits')
+             ->setDescription("Determine if there are any unpublished edits, in case you forgot what you did last night.");
     }
 
     /**
-     * Cache Executer
+     * Edits Check Executer
      * 
      * @param  InputInterface  $input 
      * @param  OutputInterface $output
@@ -106,7 +92,6 @@ class BuildEditsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         // Try connect to database repository index
         // in order to retrieve latest informations abour current build.
         // If fails, it will skip the process.
@@ -114,8 +99,8 @@ class BuildEditsCommand extends Command
             return 1;
         }
 
-        $this->runCheckBuilderAndBuilds($output);
-        
+        $this->runCheckerBuilder($output);
+
         // Skip the process in case finder fails in finding any contents
         if( ! $this->finderHasResults ) {
             return 1;
@@ -123,16 +108,16 @@ class BuildEditsCommand extends Command
 
         // No edits available for building again
         if( static::$countingArticles === 0 ) {
-            $this->printInfoNoUpdatesAvailable($output);
+            $this->printInfoNoEditsAvailable($output);
             return 1;
 
         // If we got something, you also must to update the database repository
         // with the latest build and dates changes.
         } else {
-            $this->buildDatabaseIndex();
-            $this->editsHaveBeenPublished($output);
+            $this->printAsHavingEditsReadyForBuild($output, static::$countingArticles);
+            // $this->buildDatabaseIndex();
+            // $this->editsHaveBeenPublished($output);
             return 0;
         }
     }
-
 }

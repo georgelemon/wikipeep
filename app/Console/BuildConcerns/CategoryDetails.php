@@ -70,4 +70,16 @@ trait CategoryDetails
         ], $key, '__settings', false);
     }
 
+    /**
+     * Determine if the given category is already published on public.
+     * 
+     * @param  string  $categoryId
+     * 
+     * @return boolean
+     */
+    protected function hasPublicCategory($categoryId)
+    {
+        return isset($this->storedIndexes->$categoryId);
+    }
+
 }

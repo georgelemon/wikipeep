@@ -9,6 +9,70 @@ trait ArticleDetails
 {
 
     /**
+     * Determine if the given article needs update, based on
+     * the latest modified date and the latest build.
+     * 
+     * @param  object $storedArticleIndex
+     * 
+     * @return boolean
+     */
+    protected function articleNeedsUpdate($currentMdTime, $storedMdTime)
+    {
+        $currentMdTime = str_replace('.000000', '', $currentMdTime['date']);
+        $storedMdTime = str_replace('.000000', '', $storedMdTime->last_build_date->date);
+
+        if ( $currentMdTime > $storedMdTime ) {
+            return true;
+        }
+        
+        return false;
+    }
+
+    /**
+     * Updates an article based its ID via Flywheel
+     * 
+     * @param  array $articleMeta
+     * @param  string $categoryId
+     * @param  Symfony\Finder\SplFileInfo $article
+     * 
+     * @return void
+     */
+    protected function updateArticleById($articleMeta, $categoryId, SplFileInfo $article, $previouslyIndex)
+    {
+        $parsedContents = $this->getArticleParsedContents($article);
+
+        // Update the article via Flywheel
+        flywheel()->create([
+            'title' => $articleMeta['title'],
+            'summary' => $parsedContents['summary'] ?? null,
+            'article' => serialize($parsedContents['contents']),
+        ], $categoryId, $articleMeta['slug']);
+
+        // After updating the article we need to store this change
+        // in Database Index so we can keep the track of the updates.
+        $this->storeInDatabaseIndex(
+            // the public path of the directory/category
+            $categoryId,
+            
+            // the public path of the article (slug)
+            $articleMeta['slug'],
+            
+            // the markdown source path (related to project)
+            $this->getMarkdownPath($article->getRealPath()),
+            
+            // the formatted last time modified date of the markdown
+            $this->getLastTimeModifiedFormatted($article->getRealPath()),
+
+            // the date time of the latest build related to the article
+            flywheel()->getCreationDateTime(),
+
+            // When available, it will merge the previously index with what
+            // was added during the last build.
+            $previouslyIndex,
+        );
+    }
+
+    /**
      * Create the name of the article based on markdown file.
      * It will slugify the name to lowercase with - separator.
      * 
