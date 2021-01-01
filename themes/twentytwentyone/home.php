@@ -22,7 +22,7 @@
                         <div class="px-5 pt-4 pb-5">
                             <?php echo $this->contents['content'] ?>
                             <div class="article--meta mb-3 text-right text-muted">
-                                <small>Last update on <?php echo $this->contents['__update']; ?></small>
+                                <small>Last update on <?php echo $this->getPublishedDate(); ?></small>
                             </div>
                             <?php echo $this->view('partials/footbox');?>
                         </div>
