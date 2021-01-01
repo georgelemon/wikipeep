@@ -5,7 +5,13 @@ return [
      * The application name and logo.
      * When logo is set to false the default WikiPeep logo will be shown.
      */
-    'name' => 'WikiPeep.',
+    'name' => getenv('APP_NAME', 'WikiPeep'),
+
+    /**
+     * Set the application URL mainly used for getting assets
+     */
+    'url' => getenv('APP_URL'),
+
     /**
      * In order to display it correctly,
      * the given path must be a public path to a svg/png file of your logo.

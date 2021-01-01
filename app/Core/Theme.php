@@ -121,7 +121,7 @@ class Theme
      */
     public function getStylesheetTag()
     {
-        return sprintf('<link rel="stylesheet" href="%s">', $this->getCurrentThemeStylesheet(true)) . PHP_EOL;
+        return sprintf('<link rel="stylesheet" href="%s">', asset($this->getCurrentThemeStylesheet(true))) . PHP_EOL;
     }
 
     /**
@@ -131,7 +131,7 @@ class Theme
      */
     protected function getCurrentThemeStylesheet($getAsPublic = true)
     {
-        $themePath = (DS .'assets/themes' . DS . $this->themeName . DS . 'style.css');
+        $themePath = ('assets/themes' . DS . $this->themeName . DS . 'style.css');
         return $getAsPublic ? $themePath : ROOT_PATH . DS . 'public' . $themePath;
     }
 

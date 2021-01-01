@@ -38,7 +38,7 @@ function flywheel()
  */
 function theme()
 {
-    return App\Core\Theme::instance();
+return App\Core\Theme::instance();
 }
 
 /**
@@ -49,6 +49,16 @@ function theme()
 function getStylesheetTag()
 {
     return theme()->getStylesheetTag();
+}
+
+/**
+ * [get_stylesheet description]
+ * @param  [type] $asset_path [description]
+ * @return [type]             [description]
+ */
+function asset($asset_path)
+{
+    return env('APP_URL') . DS . $asset_path;
 }
 
 function el(string $tag, $attributes = null, $content = null, array $statement = null) : string
