@@ -2,6 +2,8 @@
 <mark>WikiPeep is made on PHP</mark> &mdash; fully Object Oriented 🌿 Based on some Symfony Components, like <strong>Console</strong> and <strong>HttpFoundation</strong>, a strong Markdown parser, a JSON flat database powered by <strong>Flywheel</strong>. Originally inspired by GetOutline, <strong>WikiPeep</strong> provides a beautiful and friendly User Interface with readable fonts and a <mark>super fast search</mark> with autocomplete made with Vanilla JavaScript!
 
 ### [Features](#features)
+WikiPeep comes with some wonderful basic features ready to use. For full list of whats bundled in WikiPeep [see the road map](/roadmap)
+
 
 - [x] Markdown parser, [Parsedown](https://github.com/erusev/parsedown)
 - [x] Flat file, with [Flywheel](https://github.com/jamesmoss/flywheel) JSON Database

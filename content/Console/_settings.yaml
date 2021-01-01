@@ -1,0 +1,7 @@
+menu:
+  label: 'Console'
+  icon: 'terminal'
+  order: 10
+settings:
+  heading:
+    title: Console Commands
