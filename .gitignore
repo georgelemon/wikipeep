@@ -10,3 +10,6 @@ composer.phar
 # Temporary. Prevents ignore for dessert storage
 !/storage/dessert
 !/storage/dessert/**
+
+# Ignore index.php located in public directory
+/public/index.php
