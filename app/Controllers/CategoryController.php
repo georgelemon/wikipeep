@@ -59,6 +59,12 @@ class CategoryController extends BaseController
     protected int $count = 0;
 
     /**
+     * Holds data when the category has a specific index markdown to show
+     * @var array
+     */
+    protected $singleArticle;
+
+    /**
      * The main method that handles GET request.
      * 
      * @return Response View
@@ -99,8 +105,8 @@ class CategoryController extends BaseController
         // First, try look if the current category has an index.json stored
         // in repository. This index.json is by default automatically created
         // whenever you create an index.md inside a directory.
-        if( $article = flywheel()->getById('index', $this->categoryId)) {
-            return $this->layout('home', 'base', $article);
+        if( $this->singleArticle = flywheel()->getById('index', $this->categoryId)) {
+            return $this->layout('home', 'base', $this->singleArticle);
 
         // Otherwise, it will treat the root page of the category with
         // page an auto-index containing a list with all the page screens.
@@ -225,8 +231,8 @@ class CategoryController extends BaseController
         if( $this->categorySettings->heading ) {
             $this->hasHeading = true;
 
-            $this->categorySettings->heading->title ? $this->hasHeadingTitle = true : null;
-            $this->categorySettings->heading->lead ? $this->hasHeadingLead = true : null;
+            isset($this->categorySettings->heading->title) ? $this->hasHeadingTitle = true : null;
+            isset($this->categorySettings->heading->lead) ? $this->hasHeadingLead = true : null;
         }
     }
 
@@ -291,6 +297,11 @@ class CategoryController extends BaseController
     protected function getCounter()
     {
         return $this->count;
+    }
+
+    protected function getPublishedDate()
+    {
+        return get_formatted_date($this->singleArticle['__update']->date, 'Y-m-d H:i:s.u', 'Y-m-d');
     }
 
     /**

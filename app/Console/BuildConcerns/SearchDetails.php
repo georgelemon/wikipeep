@@ -36,8 +36,9 @@ trait SearchDetails
         if( $previousVersion ) {
             unlink($previousVersion[0]);
         }
-
-        $searchUpdateTime = DateTime::createFromFormat(config()->get('app.date_format'), $getDate);
+        
+        $getDate = (array) $getDate;
+        $searchUpdateTime = DateTime::createFromFormat('Y-m-d H:i:s.u', $getDate['date']);
         $searchVersionFileName = sprintf('__search--version--%s', $searchUpdateTime->format('Ymdis'));
         file_put_contents(STORAGE_PATH . '/' . $searchVersionFileName, '');
     }

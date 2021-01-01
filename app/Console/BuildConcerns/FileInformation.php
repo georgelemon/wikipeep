@@ -27,11 +27,20 @@ trait FileInformation
         $ltm = $this->getLastTimeModified($path);
 
         // Create an UNIX format of the provided date
-        $ltm = DateTime::createFromFormat("U", $ltm);
+        $ltm = $this->formatDateTime($ltm);
 
         // Set the timezone according to application
         // timezone configuration to we can avoid the time differences.
         return $ltm->setTimezone($this->getApplicationTimezone());
+    }
+
+    /**
+     * Create an Unix format of the date based on application time zone.
+     * @return string
+     */
+    protected function formatDateTime($ltm)
+    {
+        return DateTime::createFromFormat("U", $ltm);
     }
 
     /**

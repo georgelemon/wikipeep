@@ -2,7 +2,7 @@
 
 namespace App\Core;
 
-use DateTime;
+use DateTime, DateTimeZone;
 use JamesMoss\Flywheel\{
     Config, Repository, Document
 };
@@ -141,7 +141,12 @@ class Flywheel
     {
         // Set current date based on date zone
         if( $withDate === true ) {
-            $content['__update'] = date( config()->get('app.date_format') ?? "Y-m-d H:i:s");
+            
+            $timezone = config()->get('app.timezone');
+            $uptm = DateTime::createFromFormat('Y-m-d H:i:s.u', date('Y-m-d H:i:s.u'));
+            $uptm = $uptm->setTimezone( new DateTimeZone( $timezone ) );
+            $content['__update'] = $uptm;
+
             $this->articleCreationDateTime = $content['__update'];
         }
 

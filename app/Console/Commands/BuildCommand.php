@@ -98,22 +98,6 @@ class BuildCommand extends Command
     }
 
     /**
-     * Retrieve the structure of the markdown file, based on its directories.
-     * 
-     * @param  string $path
-     * 
-     * @return array
-     */
-    protected function getIndexStructure($path)
-    {
-        $paths = explode('/', str_replace(CONTENT_PATH, '', $path));
-        
-        if( $paths[0] === '' ) array_shift($paths);
-
-        return $paths;
-    }
-
-    /**
      * The Builder Executer
      * 
      * @param  InputInterface  $input 

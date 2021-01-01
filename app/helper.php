@@ -207,6 +207,18 @@ function excerpt(string $content, string $slug)
 }
 
 /**
+ * Format dates from one type to other.
+ * 
+ * @return string
+ */
+function get_formatted_date($strDate, $fromFormat, $toFormat, string $timezone = null)
+{
+    $date = DateTime::createFromFormat($fromFormat, $strDate);
+    $date->setTimezone( new DateTimeZone( $timezone ?? config()->get('app.timezone') ) );
+    return $date->format(config()->get('app.date_format'));
+}
+
+/**
  * Retrieve the name of the application.
  * 
  * @return string
