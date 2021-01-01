@@ -66,6 +66,11 @@ class BuildEditsCommand extends Command
     use \App\Console\BuildConcerns\ConsoleLoader;
 
     /**
+     * Use global console messages
+     */
+    use \App\Console\ConsoleMessages;
+
+    /**
      * Holds temporary data while in loop
      * @var object | null
      */
@@ -112,6 +117,7 @@ class BuildEditsCommand extends Command
 
             // Retrieve the stored index from repository
             $storedIndexes = $this->getStoredDatabaseIndex()[0];
+            $this->storedIndexes = $storedIndexes->indexes;
 
             // Finder gets all the markdowns placed in contents directory
             $contents = $this->finderGetContents();
@@ -132,8 +138,6 @@ class BuildEditsCommand extends Command
                 $ltm = (array) $this->getLastTimeModifiedFormatted($article->getRealPath());
                 // Create the structure of directories
                 $categoryId = $this->getDirectoriesPath($markdownStructure);
-                $this->storedIndexes = $storedIndexes->indexes;
-
 
                 // Now, check if the category of the current iterated article
                 // has been already published previously.
@@ -141,25 +145,22 @@ class BuildEditsCommand extends Command
                     // Get the name of the article including its slugified version
                     $articleMeta = $this->getArticleName( $markdownStructure );
                     $articleSlug = $articleMeta['slug'];
-                    // $articleTitle = $articleMeta['title'];
 
                     $itsCategory = $this->storedIndexes->$categoryId;
+                    foreach ($itsCategory as $aKey => $storedArticleIndex) {
 
-                        foreach ($itsCategory as $aKey => $storedArticleIndex) {
-
-                            if( $storedArticleIndex->article_id === $articleSlug ) {
-                                // Determine if the article needs to be updated
-                                if( $this->articleNeedsUpdate($ltm, $storedArticleIndex) ) {
-                                    echo 'YES: ' . $categoryId . ' @ ' . $articleSlug . PHP_EOL;
-                                    $this->updateArticleById($articleMeta, $categoryId, $article);
-                                    static::$countingArticles++;
-                                    break;
-                                } else {
-                                    // echo 'NO: ' . $categoryId . ' @ ' . $articleSlug . PHP_EOL;
-                                    break;
-                                }
+                        if( $storedArticleIndex->article_id === $articleSlug ) {
+                            // Determine if the article needs to be updated
+                            if( $this->articleNeedsUpdate($ltm, $storedArticleIndex) ) {
+                                static::$countingArticles++;
+                                $this->updateArticleById($articleMeta, $categoryId, $article, $this->storedIndexes);
+                                // break;
+                            } else {
+                                // echo 'NO: ' . $categoryId . ' @ ' . $articleSlug . PHP_EOL;
+                                // break;
                             }
                         }
+                    }
                 }
             }
 
@@ -167,16 +168,11 @@ class BuildEditsCommand extends Command
                 $this->printInfoNoUpdatesAvailable($output);
                 return 1;
             } else {
-                // Create the Flywheel Database Repository Index that tracks all articles and categories.
-                // 
-                // This comes as a requirement for making builds for a specific types of content:
-                // 1. artisan build:new         Will build only new contents without touching existing ones
-                // 2. artisan build:edits       Will rebuild only published contents that needs update
-                // 3. artisan build:all         Builds everything, no matter what.
+                // Update Database Index with the latest changes
                 $this->buildDatabaseIndex();
+                $this->editsHaveBeenPublished($output);
+                return 0;
             }
-
-            return 0;
 
         // Print error in case there are no records found related to edits and published
         } else {
@@ -195,7 +191,7 @@ class BuildEditsCommand extends Command
      * 
      * @return void
      */
-    protected function updateArticleById($articleMeta, $categoryId, SplFileInfo $article)
+    protected function updateArticleById($articleMeta, $categoryId, SplFileInfo $article, $previouslyIndex)
     {
         $parsedContents = $this->getArticleParsedContents($article);
 
@@ -222,7 +218,11 @@ class BuildEditsCommand extends Command
             $this->getLastTimeModifiedFormatted($article->getRealPath()),
 
             // the date time of the latest build related to the article
-            flywheel()->getCreationDateTime()
+            flywheel()->getCreationDateTime(),
+
+            // When available, it will merge the previously index with what
+            // was added during the last build.
+            $previouslyIndex,
         );
     }
 
@@ -236,8 +236,8 @@ class BuildEditsCommand extends Command
      */
     protected function articleNeedsUpdate($currentMdTime, $storedMdTime)
     {
-        $currentMdTime = $currentMdTime['date'];
-        $storedMdTime = $storedMdTime->last_build_date->date;
+        $currentMdTime = str_replace('.000000', '', $currentMdTime['date']);
+        $storedMdTime = str_replace('.000000', '', $storedMdTime->last_build_date->date);
 
         if ( $currentMdTime > $storedMdTime ) {
             return true;
@@ -256,34 +256,6 @@ class BuildEditsCommand extends Command
     protected function hasPublicCategory($categoryId)
     {
         return isset($this->storedIndexes->$categoryId);
-    }
-
-    /**
-     * Symfony Console Error that gets printed when
-     * there are no markdown files in /content/ directory
-     * 
-     * @param  OutputInterface $output
-     * 
-     * @return void
-     */
-    private function printErrorNoMarkdownFiles($output)
-    {
-        $output->writeln($this->addBreakline(1) . "<error>Something Wrong 😵 Finder couldn't find any contents.</error>");
-        $output->writeln("<info>Write your markdown contents inside content directory.</info>" . $this->addBreakline(1));
-    }
-
-    /**
-     * Symfony Console info message that gets printed when
-     * there are no available updates on articles.
-     * 
-     * @param  OutputInterface $output
-     * 
-     * @return void
-     */
-    private function printInfoNoUpdatesAvailable($output)
-    {
-        $output->writeln($this->addBreakline(1) . "<error>There are no edits available 👌</error>");
-        $output->writeln("<info>None of the articles have been edited so far.</info>" . $this->addBreakline(1));   
     }
 
 }

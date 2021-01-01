@@ -43,15 +43,23 @@ trait DatabaseIndex
      * 
      * @return void
      */
-    protected function storeInDatabaseIndex($cId, $aId, $src, $md_ltm, $bd_lt)
+    protected function storeInDatabaseIndex($cId, $aId, $src, $md_ltm, $bd_lt, $prevIndex = null)
     {
-        $this->databaseIndex[$cId] [] = [
+
+        $newIndex = [
             'category_id' => $cId,
             'article_id' => $aId,
             'source' => $src,
             'markdown_last_time_modified' => $md_ltm,
             'last_build_date' => $bd_lt
         ];
+
+        if( $prevIndex ) {
+            $this->databaseIndex = json_decode(json_encode($prevIndex), true);
+            $this->databaseIndex[$cId][$aId] = $newIndex;
+        } else {
+            $this->databaseIndex[$cId][$aId] = $newIndex;
+        }
     }
 
     /**
