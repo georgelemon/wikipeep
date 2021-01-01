@@ -7,3 +7,6 @@ composer.phar
 .env
 /storage/**
 !/storage/.gitkeep
+# Temporary. Prevents ignore for dessert storage
+!/storage/dessert
+!/storage/dessert/*
