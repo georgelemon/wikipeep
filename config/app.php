@@ -5,12 +5,12 @@ return [
      * The application name and logo.
      * When logo is set to false the default WikiPeep logo will be shown.
      */
-    'name' => getenv('APP_NAME', 'WikiPeep'),
+    'name' => env('APP_NAME', 'WikiPeep'),
 
     /**
      * Set the application URL mainly used for getting assets
      */
-    'url' => getenv('APP_URL'),
+    'url' => env('APP_URL'),
 
     /**
      * In order to display it correctly,
@@ -23,13 +23,13 @@ return [
      * Setup your timezone.
      * Used by Compiler to add the update time on articles.
      */
-    'timezone' => 'Europe/Bucharest',
+    'timezone' => env('TIME_ZONE'),
 
     /**
-     * A valid date format.
+     * A valid date format to be displayed at the bottom of your contents.
      * @see https://www.php.net/manual/en/function.date.php
      */
-    'date_format' => 'l jS \of F Y h:i:s A',
+    'date_format' => env('DATE_FORMAT', 'l jS \of F Y h:i:s A'),
 
     /**
      * SEO Meta tags - Where meta name is used for title tag,

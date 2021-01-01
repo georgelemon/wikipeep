@@ -52,13 +52,28 @@ function getStylesheetTag()
 }
 
 /**
+ * Retrieve the preferred protocol.
+ * 
+ * @return string
+ */
+function ssl()
+{
+    return $protocol = env('SSL') ? 'https://' : 'http://';
+}
+
+function app_url()
+{
+    echo ssl() . env('APP_URL');
+}
+
+/**
  * [get_stylesheet description]
  * @param  [type] $asset_path [description]
  * @return [type]             [description]
  */
 function asset($asset_path)
 {
-    return env('APP_URL') . DS . $asset_path;
+    return ssl() . env('APP_URL') . DS . $asset_path;
 }
 
 function el(string $tag, $attributes = null, $content = null, array $statement = null) : string
@@ -235,7 +250,7 @@ function get_formatted_date($strDate, $fromFormat, $toFormat, string $timezone =
  */
 function app_name()
 {
-    return app()->config()->get('app.name');
+    return config()->get('app.name');
 }
 
 /**
@@ -244,7 +259,7 @@ function app_name()
  */
 function app_logo()
 {
-    return app()->config()->get('app.logo');
+    return config()->get('app.logo');
 }
 
 /**
@@ -257,7 +272,7 @@ function app_logo()
  */
 function meta_title(string $title = '', $default = '')
 {
-    return app()->config()->get('app.meta_name');
+    return config()->get('app.meta_name');
 }
 
 /**
