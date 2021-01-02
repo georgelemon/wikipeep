@@ -31,7 +31,7 @@
 
                                 </div>
                                 <div class="col-lg-6 fluid-svg">
-                                    <img src="/assets/themes/twentytwentyone/svg/undrawDocs.svg" alt="" class="img-fluid" width="100%">
+                                    <img src="<?php echo uri()->base('/assets/themes/twentytwentyone/svg/undrawDocs.svg'); ?>" alt="" class="img-fluid" width="100%">
                                 </div>
                             </div>
 
@@ -86,7 +86,7 @@
 
                             <div class="row d-flex align-items-center" style="height:100vh">
                                 <div class="col-lg-6 text-center">
-                                    <img src="/assets/themes/twentytwentyone/svg/undrawReadingTime.svg" alt="" class="img-fluid" width="80%">
+                                    <img src="<?php echo uri()->base('/assets/themes/twentytwentyone/svg/undrawReadingTime.svg'); ?>" alt="" class="img-fluid" width="80%">
                                 </div>
                                 <div class="col-lg-6">
                                     <h1 class="display-4">Flawless <span class="font-weight-normal">Documentation</span></h1>
@@ -116,7 +116,7 @@
 
                             <div class="row d-flex align-items-center" style="height:100vh">
                                 <div class="col-lg-6 text-center">
-                                    <img src="/assets/themes/twentytwentyone/svg/undrawSetup.svg" alt="" class="img-fluid" width="68%">
+                                    <img src="<?php echo uri()->base('/assets/themes/twentytwentyone/svg/undrawSetup.svg'); ?>" alt="" class="img-fluid" width="68%">
                                 </div>
                                 <div class="col-lg-6">
                                     <h1 class="display-3">Build fast.</h1>

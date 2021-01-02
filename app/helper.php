@@ -61,38 +61,31 @@ function ssl()
     return $protocol = env('SSL') ? 'https://' : 'http://';
 }
 
+/**
+ * Get the URL of the application.
+ * 
+ * @return string
+ */
 function app_url()
 {
     echo ssl() . env('APP_URL');
 }
 
 /**
- * [get_stylesheet description]
- * @param  [type] $asset_path [description]
- * @return [type]             [description]
+ * Retrieve asset path.
+ * 
+ * @param string $asset_path
+ * 
+ * @return string
  */
 function asset($asset_path)
 {
     return ssl() . env('APP_URL') . DS . $asset_path;
 }
 
-function el(string $tag, $attributes = null, $content = null, array $statement = null) : string
-{
-    /**
-     * Checking if there is any statement declared
-     */
-    if( isset($statement['showif']) && ! $statement['showif'] ) {
-        return false;
-    }
-
-    unset($statement);
-
-    return Dashboard\Support\HtmlBlocks\HtmlElement::render(...func_get_args());
-}
-
-
 /**
  * Controlling PHP requests
+ * 
  * @see App\Core\Http\Request
  * @see https://symfony.com/doc/current/components/http_foundation.html#request
  */
@@ -102,6 +95,7 @@ function request() {
 
 /**
  * Http Responses
+ * 
  * @see App\Core\Http\Response
  * @see https://symfony.com/doc/current/components/http_foundation.html#response
  */
@@ -109,6 +103,11 @@ function response($content = '', $status = 200, array $headers = []) {
     return new App\Core\Http\Response($content, $status, $headers);
 }
 
+/**
+ * URI Handler
+ * 
+ * @return UriGenerator;
+ */
 function uri() {
     return new App\Core\Http\UriGenerator;
 }
@@ -140,49 +139,6 @@ function screen(string $path) {
 }
 
 /**
- * Show Flash Messages based on user session by using Symfony Session Bag
- *
- * @see Symfony\Component\HttpFoundation\Session\Flash\FlashBag
- * @see https://symfony.com/doc/current/components/http_foundation/sessions.html#flash-messages
- */
-function notify() {
-    return session()->getFlashBag();
-}
-
-/**
- * [notifyMessage description]
- * @return [type] [description]
- */
-function notifyMessage()
-{
-
-    $messages = session()->getFlashBag()->get('notice');
-    if( ! $messages ) {
-        return;
-    }
-    foreach ($messages as $message) {
-        echo '<div class="flash-notice">'.$message.'</div>';
-    }
-}
-
-/**
- * Get database path on disk
- */
-if (! function_exists('database_path')) {
-    /**
-     * Get the database path.
-     *
-     * @param string $path
-     *
-     * @return string
-     */
-    function database_path(string $path = '') : string 
-    {
-        return STORAGE_PATH . DIRECTORY_SEPARATOR . 'database/' . $path;
-    }
-}
-
-/**
  * Wraps the Router for the same reason
  * @see App\Core\Router
  */
@@ -190,17 +146,6 @@ if( ! function_exists('route') ) {
     function route()
     {
         return app()->route();
-    }
-}
-
-/**
- * Wraps the Router for the same reason
- * @see App\Core\Router
- */
-if( ! function_exists('slugify') ) {
-    function slugify($title, $separator = '-', $language = 'en')
-    {
-        return app()->support()->slug($title, $separator, $language);
     }
 }
 
@@ -306,7 +251,7 @@ function getAsideNavigation()
             $icon = $nav->icon ? icon($nav->icon)->size(17) : null;
 
             // Get slug uri and check if this is an internal or external link
-            $slug = strpos($nav->slug, 'http') === 0 ? $nav->slug : '/' . $nav->slug;
+            $slug = strpos($nav->slug, 'http') === 0 ? $nav->slug : uri()->base($nav->slug);
 
             if( $activeCat = getCurrentCategory() )  {
                 $activeCat = $activeCat === str_replace('/', '', $slug) ? sprintf(' class="%s"', 'active') : null;
