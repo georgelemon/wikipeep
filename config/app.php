@@ -20,6 +20,11 @@ return [
     'logo' => false,
 
     /**
+     * To be served with or without https protocol
+     */
+    'https' => env('SSL'),
+
+    /**
      * Setup your timezone.
      * Used by Compiler to add the update time on articles.
      */
