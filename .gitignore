@@ -13,3 +13,11 @@ composer.phar
 
 # Ignore index.php located in public directory
 /public/index.php
+
+# Ignore anything inside of content directory, except README.md
+# By default, WikiPeep documentation should stay separate from the main repo.
+# 
+# It is recommended to create your own repo for your Markdown contents,
+# and to pull them inside /content directory
+/content/**
+!/content/README.md
