@@ -103,6 +103,7 @@ class HasEditsCommand extends Command
 
         // Skip the process in case finder fails in finding any contents
         if( ! $this->finderHasResults ) {
+            $this->printFinderFilesNotFound($output);
             return 1;
         }
 

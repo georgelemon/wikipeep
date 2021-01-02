@@ -2,19 +2,12 @@
 
 namespace App\Console\Commands;
 
-use DateTime;
-use App\Core\Compiler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Finder\SplFileInfo;
-use Illuminate\Support\Str;
-use Illuminate\Filesystem\Filesystem;
 
-class BuildEditsCommand extends Command
+class HasNewCommand extends Command
 {
-
     /**
      * Database Repository Index
      */
@@ -56,11 +49,8 @@ class BuildEditsCommand extends Command
     use \App\Console\BuildConcerns\NavigationDetails;
 
     /**
-     * Loading AsideBox methods in order to store data for
-     * showing informational boxes displayed aside (sidebar).
+     * Loading the Console Loader feature
      */
-    // use \App\Console\BuildConcerns\AsideBoxDetails;
-
     use \App\Console\BuildConcerns\ConsoleLoader;
 
     /**
@@ -69,35 +59,23 @@ class BuildEditsCommand extends Command
     use \App\Console\ConsoleMessages;
 
     /**
-     * Loading all patternized methods related to edits commands
+     * Loading all patternized methods related to new commands
      */
-    use \App\Console\EditsConcern\EditsConcern;
+    use \App\Console\EditsConcern\NewConcern;
 
     /**
-     * Holds temporary data while in loop
-     * @var object | null
-     */
-    protected $storedIndexes;
-
-    /**
-     * Holds an instance of Parsedown
-     * @var App\Core\Parsedown
-     */
-    protected $parsedown;
-
-    /**
-     * Configuring the cli command for caching everything.
+     * Configuring the cli command.
      * 
      * @return void
      */
     protected function configure()
     {
-        $this->setName('build:edits')
-             ->setDescription("Builds contents only for modified articles that are already published.");
+        $this->setName('has:new')
+             ->setDescription("Checking if there are any new contents that must be published");
     }
 
     /**
-     * Cache Executer
+     * The Executer
      * 
      * @param  InputInterface  $input 
      * @param  OutputInterface $output
@@ -106,34 +84,47 @@ class BuildEditsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // Checking for new contents while the
+        // database index repository has not been built yet.
+        if( $this->tryConnectDatabaseRepository($output) ) {
 
-        // Try connect to database repository index
-        // in order to retrieve latest informations abour current build.
-        // If fails, it will skip the process.
-        if( ! $this->tryConnectDatabaseRepository($output) ) {
-            return 1;
+            $this->runNewContentsChecker($output);
+            
+            // Skip the process in case finder fails in finding any contents
+            if( ! $this->finderHasResults ) {
+                $this->printFinderFilesNotFound($output);
+                return 1;
+            }
+
+            // No edits available for building again
+            if( static::$countingNewArticles === 0 ) {
+                $this->printInfoNoEditsAvailable($output);
+                return 1;
+
+            // If we got something, you also must to update the database repository
+            // with the latest build and dates changes.
+            } else {
+                $this->printAsHavingNewContentsWithDatabase($output, static::$countingNewArticles);
+                return 0;
+            }
+
+            $this->printAsHavingNewContentsWithoutDatabase($output);
+            return 0;
         }
 
-        $this->runCheckBuilderAndBuilds($output);
-        
-        // Skip the process in case finder fails in finding any contents
-        if( ! $this->finderHasResults ) {
-            $this->printFinderFilesNotFound($output);
-            return 1;
-        }
 
         // No edits available for building again
         if( static::$countingArticles === 0 ) {
-            $this->printInfoNoUpdatesAvailable($output);
+            $this->printInfoNoEditsAvailable($output);
             return 1;
 
         // If we got something, you also must to update the database repository
         // with the latest build and dates changes.
         } else {
-            $this->buildDatabaseIndex();
-            $this->editsHaveBeenPublished($output);
+            $this->printAsHavingEditsReadyForBuild($output, static::$countingArticles);
+            // $this->buildDatabaseIndex();
+            // $this->editsHaveBeenPublished($output);
             return 0;
         }
     }
-
 }

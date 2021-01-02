@@ -8,22 +8,22 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
 
-class BuildNewCommand extends Command
+class SampleCommand extends Command
 {
     /**
-     * Configuring the cli command for building new contents.
+     * Configuring the cli command
      * 
      * @return void
      */
     protected function configure()
     {
-        $this->setName('build:new')
-             ->setDescription("Build new contents only without touching edits or anything published before.");
+        $this->setName('type:command')
+             ->setDescription("A short description that tells what is this about");
     }
 
 
     /**
-     * Build new executer
+     * The Executer
      * 
      * @param  InputInterface  $input 
      * @param  OutputInterface $output

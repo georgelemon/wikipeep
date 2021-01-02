@@ -22,6 +22,7 @@ class Console
         Commands\BuildNewCommand::class,
         Commands\BuildEditsCommand::class,
         Commands\HasEditsCommand::class,
+        Commands\HasNewCommand::class,
     ];
 
     /**
@@ -38,8 +39,8 @@ class Console
     /**
      * Set console application.
      *
-     * @param \Symfony\Component\Console\Application $consoleApp  Console Application
-     * @param \Core\Kernel\Application $app                        Nur Framework Application
+     * @param \Symfony\Component\Console\Application $consoleApp
+     * @param \Core\Kernel\Application $app
      *
      * @return void
      */

@@ -44,37 +44,6 @@ trait EditsConcern
     protected static int $countingArticles = 0;
 
     /**
-     * Wraps multiple operations in one method, by making use of
-     * the DatabaseIndex Concern and checking if there are records.
-     *
-     * If not, it will skip the process and print an info message via terminal.
-     *
-     * @param  OutputInterface $output
-     *
-     * @return boolean | Symfony Console Message
-     */
-    protected function tryConnectDatabaseRepository(OutputInterface $output)
-    {
-        $this->setDatabaseIndexStatement();
-        
-        if( ! $this->databaseIndexExists() ) {
-            $this->noRecordsFound($output);
-            return false;
-        }
-
-        return  true;
-    }
-
-    /**
-     * Retreive the current database index stored in repository
-     * by a Flywheel Instance.
-     */
-    protected function setCurrentIndexLocal()
-    {
-        $this->storedIndexes = $this->getStoredDatabaseIndex()[0]->indexes;
-    }
-
-    /**
      * Try retreive markdown files stored in /content/ directory
      *
      * @param  OutputInterface $output

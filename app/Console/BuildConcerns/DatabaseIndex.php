@@ -2,6 +2,8 @@
 
 namespace App\Console\BuildConcerns;
 
+use Symfony\Component\Console\Output\OutputInterface;
+
 trait DatabaseIndex
 {
     /**
@@ -20,6 +22,37 @@ trait DatabaseIndex
             $this->databaseIndexExists = true;
             $this->databaseIndexData = $databaseIndex;
         }
+    }
+
+    /**
+     * Wraps multiple operations in one method, by making use of
+     * the DatabaseIndex Concern and checking if there are records.
+     *
+     * If not, it will skip the process and print an info message via terminal.
+     *
+     * @param  OutputInterface $output
+     *
+     * @return boolean | Symfony Console Message
+     */
+    protected function tryConnectDatabaseRepository(OutputInterface $output)
+    {
+        $this->setDatabaseIndexStatement();
+        
+        if( ! $this->databaseIndexExists() ) {
+            $this->noRecordsFound($output);
+            return false;
+        }
+
+        return  true;
+    }
+
+    /**
+     * Retreive the current database index stored in repository
+     * by a Flywheel Instance.
+     */
+    protected function setCurrentIndexLocal()
+    {
+        $this->storedIndexes = $this->getStoredDatabaseIndex()[0]->indexes;
     }
 
     /**
@@ -51,7 +84,7 @@ trait DatabaseIndex
             'article_id' => $aId,
             'source' => $src,
             'markdown_last_time_modified' => $md_ltm,
-            'last_build_date' => $bd_lt
+            'last_build_date' => $bd_lt,
         ];
 
         if( $prevIndex ) {

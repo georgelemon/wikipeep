@@ -87,4 +87,65 @@ trait ConsoleMessages
         $output->writeln($this->addBreakline(1) . "<info>You have $counter edits available for publishing</info>");
         $output->writeln("Publishing edits will not affect any other contents." . $this->addBreakline(1));   
     }
+
+    /**
+     * Symfony Console notification to be triggered
+     * when running php artisan has:new and there are new contents available.
+     * 
+     * @param  OutputInterface $output
+     * @param  $counter                     The number of articles containing edits available for publishing.
+     * @return void
+     */
+    private function printAsHavingNewContents($output, $counter = 2)
+    {
+        $output->writeln($this->addBreakline(1) . "<info>You have $counter new contents ready for publishing</info>");
+        $output->writeln("Publishing new contents does not affect published already contents or edits." . $this->addBreakline(1));   
+    }
+
+    /**
+     * Symfony Console notification to be triggered
+     * when running php artisan has:new and there are new contents available,
+     * without having a database index repository.
+     * 
+     * @param  OutputInterface $output
+     * @param  $counter                     The number of new articles ready to publish.
+     * 
+     * @return void
+     */
+    private function printAsHavingNewContentsWithoutDatabase($output, $counter)
+    {
+        $output->writeln($this->addBreakline(1) . "<info>Looks like this is your first build! You have $counter new contents ready for publishing</info>");
+        $output->writeln("When publishing for first time you will also build the search and navigation items." . $this->addBreakline(1));   
+    }
+
+    /**
+     * Symfony Console notification to be triggered
+     * when running php artisan has:new and there are new contents available.
+     * 
+     * @param  OutputInterface $output
+     * @param  $counter                     The number of new articles ready to publish.
+     * 
+     * @return void
+     */
+    private function printAsHavingNewContentsWithDatabase($output, $counter)
+    {
+        $plural =  $counter === 1 ? 'article' : 'articles';
+        $output->writeln($this->addBreakline(1) . "<info> 👏 You have $counter new $plural ready for publishing!</info>");
+        $output->writeln("Publishing can be done with <info>artisan build:new</info> command" . $this->addBreakline(1));   
+    }
+
+
+    /**
+     * Symfony Console notification to be printed
+     * when Finder fails finding any markdown contents.
+     * 
+     * @param  OutputInterface $output
+     * 
+     * @return void
+     */
+    private function printFinderFilesNotFound($output)
+    {
+        $output->writeln($this->addBreakline(1) . "<error>Finder could not find any markdown contents</error>");
+        $output->writeln("Be sure you write your markdown files inside of /content/ directory and save them as .md files." . $this->addBreakline(1));   
+    }
 }

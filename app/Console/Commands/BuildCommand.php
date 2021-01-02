@@ -179,7 +179,7 @@ class BuildCommand extends Command
                 $this->getLastTimeModifiedFormatted($value->getRealPath()),
 
                 // the date time of the latest build related to the article
-                flywheel()->getCreationDateTime()
+                flywheel()->getCreationDateTime(),
             );
 
             // Get the Article URI. In case the Article is saved as index.md
