@@ -14,6 +14,8 @@ trait FinderInstance
      */
     protected static $CNTSPTH = CONTENT_PATH;
 
+    // protected static $IGNORE_README = 'README.md';
+
     /**
      * The Finder Instance
      * 
@@ -43,7 +45,13 @@ trait FinderInstance
      */
     protected function finderGetContents()
     {
-        return $this->finder()->files()->in(self::$CNTSPTH)->name('*.md')->sortByName();
+        $ignoreGit = self::$CNTSPTH . DS . '.git';
+
+        return $this->finder()->files()
+                    ->notName(['README.md', 'readme.md'])
+                    ->in(self::$CNTSPTH)
+                    ->name('*.md')
+                    ->sortByName();
     }
 
     /**
@@ -55,8 +63,18 @@ trait FinderInstance
      */
     protected function finderGetDirectories($level = null)
     {
-        return $level ? $this->finder()->directories()->in(self::$CNTSPTH)->sortByName()->depth($level) :
-                        $this->finder()->directories()->in(self::$CNTSPTH)->sortByName();
+
+        // $ignoreGit = self::$CNTSPTH . DS . '.git';
+
+        return $level ? $this->finder()
+                             ->directories()
+                             ->in(self::$CNTSPTH)
+                             ->sortByName()
+                             ->depth($level) :
+                        $this->finder()
+                             ->directories()
+                             ->in(self::$CNTSPTH)
+                             ->sortByName();
     }
 
     /**
@@ -109,16 +127,21 @@ trait FinderInstance
     {
         $contents = $this->finderGetContents();
 
+        // If finder failes in getting the source of markdown files,
+        // that means all files are deleted and we have to return all existing contents
+        // stored in index database repository as deleted.
         if( ! $contents->hasResults() ) {
-            return false;
-        }
+            $deletes = $existingContents;
+        } else {
 
-        $foundContents = [];
-        foreach ($contents as $key => $markdown) {
-            $foundContents[] = $markdown->getRealPath();
-        }
+            $foundContents = [];
+            foreach ($contents as $key => $markdown) {
+                $foundContents[] = $markdown->getRealPath();
+            }
 
-        $deletes = array_diff($existingContents, $foundContents);
+            $deletes = array_diff($existingContents, $foundContents);
+
+        }
 
         static::$countingDeletes = count($deletes);
         static::$countingDeletes > 0 ?  $this->finderHasResults = true : $this->finderHasResults = false;

@@ -89,7 +89,6 @@ class HasDeletesCommand extends Command
         // Try connect to database repository with indexes.
         // In case is missing then skip the process and prints info notification.
         if( ! $this->tryConnectDatabaseRepository($output) ) {
-            $this->noRecordsFound($output);
             return 1;
         }
 

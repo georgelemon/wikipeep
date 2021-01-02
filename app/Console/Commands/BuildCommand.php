@@ -93,7 +93,7 @@ class BuildCommand extends Command
      */
     protected function configure()
     {
-        $this->setName('build:all')
+        $this->setName('publish:all')
              ->setDescription("Builds the content of the application based on provided markdown.");
     }
 

@@ -72,7 +72,7 @@ class BuildNewCommand extends Command
      */
     protected function configure()
     {
-        $this->setName('build:new')
+        $this->setName('publish:new')
              ->setDescription("Builds new contents only without touching edits or anything published before.");
     }
 

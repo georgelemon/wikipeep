@@ -92,7 +92,7 @@ class BuildEditsCommand extends Command
      */
     protected function configure()
     {
-        $this->setName('build:edits')
+        $this->setName('publish:edits')
              ->setDescription("Builds contents only for modified articles that are already published.");
     }
 

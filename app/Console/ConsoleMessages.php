@@ -4,6 +4,12 @@ namespace App\Console;
 
 trait ConsoleMessages
 {
+
+    private function pluralize($string, $counter)
+    {
+        return $counter > 1 ? $string . 's' : $string;
+    }
+
     /**
      * Symfony Console to print notification after edits have been published
      * 
@@ -84,7 +90,8 @@ trait ConsoleMessages
      */
     private function printAsHavingEditsReadyForBuild($output, $counter)
     {
-        $output->writeln($this->addBreakline(1) . "<info>You have $counter edits available for publishing</info>");
+        $plural = $this->pluralize('edit', $counter);
+        $output->writeln($this->addBreakline(1) . "<info>You have $counter $plural available for publishing</info>");
         $output->writeln("Publishing edits will not affect any other contents." . $this->addBreakline(1));   
     }
 
@@ -130,7 +137,7 @@ trait ConsoleMessages
      */
     private function printAsHavingNewContentsWithDatabase($output, $counter)
     {
-        $plural =  $counter === 1 ? 'article' : 'articles';
+        $plural = $this->pluralize('article', $counter);
         $output->writeln($this->addBreakline(1) . "<info> 👏 You have $counter new $plural ready for publishing!</info>");
         $output->writeln("Publishing can be done with <info>artisan build:new</info> command" . $this->addBreakline(1));   
     }
@@ -146,7 +153,7 @@ trait ConsoleMessages
      */
     private function printAsBuiltNewContents($output, $counter)
     {
-        $plural =  $counter === 1 ? 'article' : 'articles';
+        $plural = $this->pluralize('article', $counter);
         $output->writeln($this->addBreakline(1) . "<info> 👏 You published $counter new $plural ready to view in browser!</info>");   
     }
 
@@ -205,7 +212,7 @@ trait ConsoleMessages
      */
     private function printAvailableDeletesForUpdate($output, $counter)
     {
-        $plural =  $counter === 1 ? 'article' : 'articles';
+        $plural = $this->pluralize('article', $counter);
         
         $output->writeln($this->addBreakline(1) . "<info> 👋 You have $counter deleted $plural ready for update?</info>");
 
