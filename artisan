@@ -35,5 +35,5 @@ $app->headless();
 // Set default time based on location input
 date_default_timezone_set(config()->get('app.timezone')); 
 
-$console = new Console(new SymfonyApplication("Running on version " . VERSION), null);
+$console = new Console(new SymfonyApplication("👋 Running WikiPeep version " . VERSION), null);
 $console->run();

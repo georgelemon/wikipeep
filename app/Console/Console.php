@@ -19,6 +19,7 @@ class Console
      */
     protected $commandList = [
         Commands\BuildCommand::class,
+        Commands\BuildNewCommand::class,
         Commands\BuildEditsCommand::class,
         Commands\HasEditsCommand::class,
     ];
