@@ -24,9 +24,10 @@ class UriGenerator
         $this->request = new Request;
         $this->base = '/';
 
-        $this->url = $this->request->server('HTTP_HOST') . '/' . $this->base . '/';
+        $this->url = env('APP_URL') . '/' . $this->base . '/';
+
         if (! in_array($this->request->server('HTTPS'), [null, 'off', 'false']) ||
-            $this->request->server('SERVER_PORT') == 443 || app()->config('app.https') === true) {
+            $this->request->server('SERVER_PORT') == 443 || config()->get('app.https') === true) {
             $this->cachedHttps = true;
         }
 
