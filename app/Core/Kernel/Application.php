@@ -63,6 +63,7 @@ class Application {
      */
     public function headless()
     {
+        $this->setupEnvironment();
         $this->registerConfigurationFiles();
     }
 
