@@ -5,8 +5,10 @@ namespace App\Console\Commands;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Illuminate\Support\Str;
+use Illuminate\Filesystem\Filesystem;
 
-class HasNewCommand extends Command
+class HasDeletesCommand extends Command
 {
     /**
      * Database Repository Index
@@ -59,19 +61,19 @@ class HasNewCommand extends Command
     use \App\Console\ConsoleMessages;
 
     /**
-     * Loading all patternized methods related to new commands
+     * Loading all patternized methods related to edits commands
      */
-    use \App\Console\EditsConcern\NewConcern;
+    use \App\Console\EditsConcern\DeletesConcern;
 
     /**
-     * Configuring the cli command.
+     * Configuring the cli command
      * 
      * @return void
      */
     protected function configure()
     {
-        $this->setName('has:new')
-             ->setDescription("Checking if there are any new contents that must be published");
+        $this->setName('has:deletes')
+             ->setDescription("Determine if there are any markdown files deleted from content directory.");
     }
 
     /**
@@ -84,37 +86,23 @@ class HasNewCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // Checking for new contents while the
-        // database index repository has not been built yet.
-        if( $this->tryConnectDatabaseRepository($output) ) {
-
-            $this->runNewContentsChecker($output);
-            
-            // Skip the process in case finder fails in finding any contents
-            if( ! $this->finderHasResults ) {
-                $this->printFinderNewFilesNotFound($output);
-                return 1;
-            }
-
-            // No edits available for building again
-            if( static::$countingNewArticles === 0 ) {
-                $this->printInfoNoEditsAvailable($output);
-                return 1;
-
-            // If we got something, you also must to update the database repository
-            // with the latest build and dates changes.
-            } else {
-                $this->printAsHavingNewContentsWithDatabase($output, static::$countingNewArticles);
-                return 0;
-            }
-
-            $this->printAsHavingNewContentsWithoutDatabase($output);
-            return 0;
-            
-        } else {
-            $this->printAsHavingNewContentsWithoutDatabase($output, 110);
+        // Try connect to database repository with indexes.
+        // In case is missing then skip the process and prints info notification.
+        if( ! $this->tryConnectDatabaseRepository($output) ) {
+            $this->noRecordsFound($output);
             return 1;
         }
 
+        $this->runDeletesChecker($output);
+
+        // Skip with a specific info message in case finder
+        // has not found any deleted articles.
+        if( ! $this->finderHasResults ) {
+            $this->printFinderDeletedFilesNotFound($output);
+            return 1;
+        }
+
+        $this->printAvailableDeletesForUpdate($output, static::$countingDeletes);
+        return 0;
     }
 }

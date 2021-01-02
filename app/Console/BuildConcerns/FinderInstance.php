@@ -69,17 +69,20 @@ trait FinderInstance
      */
     protected function finderGetNewFiles($excludes = null)
     {
+
         if( $excludes ) {
             
             $contents = $this->finderGetContents();
+
             if( ! $contents->hasResults() ) {
                 return false;
             }
 
             $newContents = [];
+
             foreach ($contents as $key => $markdown) {
+
                 $markdown->getRealPath();
-                
                 if( ! in_array($markdown->getRealPath(), $excludes) ) {
                     $newContents[] = $markdown;
                     static::$countingNewArticles++;
@@ -94,5 +97,32 @@ trait FinderInstance
         // When there are no contents published before we just return
         // the original get contents finder instance.
         return $this->finderGetContents();
+    }
+
+    /**
+     * Finder instance to reveal deleted markdown files which were published before.
+     * 
+     * @param  array $existingContents
+     * @return bool | Symfony\Finder
+     */
+    protected function finderGetDeletedFiles($existingContents)
+    {
+        $contents = $this->finderGetContents();
+
+        if( ! $contents->hasResults() ) {
+            return false;
+        }
+
+        $foundContents = [];
+        foreach ($contents as $key => $markdown) {
+            $foundContents[] = $markdown->getRealPath();
+        }
+
+        $deletes = array_diff($existingContents, $foundContents);
+
+        static::$countingDeletes = count($deletes);
+        static::$countingDeletes > 0 ?  $this->finderHasResults = true : $this->finderHasResults = false;
+
+        return $deletes;
     }
 }

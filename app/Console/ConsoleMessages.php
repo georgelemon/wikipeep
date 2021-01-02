@@ -115,7 +115,8 @@ trait ConsoleMessages
     private function printAsHavingNewContentsWithoutDatabase($output, $counter)
     {
         $output->writeln($this->addBreakline(1) . "<info>Looks like this is your first build! You have $counter new contents ready for publishing</info>");
-        $output->writeln("When publishing for first time you will also build the search and navigation items." . $this->addBreakline(1));   
+        $output->writeln("Use <info>artisan build:all</info> in order to build your first contents.");
+        $output->writeln("After your first build use <info>artisan build:new</info> for building only new contents." . $this->addBreakline(1));
     }
 
     /**
@@ -134,6 +135,21 @@ trait ConsoleMessages
         $output->writeln("Publishing can be done with <info>artisan build:new</info> command" . $this->addBreakline(1));   
     }
 
+    /**
+     * Symfony Console notification to be triggered
+     * after new contetns have been sucessfully built.
+     * 
+     * @param  OutputInterface $output
+     * @param  $counter                     The number of new articles already published.
+     * 
+     * @return void
+     */
+    private function printAsBuiltNewContents($output, $counter)
+    {
+        $plural =  $counter === 1 ? 'article' : 'articles';
+        $output->writeln($this->addBreakline(1) . "<info> 👏 You published $counter new $plural ready to view in browser!</info>");   
+    }
+
 
     /**
      * Symfony Console notification to be printed
@@ -146,6 +162,53 @@ trait ConsoleMessages
     private function printFinderFilesNotFound($output)
     {
         $output->writeln($this->addBreakline(1) . "<error>Finder could not find any markdown contents</error>");
+
         $output->writeln("Be sure you write your markdown files inside of /content/ directory and save them as .md files." . $this->addBreakline(1));   
+    }
+
+    /**
+     * Symfony Console notification to be printed
+     * when Finder fails finding any markdown contents.
+     * 
+     * @param  OutputInterface $output
+     * 
+     * @return void
+     */
+    private function printFinderNewFilesNotFound($output)
+    {
+        $output->writeln($this->addBreakline(1) . "<info>No new contents available</info>");
+
+        $output->writeln("If you wrote some contents, be sure that your files are inside of /content/ directory and also saved as .md files." . $this->addBreakline(1));   
+    }
+
+    /**
+     * Symfony Console notification to get triggered
+     * when there are no deleted files and everything is up to date.
+     * 
+     * @param  OutputInterface $output
+     * 
+     * @return void
+     */
+    private function printFinderDeletedFilesNotFound($output)
+    {
+        $output->writeln($this->addBreakline(1) . "No deletes found. Everything is up to date!" . $this->addBreakline(1));
+    }
+
+    /**
+     * Symfony Console notification to get triggered when 
+     * there are deletes available to be published.
+     * 
+     * @param  OutputInterface $output
+     * @param  int $counter                     The total number of deletes
+     * 
+     * @return void
+     */
+    private function printAvailableDeletesForUpdate($output, $counter)
+    {
+        $plural =  $counter === 1 ? 'article' : 'articles';
+        
+        $output->writeln($this->addBreakline(1) . "<info> 👋 You have $counter deleted $plural ready for update?</info>");
+
+        $output->writeln("Update your repositories with <info>artisan publish:deletes</info>" . $this->addBreakline(1));
     }
 }

@@ -53,18 +53,17 @@ trait EditsConcern
     protected function finderGetMarkdownFiles(OutputInterface $output)
     {
         // Finder gets all the markdowns placed in contents directory
-        $contents = $this->finderGetContents();
+        $this->finderFileResults = $this->finderGetContents();
 
         // In case there are no results will print an error
         // and guide the dev to use first build:all command
-        if( ! $contents->hasResults() ) {
+        if( ! $this->finderFileResults->hasResults() ) {
             
             $this->printErrorNoMarkdownFiles($output);
             return $this->finderHasResults; // return default false
         }
 
         $this->finderHasResults  = true;             // set as having results
-        $this->finderFileResults = $contents;        // set the results locally
         
         if( $this->inBuildMode ) {
             $this->parsedown     = new Parsedown;    // set the Parsedown handler while in build mode
@@ -90,8 +89,8 @@ trait EditsConcern
             // Create the structure of directories
             $categoryId = $this->getDirectoriesPath($markdownStructure);
 
-            // Now, check if the category of the current iterated article
-            // has been already published previously.
+            // Now, check if the category of the
+            // current iterated article is already published
             if( $this->hasPublicCategory($categoryId)) {
 
                 // Get the name of the article including its slugified version
@@ -113,11 +112,6 @@ trait EditsConcern
                             // articles containing edits that should be published
                             if( $this->inBuildMode ) {
                                 $this->updateArticleById($articleMeta, $categoryId, $article, $this->storedIndexes);
-
-                            // Otherwise, will just check which files are avilable
-                            // and print them nicely via terminal
-                            } else {
-
                             }
 
                         } else {

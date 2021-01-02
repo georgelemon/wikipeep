@@ -18,10 +18,29 @@ class Console
      * @var array Application base command list
      */
     protected $commandList = [
+        /**
+         * Builds all, everything, anyway, anytime.
+         */
         Commands\BuildCommand::class,
+        /**
+         * Build new articles
+         */
         Commands\BuildNewCommand::class,
+        /**
+         * Build contents edited on already published articles.
+         */
         Commands\BuildEditsCommand::class,
+        /**
+         * Determine if there are any markdown files deleted.
+         */
+        Commands\HasDeletesCommand::class,
+        /**
+         * Determine if there are any edits on published articles.
+         */
         Commands\HasEditsCommand::class,
+        /**
+         * Determine if there are any new markdown contents ready to publish.
+         */
         Commands\HasNewCommand::class,
     ];
 

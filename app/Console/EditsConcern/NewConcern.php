@@ -44,7 +44,7 @@ trait NewConcern
      * 
      * 'artisan has:new' or 'artisan build:new'
      * 
-     * @return void
+     * @return void | false
      */
     protected function runNewContentsChecker(OutputInterface $output)
     {
@@ -63,34 +63,60 @@ trait NewConcern
         if( ! $this->finderHasResults ) {
             return false;
         }
-
-        // $this->startIterateContents();
     }
 
     /**
-     * Creating a list with all existing contents that will be used
-     * for determining what's new and whats already published.
+     * Runs the new contents checker to determine if there
+     * are any new contents available for build while running:
      * 
-     * @return array
+     * 'artisan has:new' or 'artisan build:new'
+     * 
+     * @return void | false
      */
-    private function createListingExistingContents()
+    protected function runNewContentsBuilder(OutputInterface $output)
     {
-        foreach ($this->storedIndexes as $category => $articles) {
-            // var_dump($category);
-            foreach ($articles as $articleKey => $article) {
-                $this->existingContents[] = $this->getFullPathOf($article->source, $prefixedSlash = true);
-            }
+        $this->setCurrentIndexLocal();
+
+        // In order to know what's new, first we need to make a 
+        // list with all existing contents and their paths so we can pass
+        // to Finder in order to exclude them from searching.
+        $this->createListingExistingContents();
+
+        // Try run a Finder instance and search for available markdown files.
+        // If fails, it will set a console notification message and skip the process
+        $this->finderFileResults = $this->finderGetNewFiles($this->getExistingContents());
+
+        // Skip the process in case finder fails in finding any new contents
+        if( ! $this->finderHasResults ) {
+            return false;
         }
+        
+        $this->parsedown     = new Parsedown;    // set the Parsedown handler while in build mode
+        $this->startIterateContents();
     }
 
     /**
-     * Retreive all existing markdown files from the
-     * last database index repository, that have been already published before.
+     * Strat the big loop where we check each NEW markdown file,
+     * parse its contents, validate and build the contents
      * 
-     * @return array
+     * @return [type] [description]
      */
-    private function getExistingContents()
+    private function startIterateContents()
     {
-        return $this->existingContents;
+        foreach ($this->finderFileResults as $key => $article) {
+
+            // Retrieve the markdown file path
+            $markdownStructure = $this->getIndexStructure($article->getPathName());
+
+            // Create the structure of directories
+            $categoryId = $this->getDirectoriesPath($markdownStructure);
+
+            // Get the name of the article including its slugified version
+            $articleMeta = $this->getArticleName( $markdownStructure );
+            // $articleSlug = $articleMeta['slug'];
+
+            $this->updateArticleById($articleMeta, $categoryId, $article, $this->storedIndexes);
+            static::$countingNewArticles++;
+        }
     }
 }

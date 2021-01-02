@@ -78,7 +78,6 @@ trait DatabaseIndex
      */
     protected function storeInDatabaseIndex($cId, $aId, $src, $md_ltm, $bd_lt, $prevIndex = null)
     {
-
         $newIndex = [
             'category_id' => $cId,
             'article_id' => $aId,
@@ -129,6 +128,34 @@ trait DatabaseIndex
         flywheel()->create([
             'indexes' => $this->getDatabaseIndex()
         ], '___', 'meta', true);
+    }
+
+
+    /**
+     * Creating a list with all existing contents that will be used
+     * for determining what's new and whats already published.
+     * 
+     * @return array
+     */
+    private function createListingExistingContents()
+    {
+        foreach ($this->storedIndexes as $category => $articles) {
+            // var_dump($category);
+            foreach ($articles as $articleKey => $article) {
+                $this->existingContents[] = $this->getFullPathOf($article->source, $prefixedSlash = true);
+            }
+        }
+    }
+
+    /**
+     * Retreive all existing markdown files from the
+     * last database index repository, that have been already published before.
+     * 
+     * @return array
+     */
+    private function getExistingContents()
+    {
+        return $this->existingContents;
     }
 
 }
