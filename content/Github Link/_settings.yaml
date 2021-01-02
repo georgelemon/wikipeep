@@ -1,7 +1,0 @@
-menu:
-  label: 'Check on GitHub'
-  icon: github
-  order: 9
-  separator:
-    before: true
-  redirect: https://github.com/georgelemon/wikipeep

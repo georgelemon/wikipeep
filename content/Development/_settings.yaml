@@ -1,8 +1,0 @@
-menu:
-  label: 'Development'
-  icon: feather
-  order: 3
-settings:
-  heading:
-    title: Development
-    lead: Here you can find some guides about WikiPeep development
