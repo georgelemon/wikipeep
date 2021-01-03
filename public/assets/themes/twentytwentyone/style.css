@@ -101,7 +101,6 @@ body.theme-dark .form-control {
   display: block;
 }
 #article--side li {
-  list-style: none;
   margin-bottom: 0.5em;
 }
 #article--side li:input[type=checkbox] {
@@ -185,6 +184,14 @@ body.theme-dark .form-control {
 #contents--sidebar li a.active {
   border-right-color: rgba(0, 0, 255, 0.15);
   color: blue;
+}
+
+.wikipeep-copyright-aside small {
+  line-height: 13px;
+}
+.wikipeep-copyright-aside a {
+  color: blue;
+  text-decoration: none;
 }
 
 .breadcrumb--nav li:after {

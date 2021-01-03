@@ -13,9 +13,8 @@ return [
     'url' => env('APP_URL'),
 
     /**
-     * In order to display it correctly,
-     * the given path must be a public path to a svg/png file of your logo.
-     * If you don't want to use a graphic logo, just leave it false
+     * The path to your .svg, .png logo.
+     * If set false|null, will show default WikiPeep logo.
      */
     'logo' => false,
 

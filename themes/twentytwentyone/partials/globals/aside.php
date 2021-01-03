@@ -9,9 +9,9 @@
             // }
         ?>
 
-        <div class="position-absolute pb-3" style="bottom:0">
-            <small class="text-muted d-block" style="font-size:10px">Made with <a href="https://github.com/georgelemon/wikipeep">WikiPeep 1.0.0</a><br>
-            An open source wiki for busy devs.</small>
+        <div class="wikipeep-copyright-aside position-absolute pb-3 ml-4" style="bottom:0; left:0">
+            <small class="p-2 d-block rounded" style="border: 1px #addedd dotted; font-size:10px">Made with <a href="https://github.com/georgelemon/wikipeep">WikiPeep 1.0.0</a><br>
+            An open source Wiki for busy devs</small>
         </div>
     </div>
 </div>

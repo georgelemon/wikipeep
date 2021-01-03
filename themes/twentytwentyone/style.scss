@@ -108,7 +108,7 @@ body {
 
 #searchbar--area {
     width:90%;
-    
+
     input {
         border-radius:45px
     }
@@ -146,7 +146,7 @@ body {
     }
 
     li {
-        list-style: none;
+        // list-style: none;
         margin-bottom: .5em;
 
         &:input[type="checkbox"] {
@@ -255,6 +255,16 @@ body {
                 color:blue;
             }
         }
+    }
+}
+
+.wikipeep-copyright-aside {
+    small {
+        line-height:13px;
+    }
+    a {
+        color:blue;
+        text-decoration: none;
     }
 }
 
