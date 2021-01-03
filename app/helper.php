@@ -321,6 +321,10 @@ function getApplicationSettings()
     // }
 
     return sprintf('<script>const __settings = %s</script>', json_encode([
+                // The URL of the app
+                'app_url' => uri()->base(),
+                // // Whether to serve the app over https protocol
+                // 'app_ssl' => env('SSL'),
                 // The base API endpoint.
                 'api_base' => $api['base'],
                 // Search Results API Endpoint is used by the search

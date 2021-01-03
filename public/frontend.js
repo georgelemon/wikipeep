@@ -2,11 +2,15 @@
  * Initialize IndexedDB with Dexie.js
  * @see https://github.com/dfahlander/Dexie.js
  */
-const LocalDatabase = new Dexie("wikipeepSearchDB"),
-      SearchEndpoint = __settings.api_base + '/' + __settings.search_endpoint,
-      __searchVersion = __settings.latest_search_update;
 
-      console.log(__searchVersion);
+function getAppUrl(path)
+{
+    return __settings.app_url + path;
+}
+
+const LocalDatabase = new Dexie("wikipeepSearchDB"),
+      SearchEndpoint = getAppUrl(__settings.api_base + '/' + __settings.search_endpoint),
+      __searchVersion = __settings.latest_search_update;
 
 let toggleElement;
 
@@ -150,7 +154,7 @@ async function updateBrowserLocalStorage()
 // for storing as Local Storage to the user's browser.
 async function fetchSearchResults()
 {
-    await fetch('/' + SearchEndpoint).then(function (response) {
+    await fetch(SearchEndpoint).then(function (response) {
         return response.json();
     }).then(function (getSearchData) {
 
@@ -309,6 +313,8 @@ document.addEventListener('DOMContentLoaded', function() {
     searchbarFocus('searchbar--input')
     // Make external links opening in a new tab on the fly
     targetBlankLinks()
+    // highlight the available code syntax
+    hljs.initHighlightingOnLoad()
 });
 
 window.document.addEventListener('scroll', onScroll );
