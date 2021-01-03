@@ -84,6 +84,9 @@ class Response extends BaseResponse
     {
         if ($this->json) {
             $this->headers->set('Content-Type', 'application/json; charset=' . $this->getCharset());
+            $this->headers->set('Access-Control-Allow-Origin', uri()->base());
+            $this->headers->set('Access-Control-Allow-Methods', 'GET');
+            $this->headers->set('Access-Control-Max-Age', 1728000);
         }
 
         return $this->sendHeaders()->getContent();
