@@ -23,6 +23,7 @@
                             ?>
                             <div class="category--list--items">
                             <?php foreach ($this->contents as $key => $item): ?>
+
                                 <div class="mb-3">
                                     <a class="category--item p-4 bg-light rounded d-block text-dark text-decoration-none" href="<?php echo $this->getArticlePermalink($item->getId()); ?>">
                                         <span class="d-block font-weight-bold">

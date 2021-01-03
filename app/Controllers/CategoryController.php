@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Core\Paginator;
+use Illuminate\Support\Str;
 
 class CategoryController extends BaseController
 {
@@ -73,7 +74,15 @@ class CategoryController extends BaseController
     {
         $this->categoryId = request()->segment(1);;
         $this->categoryConfigs = config()->get('category');
-        return $this->getCategoryListing();
+
+        if( $contents = $this->getCategoryListing() ) {
+            // return the view according to view type, whether is a listing type
+            // or, with a specific index page via _settings.yaml
+            $screenType = $this->hasIndexPage() ? 'home' : 'category';
+            return $this->layout($screenType, 'base', $contents);
+        }
+
+        return $this->layout('404', 'public');
     }
 
     /**
@@ -102,18 +111,18 @@ class CategoryController extends BaseController
      */
     protected function getCategoryListing()
     {
-        // First, try look if the current category has an index.json stored
-        // in repository. This index.json is by default automatically created
-        // whenever you create an index.md inside a directory.
-        if( $this->singleArticle = flywheel()->getById('index', $this->categoryId)) {
-            return $this->layout('home', 'base', $this->singleArticle);
+        
+        $this->categorySettings = flywheel()->getById('__settings', $this->categoryId, 'category');
 
-        // Otherwise, it will treat the root page of the category with
-        // page an auto-index containing a list with all the page screens.
+        if( $this->hasIndexPage() ) {
+            
+            if( $this->singleArticle = flywheel()->getById($this->getIndexPage(), $this->categoryId) ) {
+                return $this->singleArticle;
+            }
+
         } else {
             
             $this->setCategorySettingsIfAny();
-
             $articles = $this->getContent($this->categoryId);
 
             if( $articles ) {
@@ -123,12 +132,12 @@ class CategoryController extends BaseController
 
                 if( $this->total > 0 && $this->count > 0 ) {
                     $this->hasPaginationConfig();
-                    return $this->layout('category', 'base', $articles);                
+                    return $articles;
                 }
             }
-
-            return $this->layout('404', 'public');
         }
+
+        return false;
     }
 
     /**
@@ -226,14 +235,68 @@ class CategoryController extends BaseController
      */
     protected function setCategorySettingsIfAny()
     {
-        $this->categorySettings = flywheel()->getById('__settings', $this->categoryId, 'category');
-
-        if( $this->categorySettings->heading ) {
-            $this->hasHeading = true;
-
-            isset($this->categorySettings->heading->title) ? $this->hasHeadingTitle = true : null;
-            isset($this->categorySettings->heading->lead) ? $this->hasHeadingLead = true : null;
+        if( ! $this->hasSettings('heading') )  {
+            return false;
         }
+
+        $this->hasHeading = true;
+        isset($this->categorySettings->heading->title) ? $this->hasHeadingTitle = true : null;
+        isset($this->categorySettings->heading->lead) ? $this->hasHeadingLead = true : null;
+    }
+
+    /**
+     * Determine if the current category has any specific settings
+     * provided via _settings.yaml.
+     * 
+     * @return boolean 
+     */
+    protected function hasSettings($key)
+    {
+        if( ! $this->categorySettings ) {
+            return false;
+        }
+
+        if( $key ) {
+            return $this->categorySettings->$key ? true : false;
+        } else {
+            return $this->categorySettings ? true : false;
+        }
+    }
+
+    /**
+     * Retrieve the available settings.
+     * 
+     * @return array
+     */
+    protected function getSettings($key)
+    {
+        if( $key ) {            
+            return $this->categorySettings->$key ?? null;
+        }
+
+        return $this->categorySettings;
+    }
+
+    /**
+     * When available in _settings.yaml, retrieves
+     * the specific markdown page that should be displayed as index.
+     * 
+     * @return string
+     */
+    protected function getIndexPage()
+    {
+        return $this->getSettings('index');
+    }
+
+    /**
+     * Determine if the current category has a specific index markdown
+     * specified in _settings.yaml.
+     * 
+     * @return boolean
+     */
+    protected function hasIndexPage()
+    {
+        return $this->hasSettings('index');
     }
 
     /**

@@ -3,8 +3,6 @@
         <?php echo sprintf('<a href="'.app_url().'"><img class="img-fluid" alt="'.app_name().'" src="%s"></a>', $appLogo); ?>
     <?php } else { ?>
     <a class="d-block" href="<?php echo app_url(); ?>">
-        <small class="d-block text-uppercase text-left text-dark" style="letter-spacing: 1px; font-family: courier; font-size:8px; margin-top:-10px; font-weight:normal;">
-        Currently in alpha-01</small>
         <svg style="margin-top:4px" viewBox="0 0 24 24" width="28" height="28" stroke="url(#gradient)" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
             <defs>
                 <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">

@@ -256,6 +256,10 @@ class BuildCommand extends Command
 
                 // Checking if there should be an external uri instead of the url
                 // of the directory. When provided it will replace the default.
+                $external = false;
+                if( isset($settings['menu']['redirect']) ) {
+                    $external = true;
+                }
                 $slug = $settings['menu']['redirect'] ?? $directorySlug;
                 $icon = $settings['menu']['icon'] ?? null;
 
@@ -272,10 +276,13 @@ class BuildCommand extends Command
 
                 // When provided, creates specific settings
                 // based on some keys that can be placed in _settings.yaml of the category.
+                // 
                 // Like Heading meta data (for showing a headline/lead while on page),
                 // Custom button links to be displayed on top/bottom and so on.
-                if( isset($settings['settings'])) {
-                    $this->categorySettingsView($slug, $settings['settings']);
+                if( ! $external ) {
+                    $specificIndex = isset($settings['index']) ? Str::slug($settings['index']) : null;
+                    $specificSettings = isset($settings['settings']) ?? null;
+                    $this->categorySettingsView($slug, $specificSettings, $specificIndex);
                 }
 
                 // Store it in search index

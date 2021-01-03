@@ -63,9 +63,10 @@ trait CategoryDetails
      * 
      * @return void
      */
-    protected function categorySettingsView($key, $settings)
+    protected function categorySettingsView($key, $settings, $index = null)
     {
         flywheel()->create([
+            'index' => $index,
             'heading' => $settings['heading'] ?? null,
         ], $key, '__settings', false);
     }
