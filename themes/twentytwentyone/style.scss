@@ -100,11 +100,6 @@ body {
     }
 }
 
-#sidebar--summary-wrapper {
-
-}
-
-
 /* Headlines in Contents */
 #article--side h1,
 #article--side h2 {
@@ -327,6 +322,14 @@ iframe {
             font-size: .9em;
             color: dimgrey;
         }
+    }
+}
+
+@media (max-width:575.98px){
+    .autoComplete_list {
+        position: fixed;
+        width: 90%;
+        left: 5%;
     }
 }
 

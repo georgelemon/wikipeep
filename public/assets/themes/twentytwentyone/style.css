@@ -243,6 +243,13 @@ iframe {
   color: dimgrey;
 }
 
+@media (max-width: 575.98px) {
+  .autoComplete_list {
+    position: fixed;
+    width: 90%;
+    left: 5%;
+  }
+}
 @keyframes pulse {
   0% {
     transform: scale(0.95);

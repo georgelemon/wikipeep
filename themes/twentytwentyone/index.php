@@ -15,8 +15,8 @@
                 ?>
                 <div class="row">
                     <div class="col-lg-12">
-                        <div id="article--side" class="pl-4 pr-5 pt-4 pb-5">
-                            <div class="row d-flex align-items-center my-5">
+                        <div id="article--side" class="pl-lg-4 pr-lg-5 pt-4 pb-5">
+                            <div class="row d-flex align-items-center my-lg-5 my-md-5 mt-0">
                                 <div class="col-lg-6">
                                     <h1 class="display-4 mb-0">This is WikiPeep.</h1>
                                     <h2 class="h3 font-weight-normal">The open source Wiki for busy Devs</h2>

@@ -19,7 +19,7 @@
                         }
                     ?>
                     <div id="article--side" class="<?php echo $articleViewColSize; ?> position-relative">
-                        <div class="px-5 pt-4 pb-5">
+                        <div class="px-lg-5 px-md-5 pt-4 pb-5">
                             <?php echo $this->contents['content'] ?>
                             <div class="article--meta mb-3 text-right text-muted">
                                 <small>Last update on <?php echo $this->getPublishedDate(); ?></small>
