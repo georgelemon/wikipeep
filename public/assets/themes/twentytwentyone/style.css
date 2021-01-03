@@ -69,6 +69,9 @@ body.theme-dark .form-control {
   font-weight: bold;
 }
 
+#searchbar--area {
+  width: 90%;
+}
 #searchbar--area input {
   border-radius: 45px;
 }
@@ -244,6 +247,23 @@ iframe {
 }
 
 @media (max-width: 575.98px) {
+  h1 {
+    font-size: 1.8em;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 0.5rem !important;
+  }
+
+  #app--theme--switcher svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  #searchbar--area {
+    width: 85%;
+  }
+
   .autoComplete_list {
     position: fixed;
     width: 90%;

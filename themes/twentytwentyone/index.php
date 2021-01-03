@@ -3,7 +3,6 @@
         width: 100% !important;
     }
 </style>
-<main>
     <div class="container-fluid">
         <div class="row">
             <?php echo $this->view('partials/globals/aside') ?>
@@ -176,4 +175,3 @@
             </div>
         </div>
     </div>
-</main>

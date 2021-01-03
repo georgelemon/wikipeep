@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo meta_title(); ?></title>
-    <?php echo getStylesheetTag(); ?>
     <link type="text/css" rel="stylesheet" href="<?php echo asset('assets/css/bootstrap-5.0.0-alpha.min.css'); ?>">
+    <?php echo getStylesheetTag(); ?>
     <!-- <link href="/assets/css/rainbow.css"> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@8.1.1/dist/css/autoComplete.min.css">
     <style type="text/css">
