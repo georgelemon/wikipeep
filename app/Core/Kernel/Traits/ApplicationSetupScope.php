@@ -14,11 +14,12 @@ trait ApplicationSetupScope {
      */
     private function setupEnvironment() : void
     {
-        try {
+        if( is_file(ROOT_PATH . '/.env') ) {
             $env = Dotenv::createImmutable(ROOT_PATH);
-            $env->load();
-        } catch (Exception $e) {
-            die($e->getMessage());
+            $env->load();     
+        } else {
+            print 'The <code>.env</code> file is missing from your project. Copy from <code>.env.sample</code> to <code>.env</code>';
+            exit;
         }
 
     }
