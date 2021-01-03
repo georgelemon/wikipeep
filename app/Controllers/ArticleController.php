@@ -18,10 +18,11 @@ class ArticleController extends BaseController {
         $directory = request()->segment(1);
         $articleId = request()->segment(2);
 
-        // In case the article id is /index it will redirect to root of the category
-        // in order to prevent duplicated contents.
-        if( $articleId === 'index' ) {
-            return response()->redirect($directory);
+        // When the category has a specific article set as index,
+        // we need to prevent accessing the specific article from being
+        // accessed as standalone. So, instead of redirect, or access that, it will throw a 404
+        if( $articleId === $directory ) {
+            return $this->layout('404', 'base');
         }
 
         // Try retrieve the article based on the ID provided from Request
