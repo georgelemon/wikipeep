@@ -123,14 +123,6 @@ function session() {
 }
 
 /**
- * Deterime if the current user is logged in
- * @return bool
- */
-function is_loggedin() {
-    return call_user_func([new App\Middleware\Auth, 'is_loggedin']);
-}
-
-/**
  * Get the current screen based on request
  * @return bool
  */
@@ -158,34 +150,6 @@ if( ! function_exists('route') ) {
  */
 function icon(string $key = null, array $attr = [], $library = 'feather') {   
     return Ethos\Dessert\Library::getInstance($library)->render($key, $attr);
-}
-
-/**
- * [excerpt description]
- * @param  string $content [description]
- * @param  string $slug    [description]
- * @return [type]          [description]
- */
-function excerpt(string $content, string $slug)
-{
-    if (strlen($content) > 120) {
-        
-       return substr($content, 0, 120) . '...';
-    }
-
-    return $content;
-}
-
-/**
- * Format dates from one type to other.
- * 
- * @return string
- */
-function get_formatted_date($strDate, $fromFormat, $toFormat, string $timezone = null)
-{
-    $date = DateTime::createFromFormat($fromFormat, $strDate);
-    $date->setTimezone( new DateTimeZone( $timezone ?? config()->get('app.timezone') ) );
-    return $date->format(config()->get('app.date_format'));
 }
 
 /**
@@ -314,12 +278,6 @@ function getApplicationSettings()
         $vers = 10; // default version
     }
 
-
-    // Try get the version of the search results from disk
-    // if( $filesystem->exists(STORAGE_PATH . '') ) {
-    //     // $version = 
-    // }
-
     return sprintf('<script>const __settings = %s</script>', json_encode([
                 // The URL of the app
                 'app_url' => uri()->base(),
@@ -342,4 +300,32 @@ function getApplicationSettings()
                 // Retrieve the cookie disclaimer message
                 'cookie_disclaimer' => getCookeDisclaimer()
         ]));
+}
+
+/**
+ * [excerpt description]
+ * @param  string $content [description]
+ * @param  string $slug    [description]
+ * @return [type]          [description]
+ */
+function excerpt(string $content, string $slug)
+{
+    if (strlen($content) > 120) {
+        
+       return substr($content, 0, 120) . '...';
+    }
+
+    return $content;
+}
+
+/**
+ * Format dates from one type to other.
+ * 
+ * @return string
+ */
+function get_formatted_date($strDate, $fromFormat, $toFormat, string $timezone = null)
+{
+    $date = DateTime::createFromFormat($fromFormat, $strDate);
+    $date->setTimezone( new DateTimeZone( $timezone ?? config()->get('app.timezone') ) );
+    return $date->format(config()->get('app.date_format'));
 }
