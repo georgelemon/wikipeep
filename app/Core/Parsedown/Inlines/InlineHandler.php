@@ -193,7 +193,7 @@ trait InlineHandler
             // Look for URL Anchor types
             if( $this->hasAnchor($matches[1]) ) {
                 if( $title = $Element['handler']['argument'] ) {
-                    $Element['attributes']['id'] = $this->makeAnchorUrl($matches[1], $title);
+                    $Element['attributes']['name'] = $this->makeAnchorUrl($matches[1], $title);
                 }
             }
 
