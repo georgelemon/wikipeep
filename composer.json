@@ -1,8 +1,8 @@
 {
-    "name": "georgelemon/loopless",
-    "description": "The application template of the Lowless framework.",
+    "name": "georgelemon/wikipeep",
+    "description": "Open source wiki for busy devs",
     "type": "project",
-    "license": "MIT",
+    "license": "GPLv3",
     "authors": [
         {
             "name": "George Lemon",
@@ -12,10 +12,12 @@
     "minimum-stability": "dev",
     "require": {
         "php": "^7.4|^8.0",
-        "georgelemon/loopless-framework": "dev-main",
-        "jamesmoss/flywheel": "dev-master",
+        "symfony/yaml": "5.x-dev",
         "symfony/console": "5.x-dev",
-        "symfony/yaml": "5.x-dev"
+        "illuminate/filesystem": "8.21.0",
+        "jamesmoss/flywheel": "dev-master",
+        "georgelemon/loopless-framework": "dev-main",
+        "georgelemon/dessert": "1.3"
     },
     "autoload": {
         "psr-4": {
