@@ -78,11 +78,11 @@ class CategoryController extends BaseController
         if( $contents = $this->getCategoryListing() ) {
             // return the view according to view type, whether is a listing type
             // or, with a specific index page via _settings.yaml
-            $screenType = $this->hasIndexPage() ? 'home' : 'category';
-            return $this->layout($screenType, 'base', $contents);
+            $screenType = $this->hasIndexPage() ? 'article-screen' : 'category';
+            return response($this->layout($screenType, 'base', $contents));
         }
 
-        return $this->layout('404', 'public');
+        return response($this->layout('404', 'public'), 404);
     }
 
     /**

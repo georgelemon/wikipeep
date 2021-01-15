@@ -22,15 +22,15 @@ class ArticleController extends BaseController {
         // we need to prevent accessing the specific article from being
         // accessed as standalone. So, instead of redirect, or access that, it will throw a 404
         if( $articleId === $directory ) {
-            return $this->layout('404', 'base');
+            return response($this->layout('404', 'base'), 404);
         }
 
         // Try retrieve the article based on the ID provided from Request
         if( $this->article = flywheel()->getById($articleId, $directory)) {
-            return $this->layout('home', 'base', $this->article);
+            return response($this->layout('article-screen', 'base', $this->article));
         }
 
-        return $this->layout('404', 'base');
+        return response($this->layout('404', 'base'), 404);
     }
 
     protected function getPublishedDate()

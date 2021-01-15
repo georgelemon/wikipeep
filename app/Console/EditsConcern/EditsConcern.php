@@ -2,7 +2,7 @@
 
 namespace App\Console\EditsConcern;
 
-use App\Core\Parsedown\Parsedown;
+use App\Parsedown\Parsedown;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**

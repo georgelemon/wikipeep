@@ -33,7 +33,7 @@ function getCurrentCategory()
  */
 function getAsideNavigation()
 {
-
+    $items = '';
     if( $navigation = flywheel()->getNavigation() ) {
         foreach ($navigation as $key => $nav) {
             
@@ -54,8 +54,10 @@ function getAsideNavigation()
                 $separator = sprintf('item-separator="%s"', $separator);
             }
 
-            echo sprintf('<li%4$s %5$s><a href="%1$s">%3$s %2$s</a></li>', $slug, $nav->label, $icon, $activeCat, $separator);
+            $items .= sprintf('<li%4$s %5$s><a href="%1$s">%3$s %2$s</a></li>', $slug, $nav->label, $icon, $activeCat, $separator);
         }
+
+        return $items;
     }
 }
 
