@@ -1,27 +1,7 @@
 <?php
-
-/**
- * Define the current environment (default: production).
- * @see !IMPORTANT: Do not leave the app with local env in production
- */ 
 define('ENV', 'local');
-
-// Directory Separator shortcut
 define('DS', DIRECTORY_SEPARATOR);
-
-// Autoloading namespaces & package dependencies
-require_once __DIR__ . DS . 'vendor/autoload.php';
-
-// Error handling
-set_exception_handler(['App\Core\ErrorExceptionHandler', 'exception']);
-set_error_handler(['App\Core\ErrorExceptionHandler', 'native']);
-register_shutdown_function(['App\Core\ErrorExceptionHandler', 'shutdown']);
-
-require_once __DIR__ . DS . 'app/helper.php';
-require_once __DIR__ . DS . 'app/debug.php';
-
 define('APP_VERSION', '1.0.0');
-define('ROOT_PATH', __DIR__);
 define('APP_PATH', ROOT_PATH . DS . 'app');
 define('CONFIG_PATH', ROOT_PATH . DS . 'config');
 define('STORAGE_PATH', ROOT_PATH . DS . 'storage');
@@ -33,9 +13,19 @@ define('VENDOR_PATH', ROOT_PATH . DS . 'vendor');
 define('THEMES_PATH', ROOT_PATH . DS . 'themes');
 define('CONTENT_PATH', ROOT_PATH . DS . 'content');
 
+require_once __DIR__ . DS . 'vendor/autoload.php';
+
 // Initialize the Application with the current setup
-$app = App\Core\Kernel\Application::instance();
+$app = App\Application::instance();
 $app->setup();
+
+// Error handling
+set_exception_handler(['Loopless\Kernel\ErrorExceptionHandler', 'exception']);
+set_error_handler(['Loopless\Kernel\ErrorExceptionHandler', 'native']);
+register_shutdown_function(['Loopless\Kernel\ErrorExceptionHandler', 'shutdown']);
+
+// The debug handler
+require_once ROOT_PATH . 'app/debug.php';
 
 // Set default timezone based on application config
 date_default_timezone_set(config()->get('app.timezone')); 

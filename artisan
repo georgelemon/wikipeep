@@ -1,19 +1,14 @@
 #!usr/bin/env php
 <?php
 
+define('ROOT_PATH', __DIR__);
+define('DS', DIRECTORY_SEPARATOR);
+define('VERSION', '1.0.0');
 require __DIR__.'/vendor/autoload.php';
 
 use App\Console\Console;
 use Symfony\Component\Console\Application as SymfonyApplication;
 
-/**
- * Redefine all the system constants
- */
-define('DS', DIRECTORY_SEPARATOR);
-require_once __DIR__ . DS . 'app/helper.php';
-define('VERSION', '1.0.0');
-
-define('ROOT_PATH', __DIR__);
 // While in blindmode (Artisan Console) we don't need the real public path,
 // but will overwrite the PUBLIC_PATH value with the root path.
 define('APP_PATH', ROOT_PATH . DS . 'app');
@@ -29,7 +24,7 @@ define('VENDOR_PATH', ROOT_PATH . DS . 'vendor');
 /**
  * Initialize the Application with the current setup
  */
-$app = App\Core\Kernel\Application::instance();
+$app = App\Application::instance();
 $app->headless();
 
 // Set default time based on location input
