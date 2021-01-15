@@ -12,7 +12,7 @@ class EndpointSearchController
     public function get()
     {
         if( $output = flywheel()->getById('__search-results', '__search', null) )  {
-            return print response()->json($output->results);
+            return response()->json($output->results);
         }
         
         return print response()->json(['status' => '404']);

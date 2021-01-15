@@ -2,7 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Core\Parsedown\Parsedown;
+use App\MarkdownFinder;
+use App\Parsedown\Parsedown;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,7 +16,7 @@ class BuildCommand extends Command
     /**
      * @var Finder Instance
      */
-    protected $compiler;
+    protected $finder;
 
     /**
      * @var array
@@ -110,7 +111,7 @@ class BuildCommand extends Command
         // so we can easily track things.
         $this->setDatabaseIndexStatement();
 
-        $this->compiler = new Compiler;
+        $this->finder = new MarkdownFinder;
 
         if( $this->databaseIndexExists() ) {
             $content = $this->finderGetContents();
