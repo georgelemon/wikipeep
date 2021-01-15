@@ -1,9 +1,9 @@
-<?php $this->view('globals/head'); ?>
+<?php echo $this->view('globals/head'); ?>
 <main>
     <div class="container-fluid">
         <div class="row">
-            <?php $this->view($this->fileview); ?>
+            <?php echo $this->view($this->fileview); ?>
         </div>
     </div>
 </main>
-<?php $this->view('globals/foot'); ?>
+<?php echo $this->view('globals/foot'); ?>
