@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Core\Compiler;
 use App\Core\Parsedown\Parsedown;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
