@@ -58,3 +58,25 @@ function getAsideNavigation()
         }
     }
 }
+
+/**
+ * Format dates from one type to other.
+ * 
+ * @return string
+ */
+function get_formatted_date($strDate, $fromFormat, $toFormat, string $timezone = null)
+{
+    $date = DateTime::createFromFormat($fromFormat, $strDate);
+    $date->setTimezone( new DateTimeZone( $timezone ?? config()->get('app.timezone') ) );
+    return $date->format(config()->get('app.date_format'));
+}
+
+/**
+ * Get a basic, readable formatted date 
+ * @return string
+ */
+function get_date($strDate)
+{
+    $date = new DateTime($strDate);
+    return $date->format(config()->get('app.date_format'));
+}
