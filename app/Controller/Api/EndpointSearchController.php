@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Api;
+namespace App\Controller\Api;
 
 class EndpointSearchController
 {

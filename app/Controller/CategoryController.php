@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controller;
 
-use App\Core\Paginator;
+use App\Paginator;
 use Illuminate\Support\Str;
 
 class CategoryController extends BaseController
