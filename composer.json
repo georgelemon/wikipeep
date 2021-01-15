@@ -12,12 +12,9 @@
     "minimum-stability": "dev",
     "require": {
         "php": "^7.4|^8.0",
-        "symfony/yaml": "5.x-dev",
         "symfony/console": "5.x-dev",
-        "illuminate/filesystem": "8.21.0",
         "jamesmoss/flywheel": "dev-master",
-        "georgelemon/loopless-framework": "dev-main",
-        "georgelemon/dessert": "1.3"
+        "georgelemon/loopless-framework": "dev-main"
     },
     "autoload": {
         "psr-4": {
