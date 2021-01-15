@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Paginator;
+use Loopless\Support\Paginator;
 use Illuminate\Support\Str;
 
 class CategoryController extends BaseController
