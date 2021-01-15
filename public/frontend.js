@@ -154,10 +154,12 @@ async function updateBrowserLocalStorage()
 // for storing as Local Storage to the user's browser.
 async function fetchSearchResults()
 {
-    await fetch(SearchEndpoint).then(function (response) {
+    await fetch(SearchEndpoint, {
+        method: 'GET',
+        cache: 'force-cache'
+    }).then(function(response) {
         return response.json();
     }).then(function (getSearchData) {
-
         LocalDatabase.search_results.bulkAdd(getSearchData).then(function() {
             return LocalDatabase.search_results.orderBy('title').toArray();
         }).then(function (results) {
