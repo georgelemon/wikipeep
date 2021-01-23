@@ -34,6 +34,12 @@ return [
     'date_format' => env('DATE_FORMAT', 'l jS \of F Y h:i:s A'),
 
     /**
+     * Default language. It must match with a language
+     * directory name under /locale/ directory
+     */
+    'default_locale' => 'en_GB',
+    
+    /**
      * Appearance Settings
      */
     'theme_settings' => [
