@@ -1,59 +1,50 @@
-![Loopless Micro App Framework](.github/loopless-cover.png)
+**WikiPeep is still in heavy development. The UI is still buggy and basic functionalities needs more tests**<br>
+**Wait for the first official release prepared for mid-January.**
 
-## Loopless
-**A minimal PHP framework for developing front-end web applications**. Loopless main scope is to be an API consumer and to stay wired to your whatever backend apps (one or more) with the possibility of caching results for later use. But it can be also used as a static & standalone app (see WikiPeep project).
+![Landing page of WikiPeep](.github/wikipeep_screen.png)
 
-Out of the box, Loopless comes with a MVC structure (without a database setup), a simple Router with dependency injection support, Response & Request handler, a Configuration Array in Laravel style and that's it! Ah, and of course comes with GuzzleHttp Support so in case you get it via composer you can make API connections easily.
+**[Demo: WikiPeep 1.0 in action](https://georgelemon.com/wikipeep/)**
 
-It is highly recommended for creating front-end apps, small to medium websites.<br>
-Fully Object Oriented, with Composer support - all you need is creativity. 🤪
+# Installing
 
+You will need PHP 7.4 (**recommended ^8.0**). Since **WikiPeep** is a flat file database you don't have to setup any kind of database. Instead, we use [Flywheel](https://github.com/jamesmoss/flywheel) to read/write data and serve JSON file based.
 
-### Roadmap
-- [x] SVG Icon renderer via XML with Dessert Library
-- [x] Make Github Template with the Application structure
-- [x] Separate Application from Loopless Core
-- [x] Response / Request handler based on Symfony Http Foundation
-- [x] Session Storage via Symfony Http Foundation
-- [x] Simple Router (based on Bramus Router) with some modifications so it can resolve Depdendency Injections.
-- [x] Theme support
-- [x] Coding HTML from PHP with Emmet syntax to keep things minimal
-- [ ] Guzzle Client Support
-- [ ] Add personal projects made with Loopless (almost there)
+```bash
+git clone https://github.com/georgelemon/wikipeep.git
+composer install
+```
 
-### Projects made w/ Loopless
-If you made something cool with Loopless, let me know by creating an issue and I will put it here! In case you need some inspiration have a look at the folowing projects I made <3
+When clonning, by default there is no content inside <code>content</code> directory. If you want to have a content starter you can clone the official WikiPeep documentation repo inside of <code>content</code> directory. Be sure
 
-#### [WikiPeep](https://georgelemon.com/projects/wikipeep/) - An Open Source Wiki for Busy Devs. <kbd>WIP</kbd>
-Powered by Loopless, Symfony Console, Markdown and JSON. Using WikiPeep you can create modern wiki documentation without dealing with databases. [Github Repository](https://github.com/georgelemon/wikipeep) <code>GPLv3</code>
+```
+rm -rf content
+git clone https://github.com/georgelemon/wikipeep-contents.git content
+```
 
-#### [Kampánia](https://georgelemon.com/projects/kampania) - Your Mailchimp Campaign builder Assistant. <kbd>WIP</kbd>
-Originally made for a private luxury villa rentals company. The main task was to give to non technical people the chance to run Mailchimp campaigns without touching the code.
+Once you got the contents you can make your first build via <code>cli</code> using artisan <3
+```
+php artisan publish:all
+```
 
-**Kampánia is not a drag and drop builder**,  instead, requires a front-end developer / designer to create  premade templates based on <code>MJML</code> & <code>Placeholders</code>, and make them available in Kampánia Stacks so marketing teams can do their job without worrying they screw up with something 😂 [Github Repository](https://github.com/georgelemon/kampania) <code>AGPL</code>
+Check available commands by running
+```
+php artisan
+```
 
+**[Full documentation, of course, available on WikiPeep](https://georgelemon.com/wikipeep/)**
 
-### My Open Source Projects
-🌀 [Loopless](https://github.com/georgelemon/loopless) <code>PHP</code> <kbd>MIT</kbd><br>
-Minimal web framework for micro apps
+_NOTE: WikiPeep is not made with Laravel or Symfony. It just use some components like Symfony Console, HttpFoundation, Illuminate Filesystem, Support and so on._
 
-🤟 [WikiPeep](https://github.com/georgelemon/wikipeep) <code>PHP</code> <kbd>GPLv3</kbd><br>
-Open source Wiki for busy dev. Developed on Loopless.
+### Running on local
+As I said, WikiPeep does not require a database or any complex setup. In fact, you can use it directly on your local and run it with [the built-in PHP web server](https://www.php.net/manual/en/features.commandline.webserver.php) - with whatever port you want:
+```
+php -S localhost:7575
+# [Thu Dec 31 17:15:34 2020] PHP 8.0.0 Development Server (http://localhost:7575) started
+```
 
-💌 [Kampánia](https://github.com/georgelemon/kampania) <code>PHP</code> <kbd>AGPLv3</kbd><br>
-Your Mailchimp Campaign Assistant. Developed on Loopless.
+#### Debugging and Error Handlers
+By default, WikiPeep comes with a minimal and nice Error Handler that gets triggered when you're in development environment.
 
-🦚 [Feedpuff](https://github.com/feedpuff) <code>PHP</code> <kbd>AGPLv3</kbd><br>
-Your personal feedreader adapted to the present needs. Developed on Loopless.
+For more tips & things - [Go & read WikiPeep documentation](https://georgelemon.com/wikipeep) which is also the best demo and showcase.
 
-🧐 [Ego](https://github.com/georgelemon/ego) <code>JS</code> <kbd>GPLv3</kbd><br>
-The content editor that really lets you write. Based on Electron. Available for Linux, Mac and Windows.
-
-🍰 [Dessert](https://github.com/georgelemon/dessert) <code>PHP</code> <kbd>MIT</kbd><br>
-Server Side Builder, Renderer & Manager for all your Icon Libraries that replace Webfonts or heavy Javascript libraries. Instead, it collects all your icons and store them as XML collections and render on request in no-time!
-
-🚀 [Camino.js](https://github.com/georgelemon/camino.js) <code>PHP</code> <kbd>MIT</kbd><br>
-A fluent PHP API library that lets you write Vanilla JavaScript code directly from PHP.
-
-### Do you have a nice project in mind?
-Let's collaborate! Send me your thoughts on [georgelemon.com](https://georgelemon.com)
+**WikiPeep is still in heavy development. Wait for the first official release.**
