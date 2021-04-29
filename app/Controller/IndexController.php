@@ -11,13 +11,9 @@ class IndexController extends BaseController {
 
         $getSvgScreen = app()->config()->get('welcome.empty_screen');
         
-        /**
-         * Return view with the results
-         */
-        return response(
-                $this->layout('index', 'base', [
+        return response($this->layout('index', 'base', [
                     'title' => 'Thanks for using WikiPeep',
-                    'content' => 'The open source Wiki for busy developers. ' . $getSvgScreen
+                    'content' => 'OpenSource Wiki for Busy Devs. ' . $getSvgScreen
                 ])
             );
     }

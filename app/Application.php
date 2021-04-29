@@ -2,11 +2,14 @@
 
 namespace App;
 
-use Loopless\Kernel\Application as LooplessApp;
+use Loopless\Kernel\Application as BaseApplication;
 
-class Application extends LooplessApp
+class Application extends BaseApplication
 {
 
+    /**
+     * @var App\Flywheel
+     */
     protected $flywheel;
 
     /**
@@ -22,7 +25,7 @@ class Application extends LooplessApp
     }
 
     /**
-     * Used by Symfony Console, it registers only
+     * Used by Symfony Console. Using only
      * the configuration files so it can be used via terminal.
      * 
      * @return void
@@ -34,6 +37,11 @@ class Application extends LooplessApp
         $this->registerConfigurationFiles();
     }
 
+    /**
+     * Return the instantited Flywheel.
+     * 
+     * @return App\Flywheel
+     */
     public function flywheel()
     {
         return $this->flywheel;
