@@ -1,22 +1,5 @@
 composer.phar
 /vendor/
-
-# Commit your application's lock file https://getcomposer.org/doc/01-basic-usage.md#commit-your-composer-lock-file-to-version-control
-# You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file
-# composer.lock
+/storage/*
 .env
-/storage/**
-!/storage/.gitkeep
-# Temporary. Prevents ignore for dessert storage
-!/storage/dessert
-!/storage/dessert/**
-
-# Ignore index.php located in public directory
-/public/index.php
-
-# Ignore anything inside of content directory, except README.md
-# By default, WikiPeep documentation should stay separate from the main repo.
-# It is recommended to create your own repo for your Markdown contents,
-# and to pull them inside /content directory
-/content/**
-#!/content/README.md
+content
