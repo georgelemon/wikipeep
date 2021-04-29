@@ -1,6 +1,10 @@
 <?php
 
 return [
+    /**
+     * Log reporter. If set true, it will create a 'log' directory
+     * used for saving all errors that may occur when in production.
+     */
     'report' => true,
     'log'    => function ($e) {
         $data = [

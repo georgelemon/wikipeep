@@ -2,12 +2,12 @@
 
 return [
     /**
-     * The base URI of the basic API
+     * The base API Endpoint
      */
     'base' => 'api',
 
     /**
-     * The base URI for getting search results
+     * The Search API Endpoint
      */
     'search' => 'search',
 
