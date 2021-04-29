@@ -5,7 +5,9 @@ namespace App\Controller\Api;
 class EndpointSearchController
 {
     /**
-     * The GET method for retrieving the search results
+     * The GET method for retrieving the search results from
+     * compiled flat file JSON and create an API endpoint
+     * so it can be used for search & autocomplete feature.
      * 
      * @return Response JSON Endpoint
      */
