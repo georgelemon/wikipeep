@@ -21,14 +21,13 @@ define('VIEWS_PATH', APP_PATH . DS . 'Views');
 define('PUBLIC_PATH', ROOT_PATH);
 define('VENDOR_PATH', ROOT_PATH . DS . 'vendor');
 
-/**
- * Initialize the Application with the current setup
- */
+// Initialize the Application in headless mode
 $app = App\Application::instance();
 $app->headless();
 
-// Set default time based on location input
+// Set default time based on current configuration
 date_default_timezone_set(config()->get('app.timezone')); 
 
+// Initialize Symfony Console and list available commands.
 $console = new Console(new SymfonyApplication("👋 Running WikiPeep version " . VERSION), null);
 $console->run();
