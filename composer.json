@@ -1,12 +1,12 @@
 {
     "name": "georgelemon/wikipeep",
-    "description": "Open source wiki for busy devs",
+    "description": "Open Source Wiki for Busy Devs",
     "type": "project",
     "license": "GPLv3",
     "authors": [
         {
             "name": "George Lemon",
-            "email": "hi@georgelemon.com"
+            "email": "georgelemon@protonmail.com"
         }
     ],
     "minimum-stability": "dev",
