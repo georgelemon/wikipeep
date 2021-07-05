@@ -1,12 +1,92 @@
-**This is the Node branch where we'll switch from PHP to NodeJS & Nim.**
+# Hey Wikipeep!
+Open Source Wiki for Busy Devs.
 
-# The plan
-Develop Wikipeep using NodeJS and Nim language.
+Wikipeep is a high performant platform for creating fast and beautiful wiki documentation websites for your projects.
 
-Wikipeep will be based on an in-house micro-framework written in Node (WIP) with some components written in Nim and imported to NodeJS via native addons.
+**This branch represents the new direction of Wikipeep.** Currently in heavy development. This is a monorepo containing code sources for backend, frontend and the command line interface.
 
-Wikipeep will be a flat file Documentation platform based on Markdown and git. Will make use of IndexedDB from modern Browsers and will come with a built-in CLI written in Nim.
+# Key features
+- [ ] Flat file database
+- [x] Secured by default (no dashboard interface)
+- [x] High Performant based on Jester, written in Nim
+- [ ] Command Line Interface
+- [ ] **IndexedDB Storage** (Client side)
+- [ ] Fast Persistent `key / value` store based on **Nimdbx & Libmdbx** (Server side)
+
+## Backend
+Wikipeep backend is written in Nim, powered by Jester framework.
+
+## Frontend
+The frontend is fully made with Vanilla JavaScript, packed & minified with Rollup.js.
+
+## CLI
+The command line interface is written in Nim, powered by Klymene and provides full access to your Wikipeep instance.
 
 
-# The CLI
-Since there is no plan to create an dashboard interface, the CLI will be only way to build and manage contents.
+# Install on Production
+For intalling Wikipeep on a server is highly recommended to use NGINX as a reverse proxy for Wikipeep application.
+
+Once you have NGINX installed on your server, you will need to configure it. Create a wiki.website.com file (replace the hostname with your wikipeep hostname) inside /etc/nginx/sites-available/.
+
+```bash
+server {
+        server_name wiki.website.com;
+        autoindex off;
+
+        location / {
+                proxy_pass http://127.0.0.1:6533;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real_IP $remote_addr;
+        }
+}
+```
+
+For activating the NGINX server block create a symlink and place it in `sites-enabled` directory.
+```bash
+ln -s /etc/nginx/sites-avilable/wiki.website.com /etc/nginx/sites-enabled/wiki.website.com
+```
+
+Once symlinked, you can restart NGINX service
+```bash
+service nginx restart
+# or try with sudo
+sudo service nginx restart
+# or if you have nginx cli installed
+sudo nginx -s reload
+```
+
+# Systemd Service
+For keeping your Wikipeep instance always live after a crash or a server boot, you'll need to create a `systemd` service for it.
+
+```bash
+[Unit]
+Description=wikipeep
+After=network.target httpd.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Change paths to correspond with your Wikipeep path
+WorkingDirectory=/home/<user>/wikipeep/
+ExecStart=/usr/bin/stdbuf -oL /home/<user>/wikipeep/server
+# Restart when crashes.
+Restart=always
+RestartSec=1
+# Create a limited user group or use www-data
+User=<user>
+# StandardOutput=syslog+console
+# StandardError=syslog+console
+
+[Install]
+WantedBy=multi-user.target
+```
+
+After creating `systemd` service file you can enable and start the service
+```bash
+systemctl enable wikipeep
+systemctl start wikipeep
+```
+For checking the service status
+```bash
+systemctl status wikipeep
+```
