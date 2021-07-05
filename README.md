@@ -6,22 +6,26 @@ Wikipeep is a high performant platform for creating fast and beautiful wiki docu
 **This branch represents the new direction of Wikipeep.** Currently in heavy development. This is a monorepo containing code sources for backend, frontend and the command line interface.
 
 # Key features
-- [ ] Flat file database
-- [x] Secured by default (no dashboard interface)
-- [x] High Performant based on Jester, written in Nim
+- [ ] Flat File Database
 - [ ] Command Line Interface
+- [x] Secured by default (no dashboard interface)
+- [x] High Performant based on **Jester**, written in **Nim**
+- [ ] Fast search w/ **Typesense**
 - [ ] **IndexedDB Storage** (Client side)
 - [ ] Fast Persistent `key / value` store based on **Nimdbx & Libmdbx** (Server side)
+- [ ] Dark & Light theme
+- [ ] SEO Botland (Text/Markup only renderer for SEO bots)
+- [x] Open Source under GPLv3
+
 
 ## Backend
-Wikipeep backend is written in Nim, powered by Jester framework.
+Wikipeep backend is a REST API and server written in Nim, powered by Jester framework. It is also used for frontend routing and as a Botland for rendering Text/Markup only contents for SEO bots.
 
 ## Frontend
-The frontend is fully made with Vanilla JavaScript, packed & minified with Rollup.js.
+The frontend is fast and fully made with Vanilla JavaScript, packed & minified with Rollup.js.
 
 ## CLI
-The command line interface is written in Nim, powered by Klymene and provides full access to your Wikipeep instance.
-
+From command line interface you can control your Wikipeep instance. Is written in Nim, powered by Klymene and provides full access to your Wikipeep, contents and settings.
 
 # Install on Production
 For intalling Wikipeep on a server is highly recommended to use NGINX as a reverse proxy for Wikipeep application.
