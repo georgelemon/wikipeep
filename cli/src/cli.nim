@@ -1,5 +1,26 @@
-# This is just an example to get you started. A typical binary package
-# uses this file as the main entry point of the application.
+import clymene
+
+let sheet = """
+Wikipeep 🤟 Open Source Wiki for Busy Devs
+
+Usage:
+    wikipeep status                       # Determine if there are any unpublished changes #
+    wikipeep publish <status>             # Compile markdown contents and publish for 'new' or 'updates' #
+    wikipeep make <visibility>            # Make your Wikipeep instance private or public #
+    wikipeep (-h | --help)
+    wikipeep (-v | --version)
+
+Options:
+    -h --help        Show this screen.
+    -v --version     Show version.
+"""
 
 when isMainModule:
-  echo("Hello, World!")
+    let args = docopt(sheet, version = "Wikipeep 0.1.0")
+
+    if args["status"]:
+        echo "get status"
+    elif args["publish"]:
+        echo "publishing"
+    elif args["make"]:
+        echo "change the wikipeep visibility"
