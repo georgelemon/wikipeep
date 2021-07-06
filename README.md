@@ -1,6 +1,6 @@
 <p align="center"><img src="https://github.com/georgelemon/wikipeep/blob/node/.github/wikipeep.png" width="200px" alt="Wikipeep"><br><strong>Wikipeep is a high performant platform<br> for creating fast & beautiful wiki documentations for your projects (WIP)</strong></p>
 
-Currently in heavy development. This is a monorepo containing code sources for `backend`, `frontend` and the `command line interface`.
+Currently in heavy development. This is a monorepo containing the source code for `backend`, `frontend` and `command line interface`.
 
 # Key features
 - [ ] SQLite or PostgreSQL
