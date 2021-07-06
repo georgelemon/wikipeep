@@ -1,4 +1,5 @@
 import clymene
+import ./commands/[status, publish, make]
 
 let sheet = """
 Wikipeep 🤟 Open Source Wiki for Busy Devs
@@ -21,6 +22,6 @@ when isMainModule:
     if args["status"]:
         echo "get status"
     elif args["publish"]:
-        echo "publishing"
+        echo publish.command(args)
     elif args["make"]:
         echo "change the wikipeep visibility"

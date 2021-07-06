@@ -1,5 +1,5 @@
-import json
-import asyncdispatch, jester, os, strutils
+import json, os, strutils, asyncdispatch, jester
+import backend/controller
 
 proc getSectionByName(section:string): string =
     ## Retrieve the section name from URL
@@ -9,59 +9,48 @@ proc getArticleByName(article:string): string =
     ## Retrieve the article slug from URL
     return article
 
+# https://github.com/omrilotan/isbot/blob/main/index.js
+# proc isBot(agent:string): bool =
+    ## Determine if current request is made by a bot.
+    # return agent
+
+# proc sendResponse() =
+    ## Send HTTP Response
+    ## For SEO bots will serve only text/markup contents
+
 ## Register Wikipeep routes
 router routes:
     # GET Method for home page
     get "/":
-        resp "It's alive!"
-
-    # GET Method for retrieving a single article page
-    get "/@section/@article":
-        resp(getSectionByName(@"section")&" "&getArticleByName(@"article"))
+        controller.viewHomepage()
 
     # GET Endpoint for root api
     get "/backdoor":
-        const data = $(%*{
-                "status": 200,
-                "version": "0.1.0",
-                "description": "Wikipeep | Fast & Open source wiki platform for busy devs",
-                "about": {
-                    "github": "https://github.com/georgelemon/wikipeep",
-                    "documentation": "https://github.com/georgelemon/wikipeep/wiki",
-                    "powered_by": "🃏 Jester Framework | Written in Nim",
-                    "license": "GPLv3",
-                }
-            })
-        resp(data, "application/json")
+        controller.rest("index")
 
-    # GET Endpoint for retrieving published articles
+    # GET Endpoint for retrieving articles
     get "/backdoor/articles":
-        var data = $(%*{
-                "status": 200,
-                "entries": [],
-            })
+        controller.rest("articles")
 
-    # GET Endpoint for retrieving Wikipeep sections
+    # GET Endpoint for retrieving sections
     get "/backdoor/sections":
-        var data = $(%*{
-                "status": 200,
-                "entries": [],
-            })
+        controller.rest("sections")
+
+    # # GET Method for retrieving a single article page
+    # get "/@section/@article":
+    #     resp(getSectionByName(@"section")&" "&getArticleByName(@"article"))
 
     # GET Endpoint for retrieving Wikipeep settings
     get "/backdoor/settings":
-        var data = $(%*{
-                "status": 200,
-                "entries": [],
-            })
+        controller.rest("settings")
     
     # Handle 404 Errors
     error Http404:
-        resp Http404, "Looks you took a wrong turn somewhere."
+        resp Http404, "404 | Looks you took a wrong turn somewhere."
 
     # Handle 500 Errors
     error Exception:
-        resp Http500, "Something bad happened: " & exception.msg
+        resp Http500, "500 | Something bad happened: " & exception.msg
 
 ## Start Server procedure
 ## By default Wikipeep will boot on port 6531
