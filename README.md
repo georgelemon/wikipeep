@@ -1,4 +1,4 @@
-<p align="center"><img src="https://github.com/georgelemon/wikipeep/blob/node/.github/wikipeep.png" width="255px" alt="Wikipeep"><br><strong>Wikipeep is a high performant platform<br> for creatingfast & beautiful wiki documentations for your projects (WIP)</strong></p>
+<p align="center"><img src="https://github.com/georgelemon/wikipeep/blob/node/.github/wikipeep.png" width="200px" alt="Wikipeep"><br><strong>Wikipeep is a high performant platform<br> for creatingfast & beautiful wiki documentations for your projects (WIP)</strong></p>
 
 Currently in heavy development. This is a monorepo containing code sources for `backend`, `frontend` and the `command line interface`.
 
@@ -165,8 +165,11 @@ For checking the service status
 systemctl status wikipeep
 ```
 </details>
+<<<<<<< HEAD
 
 _New to Nim? Nim is a statically typed compiled systems programming language. It combines successful concepts from mature languages like Python, Ada and Modula. [Find out more about Nim, and Nimble](https://nim-lang.org/)_
 
 ## License
 Wikipeep is developed & maintained by George Lemon | Released under GPLv3 license. Wikipeep is written in [Nim language](https://nim-lang.org/) 💛 powered by [Jester framework](https://github.com/dom96/jester).
+=======
+>>>>>>> 05a9fed3a637730cc3f044d218a8faaabef8cc86
