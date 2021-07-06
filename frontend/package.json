@@ -1,11 +1,15 @@
 {
     "name": "wikipeep",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "description": "Wikipeep - Open Source Wiki for Busy devs - The frontend application",
     "main": "src/frontend.js",
     "repository": "https://github.com/georgelemon/wikipeep",
     "author": "George Lemon",
     "license": "GPLv3",
+    "scripts": {
+        "watch": "rollup -c -w",
+        "build": "rollup -c"
+    },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^19.0.0",
         "@rollup/plugin-node-resolve": "^13.0.0",
