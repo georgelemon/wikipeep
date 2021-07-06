@@ -44,6 +44,7 @@ For intalling Wikipeep on a server is highly recommended to use NGINX as a rever
 Once you have NGINX installed on your server, you will need to configure it. Create a wiki.website.com file (replace the hostname with your wikipeep hostname) inside /etc/nginx/sites-available/.
 <details>
     <summary>NGINX & Systemd Service configuration</summary>
+
 ```bash
 server {
         server_name wiki.website.com;
