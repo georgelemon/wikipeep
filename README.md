@@ -1,4 +1,4 @@
-**Open Source Wiki for Busy Devs.**
+<p align="center"><img src="https://github.com/georgelemon/wikipeep/blob/node/.github/wikipeep.png" width="255px" alt="Wikipeep"><br><strong>(WIP) Wikipeep - Open Source Wiki for Busy Devs</strong></p>
 
 Wikipeep is a high performant platform for creating fast and beautiful wiki documentation websites for your projects.
 
