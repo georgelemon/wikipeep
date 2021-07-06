@@ -4,14 +4,18 @@ Wikipeep is a high performant platform for creating fast and beautiful wiki docu
 
 **This branch represents the new direction of Wikipeep.** Currently in heavy development. This is a monorepo containing code sources for backend, frontend and the command line interface.
 
+_Previously Wikipeep started as a PHP project and currently rewritten in Nim and vanilla JavaScript._
+
 # Key features
-- [ ] Flat File Database
+- [ ] SQLite or PostgreSQL
 - [ ] Command Line Interface
 - [x] Secured by default (no dashboard interface)
 - [x] High Performant based on **Jester**, written in **Nim**
+- [ ] **IndexedDB Storage**
+- [ ] UI Dark & Light theme
+- [ ] UI Search w/ autocomplete
 - [ ] Fast search w/ **Typesense**
-- [ ] **IndexedDB Storage** (Client side)
-- [ ] Dark & Light theme
+- [ ] Offline Support (based on `IndexedDB` and `Web Workers`)
 - [ ] SEO Botland (Text/Markup only renderer for SEO bots)
 - [x] Open Source under GPLv3
 
@@ -19,19 +23,27 @@ Wikipeep is a high performant platform for creating fast and beautiful wiki docu
 ### Backend
 Wikipeep backend is a REST API and server written in Nim, powered by Jester framework. It is also used for frontend routing and as a Botland for rendering Text/Markup only contents for SEO bots.
 
+Once we have a stable release for Wikipeep you can get the backend as a one-file binary package. For more details about running on a live server [jump to Production](#production).
+
 ### Frontend
 The frontend is fast and fully made with Vanilla JavaScript, packed & minified with Rollup.js.
 
 ### CLI
 From command line interface you can control your Wikipeep instance. Is written in Nim, powered by Klymene and provides full access to your Wikipeep contents and UI settings.
 
-## Local install
+## Compile it yourself
+If you want to compile the `backend` and `cli` from sources you will need the following:
+- Nim & Nimble (latest versions)
+- Clang (latest version)
+- SQLite or PostgreSQL (SQLite is recommended for small Wikipeep instances)
+- NodeJS (required only for client side changes)
 
 ## Production
 For intalling Wikipeep on a server is highly recommended to use NGINX as a reverse proxy for Wikipeep application.
 
 Once you have NGINX installed on your server, you will need to configure it. Create a wiki.website.com file (replace the hostname with your wikipeep hostname) inside /etc/nginx/sites-available/.
-
+<details>
+    <summary>NGINX & Systemd Service configuration</summary>
 ```bash
 server {
         server_name wiki.website.com;
@@ -94,3 +106,4 @@ For checking the service status
 ```bash
 systemctl status wikipeep
 ```
+</details>
