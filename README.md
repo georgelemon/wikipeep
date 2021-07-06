@@ -1,4 +1,4 @@
-<p align="center"><img src="https://github.com/georgelemon/wikipeep/blob/node/.github/wikipeep.png" width="255px" alt="Wikipeep"><br><strong>(WIP) Wikipeep is a high performant platform for creating<br>fast and beautiful wiki documentations for your projects.</strong></p>
+<p align="center"><img src="https://github.com/georgelemon/wikipeep/blob/node/.github/wikipeep.png" width="200px" alt="Wikipeep"><br><strong>(WIP) Wikipeep is a high performant platform for creating<br>fast and beautiful wiki documentations for your projects.</strong></p>
 
 **This branch represents the new direction of Wikipeep.** Currently in heavy development. This is a monorepo containing code sources for backend, frontend and the command line interface.
 
