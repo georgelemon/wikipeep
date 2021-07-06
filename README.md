@@ -19,15 +19,52 @@ _Previously Wikipeep started as a PHP project and currently rewritten in Nim and
 
 
 ### Backend
-Wikipeep backend is a REST API and server written in Nim, powered by Jester framework. It is also used for frontend routing and as a Botland for rendering Text/Markup only contents for SEO bots.
+Wikipeep backend is a REST API and a server at the same time. Is written in Nim, powered by Jester framework. It is also used for frontend routing and as a Botland for rendering Text/Markup only contents for SEO bots.
+
+The Backend provides only GET routes, and is wired to Norm ORM for read-only from an SQLite or PostgreSQL database.
 
 Once we have a stable release for Wikipeep you can get the backend as a one-file binary package. For more details about running on a live server [jump to Production](#production).
 
-### Frontend
-The frontend is fast and fully made with Vanilla JavaScript, packed & minified with Rollup.js.
-
 ### CLI
 From command line interface you can control your Wikipeep instance. Is written in Nim, powered by Klymene and provides full access to your Wikipeep contents and UI settings.
+
+The CLI is wired to Norm ORM with full Read/Write access to your SQLite or PostgreSQL database instance. **The command line interface is separated from backend,** is available as a binary-package, has a small size and can be easily symlinked to your `PATH`.
+
+**Available Wikipeep CLI commands**
+```
+Wikipeep 🤟 Open Source Wiki for Busy Devs
+
+Usage:
+    wikipeep status                       Determine if there are any unpublished changes
+    wikipeep publish <status>             Compile markdown contents and publish changes
+    wikipeep make <visibility>            Make your Wikipeep instance "private" or "public"
+    wikipeep (-h | --help)
+    wikipeep (-v | --version)
+
+Options:
+    -h --help        Show this screen.
+    -v --version     Show version.
+```
+
+**Wikipeep visibility**
+If you choose to make your Wikipeep instance private you can set a password by running
+```bash
+wikipeep make private
+```
+
+Once set, next time you will try to access your Wikipeep will prompt a password screen.<br>
+**Note that the password protection is a simple middleware-like cookie-session based authentication.**
+
+### Frontend
+Wikipeep frontend is fully made with Vanilla JavaScript, packed & minified with Rollup.js. The style sources of the default theme are available as SCSS and minified using Dart Sass, so there are no direct dependencies via Node.
+
+The frontend provides some minimal kick-ass features like
+- [ ] Dark & Light theme
+- [ ] Manual theme switcher
+- [ ] Search w/ Autocomplete
+- [ ] Responsive Layout
+- [ ] Based on latest Bootstrap (SCSS only)
+- [ ] Code syntax 
 
 ## Compile it yourself
 If you want to compile the `backend` and `cli` from sources you will need the following:
