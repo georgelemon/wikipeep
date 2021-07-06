@@ -43,7 +43,7 @@ For intalling Wikipeep on a server is highly recommended to use NGINX as a rever
 
 Once you have NGINX installed on your server, you will need to configure it. Create a wiki.website.com file (replace the hostname with your wikipeep hostname) inside /etc/nginx/sites-available/.
 <details>
-    <summary>NGINX & Systemd Service configuration</summary>
+    <summary>NGINX Configuration</summary>
 
 ```bash
 server {
@@ -71,8 +71,11 @@ sudo service nginx restart
 # or if you have nginx cli installed
 sudo nginx -s reload
 ```
+</details>
 
-# Systemd Service
+<details>
+<summary>Systemd Service Configuration</summary>
+
 For keeping your Wikipeep instance always live after a crash or a server boot, you'll need to create a `systemd` service for it.
 
 ```bash
