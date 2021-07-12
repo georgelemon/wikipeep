@@ -79,10 +79,6 @@ wikipeep service --webworker=true
 # Enable IndexedDB API
 wikipeep service --indexeddb=true
 
-# Enable the Redis-like service
-# For using Renims, first you will need to boot Renims instance
-wikipeep service --renims=true
-
 # Enable the UI controller for theme switcher
 wikipeep service --themeswitch=true
 
@@ -118,9 +114,6 @@ IndexedDB is a powerful transparent key/value database handled by modern Browser
 
 3. **Enable Offline mode with Web Workers**
 By default, disabled, the Offline mode can help your readers to keep a copy of your entire Wikipeep while they are offline.
-
-4. **Enable Renims**
-Renims is a built-in module implementation inspired by Redis and written in Nim. Renims is a separate server and can store `key/value` data, serving as an external cache manager.
 
 ## Compile it yourself
 If you want to compile the `backend` and `cli` from sources you will need the following:
