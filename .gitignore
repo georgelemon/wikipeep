@@ -1,6 +1,5 @@
 /storage/*
 .env
 content
-
 /frontend/node_modules
 /frontend/yarn.lock
