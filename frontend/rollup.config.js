@@ -7,7 +7,7 @@ export default {
     output: {
         name: 'Wikipeep',
         file: `../public/assets/app.min.js`,
-        format: 'iife',                       // "amd", "cjs", "system", "es", "iife" or "umd"
+        format: 'iife',                         // "amd", "cjs", "system", "es", "iife" or "umd"
         sourcemap: true
     },
     plugins: [
