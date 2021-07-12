@@ -1,0 +1,39 @@
+# This is the main configuration file of your Wikipeep instance.
+# Updating this file does not require recompiling Wikipeep from source,
+# but you will still need to restart your server for making changes available live.
+
+# Main Application Settings
+app:
+    name: "Wikipeep"            # The name of your Wikipeep instance
+    meta_title: "Open Source Wiki for Busy Devs"
+    public: true                # Whether visible to internet or password protected (also excluding bots)
+
+# Database Settings
+database:
+    driver: pgsql
+
+
+# Contents Settings
+contents:
+    path: "./content"            # The absolute path to your Markdown Contents
+
+# User Interface Settings
+interface:
+    assets_path: "./public"      # Set the path to public assets (CSS, JS and other files)
+    switch_scheme: true          # Add the manual theme switcher on frontend (recommended)
+    auto_scheme: true            # Auto switch theme based on user's preferred color scheme (recommended)
+
+# Enable Advanced Services
+# Note that for enabling the Typesense service first
+# you must install Typesense on your server.
+services:
+    botland: true               # Serve text-only & markup content to SEO bots (recommended)
+    typesense: true             # Enable fast search functionality (recommended for huge Wikipeep instances)
+    webworkers: true            # Enable offline access via Web Workers API (recommended)
+
+# Enable Social Channels links on Wikipeep.
+# The key name should reflect an available SVG icon id,
+# if not found, it will fallback to a URL-like icon.
+social_channels:
+    github: "https://github.com/georgelemon/wikipeep"
+    instagram: "#"
